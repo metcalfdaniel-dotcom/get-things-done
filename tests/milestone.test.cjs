@@ -476,6 +476,23 @@ describe('milestone complete command', () => {
     );
   });
 
+  test('updates STATE.md with plain format fields', () => {
+    fs.writeFileSync(
+      path.join(tmpDir, '.planning', 'ROADMAP.md'),
+      `# Roadmap v1.0\n`
+    );
+    fs.writeFileSync(
+      path.join(tmpDir, '.planning', 'STATE.md'),
+      `# State\n\nStatus: In progress\nLast Activity: 2025-01-01\nLast Activity Description: Working\n`
+    );
+
+    const result = runGsdTools('milestone complete v1.0 --name Test', tmpDir);
+    assert.ok(result.success, `Command failed: ${result.error}`);
+
+    const state = fs.readFileSync(path.join(tmpDir, '.planning', 'STATE.md'), 'utf-8');
+    assert.ok(state.includes('v1.0 milestone complete'), 'plain Status field should be updated');
+  });
+
   test('handles empty phases directory', () => {
     fs.writeFileSync(
       path.join(tmpDir, '.planning', 'ROADMAP.md'),
@@ -683,6 +700,51 @@ describe('requirements mark-complete command', () => {
     const output = JSON.parse(result.output);
     assert.strictEqual(output.updated, false, 'updated should be false');
     assert.strictEqual(output.reason, 'REQUIREMENTS.md not found', 'should report file not found');
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// new-milestone workflow verification gate (#1269)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe('new-milestone workflow verification gate', () => {
+  test('new-milestone workflow has verification step before writing PROJECT.md', () => {
+    const workflowPath = path.join(__dirname, '..', 'get-shit-done', 'workflows', 'new-milestone.md');
+    const content = fs.readFileSync(workflowPath, 'utf8');
+
+    // Must have a verification step between goal gathering and PROJECT.md writing
+    assert.ok(
+      content.includes('Verify Milestone Understanding'),
+      'workflow must have a "Verify Milestone Understanding" step'
+    );
+
+    // Verification must come before Step 4 (Update PROJECT.md)
+    const verifyIdx = content.indexOf('Verify Milestone Understanding');
+    const updateIdx = content.indexOf('## 4. Update PROJECT.md');
+    assert.ok(verifyIdx > 0, 'verification step must exist');
+    assert.ok(updateIdx > 0, 'Update PROJECT.md step must exist');
+    assert.ok(
+      verifyIdx < updateIdx,
+      'verification step must appear before Update PROJECT.md step'
+    );
+  });
+
+  test('verification step uses AskUserQuestion with adjust loop', () => {
+    const workflowPath = path.join(__dirname, '..', 'get-shit-done', 'workflows', 'new-milestone.md');
+    const content = fs.readFileSync(workflowPath, 'utf8');
+
+    // Extract the section between 3.5 and 4
+    const sectionStart = content.indexOf('## 3.5');
+    const sectionEnd = content.indexOf('## 4.');
+    const section = content.slice(sectionStart, sectionEnd);
+
+    assert.ok(section.includes('AskUserQuestion'), 'verification must use AskUserQuestion');
+    assert.ok(section.includes('Adjust'), 'verification must offer Adjust option');
+    assert.ok(section.includes('Looks good'), 'verification must offer Looks good option');
+    assert.ok(
+      section.includes('Loop until') || section.includes('loop until') || section.includes('re-present'),
+      'verification must loop until user approves'
+    );
   });
 });
 

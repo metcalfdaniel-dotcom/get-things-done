@@ -4,7 +4,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { execSync, spawnSync } = require('child_process');
+const { execSync, execFileSync, spawnSync } = require('child_process');
 const { MODEL_PROFILES } = require('./model-profiles.cjs');
 
 // ─── Path helpers ────────────────────────────────────────────────────────────
@@ -14,28 +14,164 @@ function toPosixPath(p) {
   return p.split(path.sep).join('/');
 }
 
+/**
+ * Scan immediate child directories for separate git repos.
+ * Returns a sorted array of directory names that have their own `.git`.
+ * Excludes hidden directories and node_modules.
+ */
+function detectSubRepos(cwd) {
+  const results = [];
+  try {
+    const entries = fs.readdirSync(cwd, { withFileTypes: true });
+    for (const entry of entries) {
+      if (!entry.isDirectory()) continue;
+      if (entry.name.startsWith('.') || entry.name === 'node_modules') continue;
+      const gitPath = path.join(cwd, entry.name, '.git');
+      try {
+        if (fs.existsSync(gitPath)) {
+          results.push(entry.name);
+        }
+      } catch {}
+    }
+  } catch {}
+  return results.sort();
+}
+
+/**
+ * Walk up from `startDir` to find the project root that owns `.planning/`.
+ *
+ * In multi-repo workspaces, Claude may open inside a sub-repo (e.g. `backend/`)
+ * instead of the project root. This function prevents `.planning/` from being
+ * created inside the sub-repo by locating the nearest ancestor that already has
+ * a `.planning/` directory.
+ *
+ * Detection strategy (checked in order for each ancestor):
+ * 1. Parent has `.planning/config.json` with `sub_repos` listing this directory
+ * 2. Parent has `.planning/config.json` with `multiRepo: true` (legacy format)
+ * 3. Parent has `.planning/` and current dir has its own `.git` (heuristic)
+ *
+ * Returns `startDir` unchanged when no ancestor `.planning/` is found (first-run
+ * or single-repo projects).
+ */
+function findProjectRoot(startDir) {
+  const resolved = path.resolve(startDir);
+  const root = path.parse(resolved).root;
+  const homedir = require('os').homedir();
+
+  // Check if startDir or any of its ancestors (up to but not including a
+  // candidate project root) contains a .git directory. This handles both
+  // `backend/` (direct sub-repo) and `backend/src/modules/` (nested inside).
+  function isInsideGitRepo(candidateParent) {
+    let d = resolved;
+    while (d !== candidateParent && d !== root) {
+      if (fs.existsSync(path.join(d, '.git'))) return true;
+      d = path.dirname(d);
+    }
+    return false;
+  }
+
+  let dir = resolved;
+  while (dir !== root) {
+    const parent = path.dirname(dir);
+    if (parent === dir) break; // filesystem root
+    if (parent === homedir) break; // never go above home
+
+    const parentPlanning = path.join(parent, '.planning');
+    if (fs.existsSync(parentPlanning) && fs.statSync(parentPlanning).isDirectory()) {
+      const configPath = path.join(parentPlanning, 'config.json');
+      try {
+        const config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+        const subRepos = config.sub_repos || config.planning?.sub_repos || [];
+
+        // Check explicit sub_repos list
+        if (Array.isArray(subRepos) && subRepos.length > 0) {
+          const relPath = path.relative(parent, resolved);
+          const topSegment = relPath.split(path.sep)[0];
+          if (subRepos.includes(topSegment)) {
+            return parent;
+          }
+        }
+
+        // Check legacy multiRepo flag
+        if (config.multiRepo === true && isInsideGitRepo(parent)) {
+          return parent;
+        }
+      } catch {
+        // config.json missing or malformed — fall back to .git heuristic
+      }
+
+      // Heuristic: parent has .planning/ and we're inside a git repo
+      if (isInsideGitRepo(parent)) {
+        return parent;
+      }
+    }
+    dir = parent;
+  }
+  return startDir;
+}
+
 // ─── Output helpers ───────────────────────────────────────────────────────────
 
+/**
+ * Remove stale gsd-* temp files/dirs older than maxAgeMs (default: 5 minutes).
+ * Runs opportunistically before each new temp file write to prevent unbounded accumulation.
+ * @param {string} prefix - filename prefix to match (e.g., 'gsd-')
+ * @param {object} opts
+ * @param {number} opts.maxAgeMs - max age in ms before removal (default: 5 min)
+ * @param {boolean} opts.dirsOnly - if true, only remove directories (default: false)
+ */
+function reapStaleTempFiles(prefix = 'gsd-', { maxAgeMs = 5 * 60 * 1000, dirsOnly = false } = {}) {
+  try {
+    const tmpDir = require('os').tmpdir();
+    const now = Date.now();
+    const entries = fs.readdirSync(tmpDir);
+    for (const entry of entries) {
+      if (!entry.startsWith(prefix)) continue;
+      const fullPath = path.join(tmpDir, entry);
+      try {
+        const stat = fs.statSync(fullPath);
+        if (now - stat.mtimeMs > maxAgeMs) {
+          if (stat.isDirectory()) {
+            fs.rmSync(fullPath, { recursive: true, force: true });
+          } else if (!dirsOnly) {
+            fs.unlinkSync(fullPath);
+          }
+        }
+      } catch {
+        // File may have been removed between readdir and stat — ignore
+      }
+    }
+  } catch {
+    // Non-critical — don't let cleanup failures break output
+  }
+}
+
 function output(result, raw, rawValue) {
+  let data;
   if (raw && rawValue !== undefined) {
-    process.stdout.write(String(rawValue));
+    data = String(rawValue);
   } else {
     const json = JSON.stringify(result, null, 2);
     // Large payloads exceed Claude Code's Bash tool buffer (~50KB).
     // Write to tmpfile and output the path prefixed with @file: so callers can detect it.
     if (json.length > 50000) {
+      reapStaleTempFiles();
       const tmpPath = path.join(require('os').tmpdir(), `gsd-${Date.now()}.json`);
       fs.writeFileSync(tmpPath, json, 'utf-8');
-      process.stdout.write('@file:' + tmpPath);
+      data = '@file:' + tmpPath;
     } else {
-      process.stdout.write(json);
+      data = json;
     }
   }
-  process.exit(0);
+  // process.stdout.write() is async when stdout is a pipe — process.exit()
+  // can tear down the process before the reader consumes the buffer.
+  // fs.writeSync(1, ...) blocks until the kernel accepts the bytes, and
+  // skipping process.exit() lets the event loop drain naturally.
+  fs.writeSync(1, data);
 }
 
 function error(message) {
-  process.stderr.write('Error: ' + message + '\n');
+  fs.writeSync(2, 'Error: ' + message + '\n');
   process.exit(1);
 }
 
@@ -65,8 +201,11 @@ function loadConfig(cwd) {
     nyquist_validation: true,
     parallelization: true,
     brave_search: false,
+    firecrawl: false,
+    exa_search: false,
     text_mode: false, // when true, use plain-text numbered lists instead of AskUserQuestion menus
-    resolve_model_ids: false, // when true, resolve aliases (opus/sonnet/haiku) to full model IDs
+    sub_repos: [],
+    resolve_model_ids: false, // false: return alias as-is | true: map to full Claude model ID | "omit": return '' (runtime uses its default)
     context_window: 200000, // default 200k; set to 1000000 for Opus/Sonnet 4.6 1M models
     phase_naming: 'sequential', // 'sequential' (default, auto-increment) or 'custom' (arbitrary string IDs)
   };
@@ -81,6 +220,39 @@ function loadConfig(cwd) {
       parsed.granularity = depthToGranularity[parsed.depth] || parsed.depth;
       delete parsed.depth;
       try { fs.writeFileSync(configPath, JSON.stringify(parsed, null, 2), 'utf-8'); } catch { /* intentionally empty */ }
+    }
+
+    // Auto-detect and sync sub_repos: scan for child directories with .git
+    let configDirty = false;
+
+    // Migrate legacy "multiRepo: true" boolean → sub_repos array
+    if (parsed.multiRepo === true && !parsed.sub_repos && !parsed.planning?.sub_repos) {
+      const detected = detectSubRepos(cwd);
+      if (detected.length > 0) {
+        parsed.sub_repos = detected;
+        if (!parsed.planning) parsed.planning = {};
+        parsed.planning.commit_docs = false;
+        delete parsed.multiRepo;
+        configDirty = true;
+      }
+    }
+
+    // Keep sub_repos in sync with actual filesystem
+    const currentSubRepos = parsed.sub_repos || parsed.planning?.sub_repos || [];
+    if (Array.isArray(currentSubRepos) && currentSubRepos.length > 0) {
+      const detected = detectSubRepos(cwd);
+      if (detected.length > 0) {
+        const sorted = [...currentSubRepos].sort();
+        if (JSON.stringify(sorted) !== JSON.stringify(detected)) {
+          parsed.sub_repos = detected;
+          configDirty = true;
+        }
+      }
+    }
+
+    // Persist sub_repos changes (migration or sync)
+    if (configDirty) {
+      try { fs.writeFileSync(configPath, JSON.stringify(parsed, null, 2), 'utf-8'); } catch {}
     }
 
     const get = (key, nested) => {
@@ -100,7 +272,15 @@ function loadConfig(cwd) {
 
     return {
       model_profile: get('model_profile') ?? defaults.model_profile,
-      commit_docs: get('commit_docs', { section: 'planning', field: 'commit_docs' }) ?? defaults.commit_docs,
+      commit_docs: (() => {
+        const explicit = get('commit_docs', { section: 'planning', field: 'commit_docs' });
+        // If explicitly set in config, respect the user's choice
+        if (explicit !== undefined) return explicit;
+        // Auto-detection: when no explicit value and .planning/ is gitignored,
+        // default to false instead of true
+        if (isGitIgnored(cwd, '.planning/')) return false;
+        return defaults.commit_docs;
+      })(),
       search_gitignored: get('search_gitignored', { section: 'planning', field: 'search_gitignored' }) ?? defaults.search_gitignored,
       branching_strategy: get('branching_strategy', { section: 'git', field: 'branching_strategy' }) ?? defaults.branching_strategy,
       phase_branch_template: get('phase_branch_template', { section: 'git', field: 'phase_branch_template' }) ?? defaults.phase_branch_template,
@@ -112,7 +292,10 @@ function loadConfig(cwd) {
       nyquist_validation: get('nyquist_validation', { section: 'workflow', field: 'nyquist_validation' }) ?? defaults.nyquist_validation,
       parallelization,
       brave_search: get('brave_search') ?? defaults.brave_search,
+      firecrawl: get('firecrawl') ?? defaults.firecrawl,
+      exa_search: get('exa_search') ?? defaults.exa_search,
       text_mode: get('text_mode', { section: 'workflow', field: 'text_mode' }) ?? defaults.text_mode,
+      sub_repos: get('sub_repos', { section: 'planning', field: 'sub_repos' }) ?? defaults.sub_repos,
       resolve_model_ids: get('resolve_model_ids') ?? defaults.resolve_model_ids,
       context_window: get('context_window') ?? defaults.context_window,
       phase_naming: get('phase_naming') ?? defaults.phase_naming,
@@ -131,7 +314,9 @@ function isGitIgnored(cwd, targetPath) {
     // Without it, git check-ignore returns "not ignored" for tracked files even when
     // .gitignore explicitly lists them — a common source of confusion when .planning/
     // was committed before being added to .gitignore.
-    execSync('git check-ignore -q --no-index -- ' + targetPath.replace(/[^a-zA-Z0-9._\-/]/g, ''), {
+    // Use execFileSync (array args) to prevent shell interpretation of special characters
+    // in file paths — avoids command injection via crafted path names.
+    execFileSync('git', ['check-ignore', '-q', '--no-index', '--', targetPath], {
       cwd,
       stdio: 'pipe',
     });
@@ -260,6 +445,84 @@ function execGit(cwd, args) {
 
 // ─── Common path helpers ──────────────────────────────────────────────────────
 
+/**
+ * Resolve the main worktree root when running inside a git worktree.
+ * In a linked worktree, .planning/ lives in the main worktree, not in the linked one.
+ * Returns the main worktree path, or cwd if not in a worktree.
+ */
+function resolveWorktreeRoot(cwd) {
+  // Check if we're in a linked worktree
+  const gitDir = execGit(cwd, ['rev-parse', '--git-dir']);
+  const commonDir = execGit(cwd, ['rev-parse', '--git-common-dir']);
+
+  if (gitDir.exitCode !== 0 || commonDir.exitCode !== 0) return cwd;
+
+  // In a linked worktree, .git is a file pointing to .git/worktrees/<name>
+  // and git-common-dir points to the main repo's .git directory
+  const gitDirResolved = path.resolve(cwd, gitDir.stdout);
+  const commonDirResolved = path.resolve(cwd, commonDir.stdout);
+
+  if (gitDirResolved !== commonDirResolved) {
+    // We're in a linked worktree — resolve main worktree root
+    // The common dir is the main repo's .git, so its parent is the main worktree root
+    return path.dirname(commonDirResolved);
+  }
+
+  return cwd;
+}
+
+/**
+ * Acquire a file-based lock for .planning/ writes.
+ * Prevents concurrent worktrees from corrupting shared planning files.
+ * Lock is auto-released after the callback completes.
+ */
+function withPlanningLock(cwd, fn) {
+  const lockPath = path.join(planningDir(cwd), '.lock');
+  const lockTimeout = 10000; // 10 seconds
+  const retryDelay = 100;
+  const start = Date.now();
+
+  // Ensure .planning/ exists
+  try { fs.mkdirSync(planningDir(cwd), { recursive: true }); } catch { /* ok */ }
+
+  while (Date.now() - start < lockTimeout) {
+    try {
+      // Atomic create — fails if file exists
+      fs.writeFileSync(lockPath, JSON.stringify({
+        pid: process.pid,
+        cwd,
+        acquired: new Date().toISOString(),
+      }), { flag: 'wx' });
+
+      // Lock acquired — run the function
+      try {
+        return fn();
+      } finally {
+        try { fs.unlinkSync(lockPath); } catch { /* already released */ }
+      }
+    } catch (err) {
+      if (err.code === 'EEXIST') {
+        // Lock exists — check if stale (>30s old)
+        try {
+          const stat = fs.statSync(lockPath);
+          if (Date.now() - stat.mtimeMs > 30000) {
+            fs.unlinkSync(lockPath);
+            continue; // retry
+          }
+        } catch { continue; }
+
+        // Wait and retry
+        spawnSync('sleep', ['0.1'], { stdio: 'ignore' });
+        continue;
+      }
+      throw err;
+    }
+  }
+  // Timeout — force acquire (stale lock recovery)
+  try { fs.unlinkSync(lockPath); } catch { /* ok */ }
+  return fn();
+}
+
 /** Get the .planning directory path */
 function planningDir(cwd) {
   return path.join(cwd, '.planning');
@@ -355,6 +618,7 @@ function searchPhaseInDir(baseDir, relBase, normalized) {
     const hasResearch = phaseFiles.some(f => f.endsWith('-RESEARCH.md') || f === 'RESEARCH.md');
     const hasContext = phaseFiles.some(f => f.endsWith('-CONTEXT.md') || f === 'CONTEXT.md');
     const hasVerification = phaseFiles.some(f => f.endsWith('-VERIFICATION.md') || f === 'VERIFICATION.md');
+    const hasReviews = phaseFiles.some(f => f.endsWith('-REVIEWS.md') || f === 'REVIEWS.md');
 
     const completedPlanIds = new Set(
       summaries.map(s => s.replace('-SUMMARY.md', '').replace('SUMMARY.md', ''))
@@ -376,6 +640,7 @@ function searchPhaseInDir(baseDir, relBase, normalized) {
       has_research: hasResearch,
       has_context: hasContext,
       has_verification: hasVerification,
+      has_reviews: hasReviews,
     };
   } catch {
     return null;
@@ -620,10 +885,18 @@ const MODEL_ALIAS_MAP = {
 function resolveModelInternal(cwd, agentType) {
   const config = loadConfig(cwd);
 
-  // Check per-agent override first
+  // Check per-agent override first — always respected regardless of resolve_model_ids.
+  // Users who set fully-qualified model IDs (e.g., "openai/gpt-5.4") get exactly that.
   const override = config.model_overrides?.[agentType];
   if (override) {
     return override;
+  }
+
+  // resolve_model_ids: "omit" — return empty string so the runtime uses its configured
+  // default model. For non-Claude runtimes (OpenCode, Codex, etc.) that don't recognize
+  // Claude aliases (opus/sonnet/haiku/inherit). Set automatically during install. See #1156.
+  if (config.resolve_model_ids === 'omit') {
+    return '';
   }
 
   // Fall back to profile lookup
@@ -633,8 +906,8 @@ function resolveModelInternal(cwd, agentType) {
   if (profile === 'inherit') return 'inherit';
   const alias = agentModels[profile] || agentModels['balanced'] || 'sonnet';
 
-  // If resolve_model_ids is true, map alias to full model ID
-  // This prevents 404s when the Task tool passes aliases directly to the API
+  // resolve_model_ids: true — map alias to full Claude model ID
+  // Prevents 404s when the Task tool passes aliases directly to the API
   if (config.resolve_model_ids) {
     return MODEL_ALIAS_MAP[alias] || alias;
   }
@@ -778,6 +1051,11 @@ module.exports = {
   replaceInCurrentMilestone,
   toPosixPath,
   extractOneLinerFromBody,
+  resolveWorktreeRoot,
+  withPlanningLock,
+  findProjectRoot,
+  detectSubRepos,
+  reapStaleTempFiles,
   MODEL_ALIAS_MAP,
   planningDir,
   planningPaths,

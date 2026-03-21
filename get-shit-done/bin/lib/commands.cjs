@@ -84,6 +84,11 @@ function cmdVerifyPathExists(cwd, targetPath, raw) {
     error('path required for verification');
   }
 
+  // Reject null bytes and validate path does not contain traversal attempts
+  if (targetPath.includes('\0')) {
+    error('path contains null bytes');
+  }
+
   const fullPath = path.isAbsolute(targetPath) ? targetPath : path.join(cwd, targetPath);
 
   try {
@@ -219,6 +224,13 @@ function cmdCommit(cwd, message, files, raw, amend, noVerify) {
     error('commit message required');
   }
 
+  // Sanitize commit message: strip invisible chars and injection markers
+  // that could hijack agent context when commit messages are read back
+  if (message) {
+    const { sanitizeForPrompt } = require('./security.cjs');
+    message = sanitizeForPrompt(message);
+  }
+
   const config = loadConfig(cwd);
 
   // Check commit_docs config
@@ -233,6 +245,43 @@ function cmdCommit(cwd, message, files, raw, amend, noVerify) {
     const result = { committed: false, hash: null, reason: 'skipped_gitignored' };
     output(result, raw, 'skipped');
     return;
+  }
+
+  // Ensure branching strategy branch exists before first commit (#1278).
+  // Pre-execution workflows (discuss, plan, research) commit artifacts but the branch
+  // was previously only created during execute-phase — too late.
+  if (config.branching_strategy && config.branching_strategy !== 'none') {
+    let branchName = null;
+    if (config.branching_strategy === 'phase') {
+      // Determine which phase we're committing for from the file paths
+      const phaseMatch = (files || []).join(' ').match(/(\d+)-/);
+      if (phaseMatch) {
+        const phaseNum = phaseMatch[1];
+        const phaseInfo = findPhaseInternal(cwd, phaseNum);
+        if (phaseInfo) {
+          branchName = config.phase_branch_template
+            .replace('{phase}', phaseInfo.phase_number)
+            .replace('{slug}', phaseInfo.phase_slug || 'phase');
+        }
+      }
+    } else if (config.branching_strategy === 'milestone') {
+      const milestone = getMilestoneInfo(cwd);
+      if (milestone && milestone.version) {
+        branchName = config.milestone_branch_template
+          .replace('{milestone}', milestone.version)
+          .replace('{slug}', generateSlugInternal(milestone.name) || 'milestone');
+      }
+    }
+    if (branchName) {
+      const currentBranch = execGit(cwd, ['rev-parse', '--abbrev-ref', 'HEAD']);
+      if (currentBranch.exitCode === 0 && currentBranch.stdout.trim() !== branchName) {
+        // Create branch if it doesn't exist, or switch to it if it does
+        const create = execGit(cwd, ['checkout', '-b', branchName]);
+        if (create.exitCode !== 0) {
+          execGit(cwd, ['checkout', branchName]);
+        }
+      }
+    }
   }
 
   // Stage files
@@ -267,6 +316,74 @@ function cmdCommit(cwd, message, files, raw, amend, noVerify) {
   const hash = hashResult.exitCode === 0 ? hashResult.stdout : null;
   const result = { committed: true, hash, reason: 'committed' };
   output(result, raw, hash || 'committed');
+}
+
+function cmdCommitToSubrepo(cwd, message, files, raw) {
+  if (!message) {
+    error('commit message required');
+  }
+
+  const config = loadConfig(cwd);
+  const subRepos = config.sub_repos;
+
+  if (!subRepos || subRepos.length === 0) {
+    error('no sub_repos configured in .planning/config.json');
+  }
+
+  if (!files || files.length === 0) {
+    error('--files required for commit-to-subrepo');
+  }
+
+  // Group files by sub-repo prefix
+  const grouped = {};
+  const unmatched = [];
+  for (const file of files) {
+    const match = subRepos.find(repo => file.startsWith(repo + '/'));
+    if (match) {
+      if (!grouped[match]) grouped[match] = [];
+      grouped[match].push(file);
+    } else {
+      unmatched.push(file);
+    }
+  }
+
+  if (unmatched.length > 0) {
+    process.stderr.write(`Warning: ${unmatched.length} file(s) did not match any sub-repo prefix: ${unmatched.join(', ')}\n`);
+  }
+
+  const repos = {};
+  for (const [repo, repoFiles] of Object.entries(grouped)) {
+    const repoCwd = path.join(cwd, repo);
+
+    // Stage files (strip sub-repo prefix for paths relative to that repo)
+    for (const file of repoFiles) {
+      const relativePath = file.slice(repo.length + 1);
+      execGit(repoCwd, ['add', relativePath]);
+    }
+
+    // Commit
+    const commitResult = execGit(repoCwd, ['commit', '-m', message]);
+    if (commitResult.exitCode !== 0) {
+      if (commitResult.stdout.includes('nothing to commit') || commitResult.stderr.includes('nothing to commit')) {
+        repos[repo] = { committed: false, hash: null, files: repoFiles, reason: 'nothing_to_commit' };
+        continue;
+      }
+      repos[repo] = { committed: false, hash: null, files: repoFiles, reason: 'error', error: commitResult.stderr };
+      continue;
+    }
+
+    // Get hash
+    const hashResult = execGit(repoCwd, ['rev-parse', '--short', 'HEAD']);
+    const hash = hashResult.exitCode === 0 ? hashResult.stdout : null;
+    repos[repo] = { committed: true, hash, files: repoFiles };
+  }
+
+  const result = {
+    committed: Object.values(repos).some(r => r.committed),
+    repos,
+    unmatched: unmatched.length > 0 ? unmatched : undefined,
+  };
+  output(result, raw, Object.entries(repos).map(([r, v]) => `${r}:${v.hash || 'skip'}`).join(' '));
 }
 
 function cmdSummaryExtract(cwd, summaryPath, fields, raw) {
@@ -831,6 +948,7 @@ module.exports = {
   cmdHistoryDigest,
   cmdResolveModel,
   cmdCommit,
+  cmdCommitToSubrepo,
   cmdSummaryExtract,
   cmdWebsearch,
   cmdProgressRender,
