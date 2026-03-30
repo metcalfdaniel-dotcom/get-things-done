@@ -39,6 +39,10 @@ jobs:
           find . -type f -not -path './.git/*' -exec sed -i 's/gsd-/gtd-/g' {} \;
           find . -type f -not -path './.git/*' -exec sed -i 's/GSD/GTD/g' {} \;
           
+          # Also replace standalone GSD references that weren't caught by above
+          find . -type f -not -path './.git/*' -exec sed -i 's/gsd:/gtd-/g' {} \;
+          find . -type f -not -path './.git/*' -exec sed -i "s/\/gsd:/\/gtd-/g" {} \;
+          
           # Rename directories
           find . -type d -name 'gsd' -exec mv {} {}_temp \; 2>/dev/null || true
           find . -type d -name 'gsd_temp' -exec mv {} get-things-done \; 2>/dev/null || true
@@ -50,5 +54,5 @@ jobs:
       - name: Commit and push
         run: |
           git add -A
-          git diff --staged --quiet || git commit -m "sync: merge from GSD and apply clean transformations"
+          git diff --staged --quiet || git commit -m "sync: merge from GSD and apply clean transformations (shit→things, gsd→gtd)"
           git push origin main

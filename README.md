@@ -56,11 +56,11 @@ The installer prompts you to choose:
 2. **Location** — Global (all projects) or local (current project only)
 
 Verify with:
-- Claude Code / Gemini: `/gsd:help`
+- Claude Code / Gemini: `/gtd-help`
 - OpenCode: `/gtd-help`
 - Codex: `$gtd-help`
-- Copilot: `/gsd:help`
-- Antigravity: `/gsd:help`
+- Copilot: `/gtd-help`
+- Antigravity: `/gtd-help`
 
 > [!NOTE]
 > Codex installation uses skills (`skills/gtd-*/SKILL.md`) rather than custom prompts.
@@ -180,12 +180,12 @@ If you prefer not to use that flag, add this to your project's `.claude/settings
 
 ## How It Works
 
-> **Already have code?** Run `/gsd:map-codebase` first. It spawns parallel agents to analyze your stack, architecture, conventions, and concerns. Then `/gsd:new-project` knows your codebase — questions focus on what you're adding, and planning automatically loads your patterns.
+> **Already have code?** Run `/gtd-map-codebase` first. It spawns parallel agents to analyze your stack, architecture, conventions, and concerns. Then `/gtd-new-project` knows your codebase — questions focus on what you're adding, and planning automatically loads your patterns.
 
 ### 1. Initialize Project
 
 ```
-/gsd:new-project
+/gtd-new-project
 ```
 
 One command, one flow. The system:
@@ -204,7 +204,7 @@ You approve the roadmap. Now you're ready to build.
 ### 2. Discuss Phase
 
 ```
-/gsd:discuss-phase 1
+/gtd-discuss-phase 1
 ```
 
 **This is where you shape the implementation.**
@@ -227,14 +227,14 @@ The deeper you go here, the more the system builds what you actually want. Skip 
 
 **Creates:** `{phase_num}-CONTEXT.md`
 
-> **Assumptions Mode:** Prefer codebase analysis over questions? Set `workflow.discuss_mode` to `assumptions` in `/gsd:settings`. The system reads your code, surfaces what it would do and why, and only asks you to correct what's wrong. See [Discuss Mode](docs/workflow-discuss-mode.md).
+> **Assumptions Mode:** Prefer codebase analysis over questions? Set `workflow.discuss_mode` to `assumptions` in `/gtd-settings`. The system reads your code, surfaces what it would do and why, and only asks you to correct what's wrong. See [Discuss Mode](docs/workflow-discuss-mode.md).
 
 ---
 
 ### 3. Plan Phase
 
 ```
-/gsd:plan-phase 1
+/gtd-plan-phase 1
 ```
 
 The system:
@@ -252,7 +252,7 @@ Each plan is small enough to execute in a fresh context window. No degradation, 
 ### 4. Execute Phase
 
 ```
-/gsd:execute-phase 1
+/gtd-execute-phase 1
 ```
 
 The system:
@@ -303,7 +303,7 @@ This is why "vertical slices" (Plan 01: User feature end-to-end) parallelize bet
 ### 5. Verify Work
 
 ```
-/gsd:verify-work 1
+/gtd-verify-work 1
 ```
 
 **This is where you confirm it actually works.**
@@ -317,7 +317,7 @@ The system:
 3. **Diagnoses failures automatically** — Spawns debug agents to find root causes
 4. **Creates verified fix plans** — Ready for immediate re-execution
 
-If everything passes, you move on. If something's broken, you don't manually debug — you just run `/gsd:execute-phase` again with the fix plans it created.
+If everything passes, you move on. If something's broken, you don't manually debug — you just run `/gtd-execute-phase` again with the fix plans it created.
 
 **Creates:** `{phase_num}-UAT.md`, fix plans if issues found
 
@@ -326,38 +326,38 @@ If everything passes, you move on. If something's broken, you don't manually deb
 ### 6. Repeat → Ship → Complete → Next Milestone
 
 ```
-/gsd:discuss-phase 2
-/gsd:plan-phase 2
-/gsd:execute-phase 2
-/gsd:verify-work 2
-/gsd:ship 2                  # Create PR from verified work
+/gtd-discuss-phase 2
+/gtd-plan-phase 2
+/gtd-execute-phase 2
+/gtd-verify-work 2
+/gtd-ship 2                  # Create PR from verified work
 ...
-/gsd:complete-milestone
-/gsd:new-milestone
+/gtd-complete-milestone
+/gtd-new-milestone
 ```
 
 Or let GTD figure out the next step automatically:
 
 ```
-/gsd:next                    # Auto-detect and run next step
+/gtd-next                    # Auto-detect and run next step
 ```
 
 Loop **discuss → plan → execute → verify → ship** until milestone complete.
 
-If you want faster intake during discussion, use `/gsd:discuss-phase <n> --batch` to answer a small grouped set of questions at once instead of one-by-one.
+If you want faster intake during discussion, use `/gtd-discuss-phase <n> --batch` to answer a small grouped set of questions at once instead of one-by-one.
 
 Each phase gets your input (discuss), proper research (plan), clean execution (execute), and human verification (verify). Context stays fresh. Quality stays high.
 
-When all phases are done, `/gsd:complete-milestone` archives the milestone and tags the release.
+When all phases are done, `/gtd-complete-milestone` archives the milestone and tags the release.
 
-Then `/gsd:new-milestone` starts the next version — same flow as `new-project` but for your existing codebase. You describe what you want to build next, the system researches the domain, you scope requirements, and it creates a fresh roadmap. Each milestone is a clean cycle: define → build → ship.
+Then `/gtd-new-milestone` starts the next version — same flow as `new-project` but for your existing codebase. You describe what you want to build next, the system researches the domain, you scope requirements, and it creates a fresh roadmap. Each milestone is a clean cycle: define → build → ship.
 
 ---
 
 ### Quick Mode
 
 ```
-/gsd:quick
+/gtd-quick
 ```
 
 **For ad-hoc tasks that don't need full planning.**
@@ -377,7 +377,7 @@ Quick mode gives you GTD guarantees (atomic commits, state tracking) with a fast
 Flags are composable: `--discuss --research --full` gives discussion + research + plan-checking + verification.
 
 ```
-/gsd:quick
+/gtd-quick
 > What do you want to do? "Add dark mode toggle to settings"
 ```
 
@@ -476,117 +476,117 @@ You're never locked in. The system adapts.
 
 | Command | What it does |
 |---------|--------------|
-| `/gsd:new-project [--auto]` | Full initialization: questions → research → requirements → roadmap |
-| `/gsd:discuss-phase [N] [--auto] [--analyze]` | Capture implementation decisions before planning (`--analyze` adds trade-off analysis) |
-| `/gsd:plan-phase [N] [--auto] [--reviews]` | Research + plan + verify for a phase (`--reviews` loads codebase review findings) |
-| `/gsd:execute-phase <N>` | Execute all plans in parallel waves, verify when complete |
-| `/gsd:verify-work [N]` | Manual user acceptance testing ¹ |
-| `/gsd:ship [N] [--draft]` | Create PR from verified phase work with auto-generated body |
-| `/gsd:next` | Automatically advance to the next logical workflow step |
-| `/gsd:fast <text>` | Inline trivial tasks — skips planning entirely, executes immediately |
-| `/gsd:audit-milestone` | Verify milestone achieved its definition of done |
-| `/gsd:complete-milestone` | Archive milestone, tag release |
-| `/gsd:new-milestone [name]` | Start next version: questions → research → requirements → roadmap |
-| `/gsd:forensics [desc]` | Post-mortem investigation of failed workflow runs (diagnoses stuck loops, missing artifacts, git anomalies) |
-| `/gsd:milestone-summary [version]` | Generate comprehensive project summary for team onboarding and review |
+| `/gtd-new-project [--auto]` | Full initialization: questions → research → requirements → roadmap |
+| `/gtd-discuss-phase [N] [--auto] [--analyze]` | Capture implementation decisions before planning (`--analyze` adds trade-off analysis) |
+| `/gtd-plan-phase [N] [--auto] [--reviews]` | Research + plan + verify for a phase (`--reviews` loads codebase review findings) |
+| `/gtd-execute-phase <N>` | Execute all plans in parallel waves, verify when complete |
+| `/gtd-verify-work [N]` | Manual user acceptance testing ¹ |
+| `/gtd-ship [N] [--draft]` | Create PR from verified phase work with auto-generated body |
+| `/gtd-next` | Automatically advance to the next logical workflow step |
+| `/gtd-fast <text>` | Inline trivial tasks — skips planning entirely, executes immediately |
+| `/gtd-audit-milestone` | Verify milestone achieved its definition of done |
+| `/gtd-complete-milestone` | Archive milestone, tag release |
+| `/gtd-new-milestone [name]` | Start next version: questions → research → requirements → roadmap |
+| `/gtd-forensics [desc]` | Post-mortem investigation of failed workflow runs (diagnoses stuck loops, missing artifacts, git anomalies) |
+| `/gtd-milestone-summary [version]` | Generate comprehensive project summary for team onboarding and review |
 
 ### Workstreams
 
 | Command | What it does |
 |---------|--------------|
-| `/gsd:workstreams list` | Show all workstreams and their status |
-| `/gsd:workstreams create <name>` | Create a namespaced workstream for parallel milestone work |
-| `/gsd:workstreams switch <name>` | Switch active workstream |
-| `/gsd:workstreams complete <name>` | Complete and merge a workstream |
+| `/gtd-workstreams list` | Show all workstreams and their status |
+| `/gtd-workstreams create <name>` | Create a namespaced workstream for parallel milestone work |
+| `/gtd-workstreams switch <name>` | Switch active workstream |
+| `/gtd-workstreams complete <name>` | Complete and merge a workstream |
 
 ### Multi-Project Workspaces
 
 | Command | What it does |
 |---------|--------------|
-| `/gsd:new-workspace` | Create isolated workspace with repo copies (worktrees or clones) |
-| `/gsd:list-workspaces` | Show all GTD workspaces and their status |
-| `/gsd:remove-workspace` | Remove workspace and clean up worktrees |
+| `/gtd-new-workspace` | Create isolated workspace with repo copies (worktrees or clones) |
+| `/gtd-list-workspaces` | Show all GTD workspaces and their status |
+| `/gtd-remove-workspace` | Remove workspace and clean up worktrees |
 
 ### UI Design
 
 | Command | What it does |
 |---------|--------------|
-| `/gsd:ui-phase [N]` | Generate UI design contract (UI-SPEC.md) for frontend phases |
-| `/gsd:ui-review [N]` | Retroactive 6-pillar visual audit of implemented frontend code |
+| `/gtd-ui-phase [N]` | Generate UI design contract (UI-SPEC.md) for frontend phases |
+| `/gtd-ui-review [N]` | Retroactive 6-pillar visual audit of implemented frontend code |
 
 ### Navigation
 
 | Command | What it does |
 |---------|--------------|
-| `/gsd:progress` | Where am I? What's next? |
-| `/gsd:next` | Auto-detect state and run the next step |
-| `/gsd:help` | Show all commands and usage guide |
-| `/gsd:update` | Update GTD with changelog preview |
-| `/gsd:join-discord` | Join the GTD Discord community |
-| `/gsd:manager` | Interactive command center for managing multiple phases |
+| `/gtd-progress` | Where am I? What's next? |
+| `/gtd-next` | Auto-detect state and run the next step |
+| `/gtd-help` | Show all commands and usage guide |
+| `/gtd-update` | Update GTD with changelog preview |
+| `/gtd-join-discord` | Join the GTD Discord community |
+| `/gtd-manager` | Interactive command center for managing multiple phases |
 
 ### Brownfield
 
 | Command | What it does |
 |---------|--------------|
-| `/gsd:map-codebase [area]` | Analyze existing codebase before new-project |
+| `/gtd-map-codebase [area]` | Analyze existing codebase before new-project |
 
 ### Phase Management
 
 | Command | What it does |
 |---------|--------------|
-| `/gsd:add-phase` | Append phase to roadmap |
-| `/gsd:insert-phase [N]` | Insert urgent work between phases |
-| `/gsd:remove-phase [N]` | Remove future phase, renumber |
-| `/gsd:list-phase-assumptions [N]` | See Claude's intended approach before planning |
-| `/gsd:plan-milestone-gaps` | Create phases to close gaps from audit |
+| `/gtd-add-phase` | Append phase to roadmap |
+| `/gtd-insert-phase [N]` | Insert urgent work between phases |
+| `/gtd-remove-phase [N]` | Remove future phase, renumber |
+| `/gtd-list-phase-assumptions [N]` | See Claude's intended approach before planning |
+| `/gtd-plan-milestone-gaps` | Create phases to close gaps from audit |
 
 ### Session
 
 | Command | What it does |
 |---------|--------------|
-| `/gsd:pause-work` | Create handoff when stopping mid-phase (writes HANDOFF.json) |
-| `/gsd:resume-work` | Restore from last session |
-| `/gsd:session-report` | Generate session summary with work performed and outcomes |
+| `/gtd-pause-work` | Create handoff when stopping mid-phase (writes HANDOFF.json) |
+| `/gtd-resume-work` | Restore from last session |
+| `/gtd-session-report` | Generate session summary with work performed and outcomes |
 
 ### Workstreams
 
 | Command | What it does |
 |---------|--------------|
-| `/gsd:workstreams` | Manage parallel workstreams (list, create, switch, status, progress, complete) |
+| `/gtd-workstreams` | Manage parallel workstreams (list, create, switch, status, progress, complete) |
 
 ### Code Quality
 
 | Command | What it does |
 |---------|--------------|
-| `/gsd:review` | Cross-AI peer review of current phase or branch |
-| `/gsd:pr-branch` | Create clean PR branch filtering `.planning/` commits |
-| `/gsd:audit-uat` | Audit verification debt — find phases missing UAT |
+| `/gtd-review` | Cross-AI peer review of current phase or branch |
+| `/gtd-pr-branch` | Create clean PR branch filtering `.planning/` commits |
+| `/gtd-audit-uat` | Audit verification debt — find phases missing UAT |
 
 ### Backlog & Threads
 
 | Command | What it does |
 |---------|--------------|
-| `/gsd:plant-seed <idea>` | Capture forward-looking ideas with trigger conditions — surfaces at the right milestone |
-| `/gsd:add-backlog <desc>` | Add idea to backlog parking lot (999.x numbering, outside active sequence) |
-| `/gsd:review-backlog` | Review and promote backlog items to active milestone or remove stale entries |
-| `/gsd:thread [name]` | Persistent context threads — lightweight cross-session knowledge for work spanning multiple sessions |
+| `/gtd-plant-seed <idea>` | Capture forward-looking ideas with trigger conditions — surfaces at the right milestone |
+| `/gtd-add-backlog <desc>` | Add idea to backlog parking lot (999.x numbering, outside active sequence) |
+| `/gtd-review-backlog` | Review and promote backlog items to active milestone or remove stale entries |
+| `/gtd-thread [name]` | Persistent context threads — lightweight cross-session knowledge for work spanning multiple sessions |
 
 ### Utilities
 
 | Command | What it does |
 |---------|--------------|
-| `/gsd:settings` | Configure model profile and workflow agents |
-| `/gsd:set-profile <profile>` | Switch model profile (quality/balanced/budget/inherit) |
-| `/gsd:add-todo [desc]` | Capture idea for later |
-| `/gsd:check-todos` | List pending todos |
-| `/gsd:debug [desc]` | Systematic debugging with persistent state |
-| `/gsd:do <text>` | Route freeform text to the right GTD command automatically |
-| `/gsd:note <text>` | Zero-friction idea capture — append, list, or promote notes to todos |
-| `/gsd:quick [--full] [--discuss] [--research]` | Execute ad-hoc task with GTD guarantees (`--full` adds plan-checking and verification, `--discuss` gathers context first, `--research` investigates approaches before planning) |
-| `/gsd:health [--repair]` | Validate `.planning/` directory integrity, auto-repair with `--repair` |
-| `/gsd:stats` | Display project statistics — phases, plans, requirements, git metrics |
-| `/gsd:profile-user [--questionnaire] [--refresh]` | Generate developer behavioral profile from session analysis for personalized responses |
+| `/gtd-settings` | Configure model profile and workflow agents |
+| `/gtd-set-profile <profile>` | Switch model profile (quality/balanced/budget/inherit) |
+| `/gtd-add-todo [desc]` | Capture idea for later |
+| `/gtd-check-todos` | List pending todos |
+| `/gtd-debug [desc]` | Systematic debugging with persistent state |
+| `/gtd-do <text>` | Route freeform text to the right GTD command automatically |
+| `/gtd-note <text>` | Zero-friction idea capture — append, list, or promote notes to todos |
+| `/gtd-quick [--full] [--discuss] [--research]` | Execute ad-hoc task with GTD guarantees (`--full` adds plan-checking and verification, `--discuss` gathers context first, `--research` investigates approaches before planning) |
+| `/gtd-health [--repair]` | Validate `.planning/` directory integrity, auto-repair with `--repair` |
+| `/gtd-stats` | Display project statistics — phases, plans, requirements, git metrics |
+| `/gtd-profile-user [--questionnaire] [--refresh]` | Generate developer behavioral profile from session analysis for personalized responses |
 
 <sup>¹ Contributed by reddit user OracleGreyBeard</sup>
 
@@ -594,7 +594,7 @@ You're never locked in. The system adapts.
 
 ## Configuration
 
-GTD stores project settings in `.planning/config.json`. Configure during `/gsd:new-project` or update later with `/gsd:settings`. For the full config schema, workflow toggles, git branching options, and per-agent model breakdown, see the [User Guide](docs/USER-GUIDE.md#configuration-reference).
+GTD stores project settings in `.planning/config.json`. Configure during `/gtd-new-project` or update later with `/gtd-settings`. For the full config schema, workflow toggles, git branching options, and per-agent model breakdown, see the [User Guide](docs/USER-GUIDE.md#configuration-reference).
 
 ### Core Settings
 
@@ -616,12 +616,12 @@ Control which Claude model each agent uses. Balance quality vs token spend.
 
 Switch profiles:
 ```
-/gsd:set-profile budget
+/gtd-set-profile budget
 ```
 
 Use `inherit` when using non-Anthropic providers (OpenRouter, local models) or to follow the current runtime model selection (e.g. OpenCode `/model`).
 
-Or configure via `/gsd:settings`.
+Or configure via `/gtd-settings`.
 
 ### Workflow Agents
 
@@ -638,9 +638,9 @@ These spawn additional agents during planning/execution. They improve quality bu
 | `workflow.skip_discuss` | `false` | Skip discuss-phase in autonomous mode |
 | `workflow.text_mode` | `false` | Text-only mode for remote sessions (no TUI menus) |
 
-Use `/gsd:settings` to toggle these, or override per-invocation:
-- `/gsd:plan-phase --skip-research`
-- `/gsd:plan-phase --skip-verify`
+Use `/gtd-settings` to toggle these, or override per-invocation:
+- `/gtd-plan-phase --skip-research`
+- `/gtd-plan-phase --skip-verify`
 
 ### Execution
 
@@ -732,7 +732,7 @@ This prevents Claude from reading these files entirely, regardless of what comma
 - For Codex, verify skills exist in `~/.codex/skills/gtd-*/SKILL.md` (global) or `./.codex/skills/gtd-*/SKILL.md` (local)
 
 **Commands not working as expected?**
-- Run `/gsd:help` to verify installation
+- Run `/gtd-help` to verify installation
 - Re-run `npx get-things-done-cc` to reinstall
 
 **Updating to the latest version?**
