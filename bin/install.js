@@ -289,8 +289,8 @@ const banner = '\n' +
   '   ╚═════╝ ╚══════╝╚═════╝' + reset + '\n' +
   '\n' +
   '  Get Things Done ' + dim + 'v' + pkg.version + reset + '\n' +
-  '  A meta-prompting, context engineering and spec-driven\n' +
-  '  development system for Claude Code, OpenCode, Gemini, Codex, Copilot, Antigravity, Cursor, and Windsurf by TÂCHES.\n';
+  '  A profanity-free fork of get-shit-done\n' +
+  '  For full specs, see: https://github.com/gsd-build/get-shit-done\n';
 
 // Parse --config-dir argument
 function parseConfigDirArg() {

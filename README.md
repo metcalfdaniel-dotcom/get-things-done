@@ -33,11 +33,9 @@ npx get-things-done-cc@latest
 
 ## About This Fork
 
-Get Things Done (GTD) is a profanity-free fork of [get-shit-done](https://github.com/gsd-build/get-shit-done) by **TÂCHES**. I forked it to clean up the profanity and restyled it.
+Get Things Done (GTD) is a profanity-free fork of [get-shit-done](https://github.com/gsd-build/get-shit-done) by **TÂCHES**. I forked it to clean up the profanity.
 
-I'm a solo developer. I don't write code — OpenCode does.
-
-That's the gist. No enterprise roleplay. Just an incredibly effective system for building cool stuff with AI.
+**For full specs, documentation, and features, see the [original project](https://github.com/gsd-build/get-shit-done).**
 
 This fork replaces "shit/gsd" with "things/gtd" — same powerful workflow, just cleaner commands.
 
