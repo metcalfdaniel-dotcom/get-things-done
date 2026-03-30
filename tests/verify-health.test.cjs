@@ -1,5 +1,5 @@
 /**
- * GSD Tools Tests - Validate Health Command
+ * GTD Tools Tests - Validate Health Command
  *
  * Comprehensive tests for validate-health covering all 8 health checks
  * and the repair path.

@@ -1,7 +1,7 @@
 /**
- * GSD Tools Bridge — shells out to `gsd-tools.cjs` for state management.
+ * GTD Tools Bridge — shells out to `gtd-tools.cjs` for state management.
  *
- * All `.planning/` state operations go through gsd-tools.cjs rather than
+ * All `.planning/` state operations go through gtd-tools.cjs rather than
  * reimplementing 12K+ lines of logic.
  */
 
@@ -14,7 +14,7 @@ import type { InitNewProjectInfo, PhaseOpInfo, PhasePlanIndex, RoadmapAnalysis }
 
 // ─── Error type ──────────────────────────────────────────────────────────────
 
-export class GSDToolsError extends Error {
+export class GTDToolsError extends Error {
   constructor(
     message: string,
     public readonly command: string,
@@ -23,15 +23,15 @@ export class GSDToolsError extends Error {
     public readonly stderr: string,
   ) {
     super(message);
-    this.name = 'GSDToolsError';
+    this.name = 'GTDToolsError';
   }
 }
 
-// ─── GSDTools class ──────────────────────────────────────────────────────────
+// ─── GTDTools class ──────────────────────────────────────────────────────────
 
 const DEFAULT_TIMEOUT_MS = 30_000;
 
-export class GSDTools {
+export class GTDTools {
   private readonly projectDir: string;
   private readonly gsdToolsPath: string;
   private readonly timeoutMs: number;
@@ -50,7 +50,7 @@ export class GSDTools {
   // ─── Core exec ───────────────────────────────────────────────────────────
 
   /**
-   * Execute a gsd-tools command and return parsed JSON output.
+   * Execute a gtd-tools command and return parsed JSON output.
    * Handles the `@file:` prefix pattern for large results.
    */
   async exec(command: string, args: string[] = []): Promise<unknown> {
@@ -73,8 +73,8 @@ export class GSDTools {
             // Distinguish timeout from other errors
             if (error.killed || (error as NodeJS.ErrnoException).code === 'ETIMEDOUT') {
               reject(
-                new GSDToolsError(
-                  `gsd-tools timed out after ${this.timeoutMs}ms: ${command} ${args.join(' ')}`,
+                new GTDToolsError(
+                  `gtd-tools timed out after ${this.timeoutMs}ms: ${command} ${args.join(' ')}`,
                   command,
                   args,
                   null,
@@ -85,8 +85,8 @@ export class GSDTools {
             }
 
             reject(
-              new GSDToolsError(
-                `gsd-tools exited with code ${error.code ?? 'unknown'}: ${command} ${args.join(' ')}${stderrStr ? `\n${stderrStr}` : ''}`,
+              new GTDToolsError(
+                `gtd-tools exited with code ${error.code ?? 'unknown'}: ${command} ${args.join(' ')}${stderrStr ? `\n${stderrStr}` : ''}`,
                 command,
                 args,
                 typeof error.code === 'number' ? error.code : (error as { status?: number }).status ?? 1,
@@ -103,8 +103,8 @@ export class GSDTools {
             resolve(parsed);
           } catch (parseErr) {
             reject(
-              new GSDToolsError(
-                `Failed to parse gsd-tools output for "${command}": ${parseErr instanceof Error ? parseErr.message : String(parseErr)}\nRaw output: ${raw.slice(0, 500)}`,
+              new GTDToolsError(
+                `Failed to parse gtd-tools output for "${command}": ${parseErr instanceof Error ? parseErr.message : String(parseErr)}\nRaw output: ${raw.slice(0, 500)}`,
                 command,
                 args,
                 0,
@@ -118,8 +118,8 @@ export class GSDTools {
       // Safety net: kill if child doesn't respond to timeout signal
       child.on('error', (err) => {
         reject(
-          new GSDToolsError(
-            `Failed to execute gsd-tools: ${err.message}`,
+          new GTDToolsError(
+            `Failed to execute gtd-tools: ${err.message}`,
             command,
             args,
             null,
@@ -131,7 +131,7 @@ export class GSDTools {
   }
 
   /**
-   * Parse gsd-tools output, handling `@file:` prefix.
+   * Parse gtd-tools output, handling `@file:` prefix.
    */
   private async parseOutput(raw: string): Promise<unknown> {
     const trimmed = raw.trim();
@@ -152,7 +152,7 @@ export class GSDTools {
   // ─── Raw exec (no JSON parsing) ───────────────────────────────────────
 
   /**
-   * Execute a gsd-tools command and return raw stdout without JSON parsing.
+   * Execute a gtd-tools command and return raw stdout without JSON parsing.
    * Use for commands like `config-set` that return plain text, not JSON.
    */
   async execRaw(command: string, args: string[] = []): Promise<string> {
@@ -172,8 +172,8 @@ export class GSDTools {
           const stderrStr = stderr?.toString() ?? '';
           if (error) {
             reject(
-              new GSDToolsError(
-                `gsd-tools exited with code ${error.code ?? 'unknown'}: ${command} ${args.join(' ')}${stderrStr ? `\n${stderrStr}` : ''}`,
+              new GTDToolsError(
+                `gtd-tools exited with code ${error.code ?? 'unknown'}: ${command} ${args.join(' ')}${stderrStr ? `\n${stderrStr}` : ''}`,
                 command,
                 args,
                 typeof error.code === 'number' ? error.code : (error as { status?: number }).status ?? 1,
@@ -188,8 +188,8 @@ export class GSDTools {
 
       child.on('error', (err) => {
         reject(
-          new GSDToolsError(
-            `Failed to execute gsd-tools: ${err.message}`,
+          new GTDToolsError(
+            `Failed to execute gtd-tools: ${err.message}`,
             command,
             args,
             null,
@@ -231,7 +231,7 @@ export class GSDTools {
   }
 
   /**
-   * Query phase state from gsd-tools.cjs `init phase-op`.
+   * Query phase state from gtd-tools.cjs `init phase-op`.
    * Returns a typed PhaseOpInfo describing what exists on disk for this phase.
    */
   async initPhaseOp(phaseNumber: string): Promise<PhaseOpInfo> {
@@ -240,7 +240,7 @@ export class GSDTools {
   }
 
   /**
-   * Get a config value from gsd-tools.cjs.
+   * Get a config value from gtd-tools.cjs.
    */
   async configGet(key: string): Promise<string | null> {
     const result = await this.exec('config', ['get', key]);
@@ -248,7 +248,7 @@ export class GSDTools {
   }
 
   /**
-   * Begin phase state tracking in gsd-tools.cjs.
+   * Begin phase state tracking in gtd-tools.cjs.
    */
   async stateBeginPhase(phaseNumber: string): Promise<string> {
     return this.execRaw('state', ['begin-phase', '--phase', phaseNumber]);
@@ -264,7 +264,7 @@ export class GSDTools {
   }
 
   /**
-   * Query new-project init state from gsd-tools.cjs `init new-project`.
+   * Query new-project init state from gtd-tools.cjs `init new-project`.
    * Returns project metadata, model configs, brownfield detection, etc.
    */
   async initNewProject(): Promise<InitNewProjectInfo> {
@@ -273,8 +273,8 @@ export class GSDTools {
   }
 
   /**
-   * Set a config value via gsd-tools.cjs `config-set`.
-   * Handles type coercion (booleans, numbers, JSON) on the gsd-tools side.
+   * Set a config value via gtd-tools.cjs `config-set`.
+   * Handles type coercion (booleans, numbers, JSON) on the gtd-tools side.
    * Note: config-set returns `key=value` text, not JSON, so we use execRaw.
    */
   async configSet(key: string, value: string): Promise<string> {
@@ -285,11 +285,11 @@ export class GSDTools {
 // ─── Path resolution ────────────────────────────────────────────────────────
 
 /**
- * Resolve gsd-tools.cjs path with repo-local fallback.
+ * Resolve gtd-tools.cjs path with repo-local fallback.
  * Probe order: repo-local → global home directory.
  */
 export function resolveGsdToolsPath(projectDir: string): string {
-  const localPath = join(projectDir, '.claude', 'get-shit-done', 'bin', 'gsd-tools.cjs');
+  const localPath = join(projectDir, '.claude', 'get-things-done', 'bin', 'gtd-tools.cjs');
   if (existsSync(localPath)) return localPath;
-  return join(homedir(), '.claude', 'get-shit-done', 'bin', 'gsd-tools.cjs');
+  return join(homedir(), '.claude', 'get-things-done', 'bin', 'gtd-tools.cjs');
 }

@@ -8,7 +8,7 @@ describe('loadConfig', () => {
   let tmpDir: string;
 
   beforeEach(async () => {
-    tmpDir = join(tmpdir(), `gsd-config-test-${Date.now()}-${Math.random().toString(36).slice(2)}`);
+    tmpDir = join(tmpdir(), `gtd-config-test-${Date.now()}-${Math.random().toString(36).slice(2)}`);
     await mkdir(join(tmpDir, '.planning'), { recursive: true });
   });
 

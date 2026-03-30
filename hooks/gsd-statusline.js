@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// gsd-hook-version: {{GSD_VERSION}}
-// Claude Code Statusline - GSD Edition
+// gtd-hook-version: {{GTD_VERSION}}
+// Claude Code Statusline - GTD Edition
 // Shows: model | current task | directory | context usage
 
 const fs = require('fs');
@@ -91,9 +91,9 @@ process.stdin.on('end', () => {
       }
     }
 
-    // GSD update available?
+    // GTD update available?
     let gsdUpdate = '';
-    const cacheFile = path.join(claudeDir, 'cache', 'gsd-update-check.json');
+    const cacheFile = path.join(claudeDir, 'cache', 'gtd-update-check.json');
     if (fs.existsSync(cacheFile)) {
       try {
         const cache = JSON.parse(fs.readFileSync(cacheFile, 'utf8'));

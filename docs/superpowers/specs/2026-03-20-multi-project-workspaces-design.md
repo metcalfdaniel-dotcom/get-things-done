@@ -6,7 +6,7 @@
 
 ## Problem
 
-GSD is tied to one `.planning/` directory per working directory. Users with multiple independent projects (monorepo-style setups with 20+ child repos) or users needing feature branch isolation in the same repo cannot run parallel GSD sessions without manual cloning and state management.
+GTD is tied to one `.planning/` directory per working directory. Users with multiple independent projects (monorepo-style setups with 20+ child repos) or users needing feature branch isolation in the same repo cannot run parallel GTD sessions without manual cloning and state management.
 
 ## Solution
 
@@ -33,14 +33,14 @@ Creates a workspace directory with repo copies and its own `.planning/`.
 |------|----------|---------|-------------|
 | `--name` | Yes | — | Workspace name |
 | `--repos` | No | Interactive selection | Comma-separated repo paths or names |
-| `--path` | No | `~/gsd-workspaces/<name>` | Target directory |
+| `--path` | No | `~/gtd-workspaces/<name>` | Target directory |
 | `--strategy` | No | `worktree` | `worktree` (lightweight, shared .git) or `clone` (fully independent) |
 | `--branch` | No | `workspace/<name>` | Branch to checkout |
 | `--auto` | No | false | Skip interactive questions, use defaults |
 
 ### `/gsd:list-workspaces`
 
-Scans `~/gsd-workspaces/*/WORKSPACE.md` for workspace manifests. Displays table with name, path, repo count, GSD status (has PROJECT.md, current phase).
+Scans `~/gtd-workspaces/*/WORKSPACE.md` for workspace manifests. Displays table with name, path, repo count, GTD status (has PROJECT.md, current phase).
 
 ### `/gsd:remove-workspace`
 
@@ -49,9 +49,9 @@ Removes a workspace directory after confirmation. For worktree strategy, runs `g
 ## Directory Structure
 
 ```
-~/gsd-workspaces/feature-b/          # workspace root
+~/gtd-workspaces/feature-b/          # workspace root
 ├── WORKSPACE.md                      # manifest
-├── .planning/                        # independent GSD planning directory
+├── .planning/                        # independent GTD planning directory
 │   ├── PROJECT.md                    # (if user ran /gsd:new-project)
 │   ├── STATE.md
 │   └── config.json
@@ -64,7 +64,7 @@ Removes a workspace directory after confirmation. For worktree strategy, runs `g
 Key properties:
 - `.planning/` is at the workspace root, not inside any individual repo
 - Each repo is a peer directory under the workspace root
-- `WORKSPACE.md` is the only GSD-specific file at the root (besides `.planning/`)
+- `WORKSPACE.md` is the only GTD-specific file at the root (besides `.planning/`)
 - For `--strategy clone`, same structure but repos are full clones
 
 ## WORKSPACE.md Format
@@ -111,7 +111,7 @@ Detects:
 - Whether target path already exists
 - Whether source repos have uncommitted changes
 - Whether `git worktree` is available
-- Default workspace base dir (`~/gsd-workspaces/`)
+- Default workspace base dir (`~/gtd-workspaces/`)
 
 Returns JSON with flags for workflow gating.
 
@@ -137,7 +137,7 @@ Returns JSON with flags for workflow gating.
 
 ### List-Workspaces Edge Cases
 
-- **`~/gsd-workspaces/` doesn't exist** — "No workspaces found"
+- **`~/gtd-workspaces/` doesn't exist** — "No workspaces found"
 - **WORKSPACE.md exists but repos inside are gone** — Show workspace, mark repos as missing
 
 ## Testing
@@ -166,20 +166,20 @@ All tests use temp directories and clean up after themselves. Follow existing `n
 | Command: new-workspace | `commands/gsd/new-workspace.md` |
 | Command: list-workspaces | `commands/gsd/list-workspaces.md` |
 | Command: remove-workspace | `commands/gsd/remove-workspace.md` |
-| Workflow: new-workspace | `get-shit-done/workflows/new-workspace.md` |
-| Workflow: list-workspaces | `get-shit-done/workflows/list-workspaces.md` |
-| Workflow: remove-workspace | `get-shit-done/workflows/remove-workspace.md` |
-| Init function | `get-shit-done/bin/lib/init.cjs` (add `cmdInitNewWorkspace`, `cmdInitListWorkspaces`, `cmdInitRemoveWorkspace`) |
-| Routing | `get-shit-done/bin/gsd-tools.cjs` (add cases to init switch) |
+| Workflow: new-workspace | `get-things-done/workflows/new-workspace.md` |
+| Workflow: list-workspaces | `get-things-done/workflows/list-workspaces.md` |
+| Workflow: remove-workspace | `get-things-done/workflows/remove-workspace.md` |
+| Init function | `get-things-done/bin/lib/init.cjs` (add `cmdInitNewWorkspace`, `cmdInitListWorkspaces`, `cmdInitRemoveWorkspace`) |
+| Routing | `get-things-done/bin/gtd-tools.cjs` (add cases to init switch) |
 | Tests | `tests/workspace.test.cjs` |
 
 ## Design Decisions
 
 | Decision | Rationale |
 |----------|-----------|
-| Physical directories over logical registry | Filesystem is source of truth — matches GSD's existing cwd-based detection pattern |
+| Physical directories over logical registry | Filesystem is source of truth — matches GTD's existing cwd-based detection pattern |
 | Worktree as default strategy | Lightweight (shared .git objects), fast to create, easy to clean up |
-| `.planning/` at workspace root | Gives full isolation from individual repo planning. Each workspace is an independent GSD project |
+| `.planning/` at workspace root | Gives full isolation from individual repo planning. Each workspace is an independent GTD project |
 | No central registry | Avoids state drift. `list-workspaces` scans the filesystem directly |
 | Case B as special case of A | `--repos .` reuses the same machinery, no special feature-branch code needed |
-| Default path `~/gsd-workspaces/<name>` | Predictable location for `list-workspaces` to scan, keeps workspaces out of source repos |
+| Default path `~/gtd-workspaces/<name>` | Predictable location for `list-workspaces` to scan, keeps workspaces out of source repos |

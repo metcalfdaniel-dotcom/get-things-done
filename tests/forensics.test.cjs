@@ -1,5 +1,5 @@
 /**
- * GSD Forensics Tests
+ * GTD Forensics Tests
  *
  * Validates the forensics command and workflow files exist,
  * follow expected patterns, and cover all anomaly detection types.
@@ -13,7 +13,7 @@ const os = require('os');
 
 const repoRoot = path.resolve(__dirname, '..');
 const commandPath = path.join(repoRoot, 'commands', 'gsd', 'forensics.md');
-const workflowPath = path.join(repoRoot, 'get-shit-done', 'workflows', 'forensics.md');
+const workflowPath = path.join(repoRoot, 'get-things-done', 'workflows', 'forensics.md');
 
 describe('forensics command', () => {
   test('command file exists', () => {
@@ -142,7 +142,7 @@ describe('forensics workflow', () => {
     const content = fs.readFileSync(workflowPath, 'utf-8');
     assert.ok(
       content.includes('state record-session'),
-      'should update STATE.md via gsd-tools'
+      'should update STATE.md via gtd-tools'
     );
   });
 
@@ -189,7 +189,7 @@ describe('forensics fixture-based tests', () => {
   let tmpDir;
 
   beforeEach(() => {
-    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'gsd-forensics-test-'));
+    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'gtd-forensics-test-'));
   });
 
   afterEach(() => {

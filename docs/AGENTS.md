@@ -1,4 +1,4 @@
-# GSD Agent Reference
+# GTD Agent Reference
 
 > All 18 specialized agents — roles, tools, spawn patterns, and relationships. For architecture context, see [Architecture](ARCHITECTURE.md).
 
@@ -6,7 +6,7 @@
 
 ## Overview
 
-GSD uses a multi-agent architecture where thin orchestrators (workflow files) spawn specialized agents with fresh context windows. Each agent has a focused role, limited tool access, and produces specific artifacts.
+GTD uses a multi-agent architecture where thin orchestrators (workflow files) spawn specialized agents with fresh context windows. Each agent has a focused role, limited tool access, and produces specific artifacts.
 
 ### Agent Categories
 
@@ -28,7 +28,7 @@ GSD uses a multi-agent architecture where thin orchestrators (workflow files) sp
 
 ## Agent Details
 
-### gsd-project-researcher
+### gtd-project-researcher
 
 **Role:** Researches domain ecosystem before roadmap creation.
 
@@ -47,7 +47,7 @@ GSD uses a multi-agent architecture where thin orchestrators (workflow files) sp
 
 ---
 
-### gsd-phase-researcher
+### gtd-phase-researcher
 
 **Role:** Researches how to implement a specific phase before planning.
 
@@ -66,7 +66,7 @@ GSD uses a multi-agent architecture where thin orchestrators (workflow files) sp
 
 ---
 
-### gsd-ui-researcher
+### gtd-ui-researcher
 
 **Role:** Produces UI design contracts for frontend phases.
 
@@ -87,7 +87,7 @@ GSD uses a multi-agent architecture where thin orchestrators (workflow files) sp
 
 ---
 
-### gsd-assumptions-analyzer
+### gtd-assumptions-analyzer
 
 **Role:** Deeply analyzes codebase for a phase and returns structured assumptions with evidence, confidence levels, and consequences if wrong.
 
@@ -110,7 +110,7 @@ GSD uses a multi-agent architecture where thin orchestrators (workflow files) sp
 
 ---
 
-### gsd-advisor-researcher
+### gtd-advisor-researcher
 
 **Role:** Researches a single gray area decision during discuss-phase advisor mode and returns a structured comparison table.
 
@@ -132,7 +132,7 @@ GSD uses a multi-agent architecture where thin orchestrators (workflow files) sp
 
 ---
 
-### gsd-research-synthesizer
+### gtd-research-synthesizer
 
 **Role:** Combines outputs from parallel researchers into a unified summary.
 
@@ -147,7 +147,7 @@ GSD uses a multi-agent architecture where thin orchestrators (workflow files) sp
 
 ---
 
-### gsd-planner
+### gtd-planner
 
 **Role:** Creates executable phase plans with task breakdown, dependency analysis, and goal-backward verification.
 
@@ -169,7 +169,7 @@ GSD uses a multi-agent architecture where thin orchestrators (workflow files) sp
 
 ---
 
-### gsd-roadmapper
+### gtd-roadmapper
 
 **Role:** Creates project roadmaps with phase breakdown and requirement mapping.
 
@@ -190,9 +190,9 @@ GSD uses a multi-agent architecture where thin orchestrators (workflow files) sp
 
 ---
 
-### gsd-executor
+### gtd-executor
 
-**Role:** Executes GSD plans with atomic commits, deviation handling, and checkpoint protocols.
+**Role:** Executes GTD plans with atomic commits, deviation handling, and checkpoint protocols.
 
 | Property | Value |
 |----------|-------|
@@ -213,7 +213,7 @@ GSD uses a multi-agent architecture where thin orchestrators (workflow files) sp
 
 ---
 
-### gsd-plan-checker
+### gtd-plan-checker
 
 **Role:** Verifies plans will achieve phase goals before execution.
 
@@ -238,7 +238,7 @@ GSD uses a multi-agent architecture where thin orchestrators (workflow files) sp
 
 ---
 
-### gsd-integration-checker
+### gtd-integration-checker
 
 **Role:** Verifies cross-phase integration and end-to-end flows.
 
@@ -253,7 +253,7 @@ GSD uses a multi-agent architecture where thin orchestrators (workflow files) sp
 
 ---
 
-### gsd-ui-checker
+### gtd-ui-checker
 
 **Role:** Validates UI-SPEC.md design contracts against quality dimensions.
 
@@ -268,7 +268,7 @@ GSD uses a multi-agent architecture where thin orchestrators (workflow files) sp
 
 ---
 
-### gsd-verifier
+### gtd-verifier
 
 **Role:** Verifies phase goal achievement through goal-backward analysis.
 
@@ -288,7 +288,7 @@ GSD uses a multi-agent architecture where thin orchestrators (workflow files) sp
 
 ---
 
-### gsd-nyquist-auditor
+### gtd-nyquist-auditor
 
 **Role:** Fills Nyquist validation gaps by generating tests.
 
@@ -307,7 +307,7 @@ GSD uses a multi-agent architecture where thin orchestrators (workflow files) sp
 
 ---
 
-### gsd-ui-auditor
+### gtd-ui-auditor
 
 **Role:** Retroactive 6-pillar visual audit of implemented frontend code.
 
@@ -330,7 +330,7 @@ GSD uses a multi-agent architecture where thin orchestrators (workflow files) sp
 
 ---
 
-### gsd-codebase-mapper
+### gtd-codebase-mapper
 
 **Role:** Explores codebase and writes structured analysis documents.
 
@@ -350,7 +350,7 @@ GSD uses a multi-agent architecture where thin orchestrators (workflow files) sp
 
 ---
 
-### gsd-debugger
+### gtd-debugger
 
 **Role:** Investigates bugs using scientific method with persistent state.
 
@@ -375,7 +375,7 @@ GSD uses a multi-agent architecture where thin orchestrators (workflow files) sp
 
 ---
 
-### gsd-user-profiler
+### gtd-user-profiler
 
 **Role:** Analyzes session messages across 8 behavioral dimensions to produce a scored developer profile.
 

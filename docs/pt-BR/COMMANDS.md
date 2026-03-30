@@ -1,6 +1,6 @@
-# Referência de Comandos do GSD
+# Referência de Comandos do GTD
 
-Este documento descreve os comandos principais do GSD em Português.  
+Este documento descreve os comandos principais do GTD em Português.  
 Para detalhes completos de flags avançadas e mudanças recentes, consulte também a [versão em inglês](../COMMANDS.md).
 
 ---
@@ -28,7 +28,7 @@ Para detalhes completos de flags avançadas e mudanças recentes, consulte tamb�
 | `/gsd:pause-work` | Salva handoff estruturado |
 | `/gsd:session-report` | Gera resumo da sessão |
 | `/gsd:help` | Lista comandos e uso |
-| `/gsd:update` | Atualiza o GSD |
+| `/gsd:update` | Atualiza o GTD |
 
 ## Gestão de Fases
 
@@ -45,7 +45,7 @@ Para detalhes completos de flags avançadas e mudanças recentes, consulte tamb�
 | Comando | Finalidade |
 |---------|------------|
 | `/gsd:map-codebase` | Mapeia base existente antes de novo projeto |
-| `/gsd:quick` | Tarefas ad-hoc com garantias do GSD |
+| `/gsd:quick` | Tarefas ad-hoc com garantias do GTD |
 | `/gsd:debug [desc]` | Debug sistemático com estado persistente |
 | `/gsd:forensics` | Diagnóstico de falhas no workflow |
 | `/gsd:settings` | Configuração de agentes, perfil e toggles |

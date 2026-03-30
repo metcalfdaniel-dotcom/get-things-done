@@ -9,7 +9,7 @@ allowed-tools:
 ---
 
 <objective>
-Research how to implement a phase. Spawns gsd-phase-researcher agent with phase context.
+Research how to implement a phase. Spawns gtd-phase-researcher agent with phase context.
 
 **Note:** This is a standalone research command. For most workflows, use `/gsd:plan-phase` which integrates research automatically.
 
@@ -24,8 +24,8 @@ Research how to implement a phase. Spawns gsd-phase-researcher agent with phase 
 </objective>
 
 <available_agent_types>
-Valid GSD subagent types (use exact names — do not fall back to 'general-purpose'):
-- gsd-phase-researcher — Researches technical approaches for a phase
+Valid GTD subagent types (use exact names — do not fall back to 'general-purpose'):
+- gtd-phase-researcher — Researches technical approaches for a phase
 </available_agent_types>
 
 <context>
@@ -39,7 +39,7 @@ Normalize phase input in step 1 before any directory lookups.
 ## 0. Initialize Context
 
 ```bash
-INIT=$(node "$HOME/.claude/get-shit-done/bin/gsd-tools.cjs" init phase-op "$ARGUMENTS")
+INIT=$(node "$HOME/.claude/get-things-done/bin/gtd-tools.cjs" init phase-op "$ARGUMENTS")
 if [[ "$INIT" == @file:* ]]; then INIT=$(cat "${INIT#@file:}"); fi
 ```
 
@@ -47,13 +47,13 @@ Extract from init JSON: `phase_dir`, `phase_number`, `phase_name`, `phase_found`
 
 Resolve researcher model:
 ```bash
-RESEARCHER_MODEL=$(node "$HOME/.claude/get-shit-done/bin/gsd-tools.cjs" resolve-model gsd-phase-researcher --raw)
+RESEARCHER_MODEL=$(node "$HOME/.claude/get-things-done/bin/gtd-tools.cjs" resolve-model gtd-phase-researcher --raw)
 ```
 
 ## 1. Validate Phase
 
 ```bash
-PHASE_INFO=$(node "$HOME/.claude/get-shit-done/bin/gsd-tools.cjs" roadmap get-phase "${phase_number}")
+PHASE_INFO=$(node "$HOME/.claude/get-things-done/bin/gtd-tools.cjs" roadmap get-phase "${phase_number}")
 ```
 
 **If `found` is false:** Error and exit. **If `found` is true:** Extract `phase_number`, `phase_name`, `goal` from JSON.
@@ -77,7 +77,7 @@ Use paths from INIT (do not inline file contents in orchestrator context):
 
 Present summary with phase description and what files the researcher will load.
 
-## 4. Spawn gsd-phase-researcher Agent
+## 4. Spawn gtd-phase-researcher Agent
 
 Research modes: ecosystem (default), feasibility, implementation, comparison.
 
@@ -142,7 +142,7 @@ Write to: .planning/phases/${PHASE}-{slug}/${PHASE}-RESEARCH.md
 ```
 Task(
   prompt=filled_prompt,
-  subagent_type="gsd-phase-researcher",
+  subagent_type="gtd-phase-researcher",
   model="{researcher_model}",
   description="Research Phase {phase}"
 )
@@ -178,7 +178,7 @@ Continue research for Phase {phase_number}: {phase_name}
 ```
 Task(
   prompt=continuation_prompt,
-  subagent_type="gsd-phase-researcher",
+  subagent_type="gtd-phase-researcher",
   model="{researcher_model}",
   description="Continue research Phase {phase}"
 )
@@ -189,7 +189,7 @@ Task(
 <success_criteria>
 - [ ] Phase validated against roadmap
 - [ ] Existing research checked
-- [ ] gsd-phase-researcher spawned with context
+- [ ] gtd-phase-researcher spawned with context
 - [ ] Checkpoints handled correctly
 - [ ] User knows next steps
 </success_criteria>

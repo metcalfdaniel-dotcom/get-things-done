@@ -1,4 +1,4 @@
-# GSD Command Reference
+# GTD Command Reference
 
 > Complete command syntax, flags, options, and examples. For feature details, see [Feature Reference](FEATURES.md). For workflow walkthroughs, see [User Guide](USER-GUIDE.md).
 
@@ -7,8 +7,8 @@
 ## Command Syntax
 
 - **Claude Code / Gemini / Copilot:** `/gsd:command-name [args]`
-- **OpenCode:** `/gsd-command-name [args]`
-- **Codex:** `$gsd-command-name [args]`
+- **OpenCode:** `/gtd-command-name [args]`
+- **Codex:** `$gtd-command-name [args]`
 
 ---
 
@@ -40,13 +40,13 @@ Create an isolated workspace with repo copies and independent `.planning/` direc
 |------|-------------|
 | `--name <name>` | Workspace name (required) |
 | `--repos repo1,repo2` | Comma-separated repo paths or names |
-| `--path /target` | Target directory (default: `~/gsd-workspaces/<name>`) |
+| `--path /target` | Target directory (default: `~/gtd-workspaces/<name>`) |
 | `--strategy worktree\|clone` | Copy strategy (default: `worktree`) |
 | `--branch <name>` | Branch to checkout (default: `workspace/<name>`) |
 | `--auto` | Skip interactive questions |
 
 **Use cases:**
-- Multi-repo: work on a subset of repos with isolated GSD state
+- Multi-repo: work on a subset of repos with isolated GTD state
 - Feature isolation: `--repos .` creates a worktree of the current repo
 
 **Produces:** `WORKSPACE.md`, `.planning/`, repo copies (worktrees or clones)
@@ -61,10 +61,10 @@ Create an isolated workspace with repo copies and independent `.planning/` direc
 
 ### `/gsd:list-workspaces`
 
-List active GSD workspaces and their status.
+List active GTD workspaces and their status.
 
-**Scans:** `~/gsd-workspaces/` for `WORKSPACE.md` manifests
-**Shows:** Name, repo count, strategy, GSD project status
+**Scans:** `~/gtd-workspaces/` for `WORKSPACE.md` manifests
+**Shows:** Name, repo count, strategy, GTD project status
 
 ```bash
 /gsd:list-workspaces
@@ -269,7 +269,7 @@ Retroactive 6-pillar visual audit of implemented frontend.
 |----------|----------|-------------|
 | `N` | No | Phase number (defaults to last executed phase) |
 
-**Prerequisites:** Project has frontend code (works standalone, no GSD project needed)
+**Prerequisites:** Project has frontend code (works standalone, no GTD project needed)
 **Produces:** `{phase}-UI-REVIEW.md`, screenshots in `.planning/ui-reviews/`
 
 ```bash
@@ -501,7 +501,7 @@ Show all commands and usage guide.
 
 ### `/gsd:quick`
 
-Execute ad-hoc task with GSD guarantees.
+Execute ad-hoc task with GTD guarantees.
 
 | Flag | Description |
 |------|-------------|
@@ -533,7 +533,7 @@ Run all remaining phases autonomously.
 
 ### `/gsd:do`
 
-Route freeform text to the right GSD command.
+Route freeform text to the right GTD command.
 
 ```bash
 /gsd:do                             # Then describe what you want
@@ -658,7 +658,7 @@ Archive accumulated phase directories from completed milestones.
 
 ### `/gsd:forensics`
 
-Post-mortem investigation of failed or stuck GSD workflows.
+Post-mortem investigation of failed or stuck GTD workflows.
 
 | Argument | Required | Description |
 |----------|----------|-------------|
@@ -700,7 +700,7 @@ Manage parallel workstreams for concurrent work on different milestone areas.
 | `complete <name>` | Archive a completed workstream |
 | `resume <name>` | Resume work in a workstream |
 
-**Prerequisites:** Active GSD project
+**Prerequisites:** Active GTD project
 **Produces:** Workstream directories under `.planning/`, state tracking per workstream
 
 ```bash
@@ -761,7 +761,7 @@ Analyze existing codebase with parallel mapper agents.
 
 ### `/gsd:update`
 
-Update GSD with changelog preview.
+Update GTD with changelog preview.
 
 ```bash
 /gsd:update                         # Check for updates and install
@@ -769,7 +769,7 @@ Update GSD with changelog preview.
 
 ### `/gsd:reapply-patches`
 
-Restore local modifications after a GSD update.
+Restore local modifications after a GTD update.
 
 ```bash
 /gsd:reapply-patches                # Merge back local changes
@@ -830,7 +830,7 @@ Create a clean PR branch by filtering out `.planning/` commits.
 |----------|----------|-------------|
 | `target branch` | No | Base branch (default: `main`) |
 
-**Purpose:** Reviewers see only code changes, not GSD planning artifacts.
+**Purpose:** Reviewers see only code changes, not GTD planning artifacts.
 
 ```bash
 /gsd:pr-branch                     # Filter against main

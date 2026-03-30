@@ -22,9 +22,9 @@ you could describe in one sentence and execute in under 2 minutes.
 </objective>
 
 <execution_context>
-@~/.claude/get-shit-done/workflows/fast.md
+@~/.claude/get-things-done/workflows/fast.md
 </execution_context>
 
 <process>
-Execute the fast workflow from @~/.claude/get-shit-done/workflows/fast.md end-to-end.
+Execute the fast workflow from @~/.claude/get-things-done/workflows/fast.md end-to-end.
 </process>

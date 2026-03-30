@@ -1,5 +1,5 @@
 /**
- * GSD Milestone Summary Tests
+ * GTD Milestone Summary Tests
  *
  * Validates the milestone-summary command and workflow files exist
  * and follow expected patterns. Tests artifact discovery logic.
@@ -12,7 +12,7 @@ const path = require('path');
 
 const repoRoot = path.resolve(__dirname, '..');
 const commandPath = path.join(repoRoot, 'commands', 'gsd', 'milestone-summary.md');
-const workflowPath = path.join(repoRoot, 'get-shit-done', 'workflows', 'milestone-summary.md');
+const workflowPath = path.join(repoRoot, 'get-things-done', 'workflows', 'milestone-summary.md');
 
 describe('milestone-summary command', () => {
   test('command file exists', () => {
@@ -108,7 +108,7 @@ describe('milestone-summary workflow', () => {
     const content = fs.readFileSync(workflowPath, 'utf-8');
     assert.ok(
       content.includes('state record-session'),
-      'should update STATE.md via gsd-tools'
+      'should update STATE.md via gtd-tools'
     );
   });
 
@@ -196,7 +196,7 @@ describe('milestone-summary fixture-based artifact discovery', () => {
   let tmpDir;
 
   beforeEach(() => {
-    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'gsd-ms-test-'));
+    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'gtd-ms-test-'));
   });
 
   afterEach(() => {

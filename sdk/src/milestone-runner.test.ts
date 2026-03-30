@@ -3,14 +3,14 @@ import type {
   PhaseRunnerResult,
   RoadmapPhaseInfo,
   RoadmapAnalysis,
-  GSDEvent,
+  GTDEvent,
   MilestoneRunnerOptions,
 } from './types.js';
-import { GSDEventType } from './types.js';
+import { GTDEventType } from './types.js';
 
 // ─── Mock modules ────────────────────────────────────────────────────────────
 
-// Mock the heavy dependencies that GSD constructor + runPhase pull in
+// Mock the heavy dependencies that GTD constructor + runPhase pull in
 vi.mock('./plan-parser.js', () => ({
   parsePlan: vi.fn(),
   parsePlanFile: vi.fn(),
@@ -36,7 +36,7 @@ vi.mock('./prompt-builder.js', () => ({
 
 vi.mock('./event-stream.js', () => {
   return {
-    GSDEventStream: vi.fn().mockImplementation(() => ({
+    GTDEventStream: vi.fn().mockImplementation(() => ({
       emitEvent: vi.fn(),
       on: vi.fn(),
       emit: vi.fn(),
@@ -64,18 +64,18 @@ vi.mock('./phase-prompt.js', () => ({
   PHASE_WORKFLOW_MAP: {},
 }));
 
-vi.mock('./gsd-tools.js', () => ({
-  GSDTools: vi.fn().mockImplementation(() => ({
+vi.mock('./gtd-tools.js', () => ({
+  GTDTools: vi.fn().mockImplementation(() => ({
     roadmapAnalyze: vi.fn(),
   })),
-  GSDToolsError: class extends Error {
-    name = 'GSDToolsError';
+  GTDToolsError: class extends Error {
+    name = 'GTDToolsError';
   },
-  resolveGsdToolsPath: vi.fn().mockReturnValue('/mock/gsd-tools.cjs'),
+  resolveGsdToolsPath: vi.fn().mockReturnValue('/mock/gtd-tools.cjs'),
 }));
 
-import { GSD } from './index.js';
-import { GSDTools } from './gsd-tools.js';
+import { GTD } from './index.js';
+import { GTDTools } from './gtd-tools.js';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -107,25 +107,25 @@ function makeAnalysis(phases: RoadmapPhaseInfo[]): RoadmapAnalysis {
 
 // ─── Tests ───────────────────────────────────────────────────────────────────
 
-describe('GSD.run()', () => {
-  let gsd: GSD;
+describe('GTD.run()', () => {
+  let gsd: GTD;
   let mockRoadmapAnalyze: ReturnType<typeof vi.fn>;
-  let events: GSDEvent[];
+  let events: GTDEvent[];
 
   beforeEach(() => {
     vi.clearAllMocks();
 
-    gsd = new GSD({ projectDir: '/tmp/test-project' });
+    gsd = new GTD({ projectDir: '/tmp/test-project' });
     events = [];
 
     // Capture emitted events
     (gsd.eventStream.emitEvent as ReturnType<typeof vi.fn>).mockImplementation(
-      (event: GSDEvent) => events.push(event),
+      (event: GTDEvent) => events.push(event),
     );
 
-    // Wire mock roadmapAnalyze on the GSDTools instance
+    // Wire mock roadmapAnalyze on the GTDTools instance
     mockRoadmapAnalyze = vi.fn();
-    vi.mocked(GSDTools).mockImplementation(
+    vi.mocked(GTDTools).mockImplementation(
       () =>
         ({
           roadmapAnalyze: mockRoadmapAnalyze,
@@ -267,8 +267,8 @@ describe('GSD.run()', () => {
 
     await gsd.run('build it');
 
-    const startEvents = events.filter(e => e.type === GSDEventType.MilestoneStart);
-    const completeEvents = events.filter(e => e.type === GSDEventType.MilestoneComplete);
+    const startEvents = events.filter(e => e.type === GTDEventType.MilestoneStart);
+    const completeEvents = events.filter(e => e.type === GTDEventType.MilestoneComplete);
 
     expect(startEvents).toHaveLength(1);
     expect(completeEvents).toHaveLength(1);

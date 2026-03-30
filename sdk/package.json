@@ -1,7 +1,7 @@
 {
-  "name": "@gsd-build/sdk",
+  "name": "@gtd-build/sdk",
   "version": "0.1.0",
-  "description": "GSD SDK — programmatic interface for running GSD plans via the Agent SDK",
+  "description": "GTD SDK — programmatic interface for running GTD plans via the Agent SDK",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -12,7 +12,7 @@
     }
   },
   "bin": {
-    "gsd-sdk": "./dist/cli.js"
+    "gtd-sdk": "./dist/cli.js"
   },
   "files": [
     "dist",
@@ -20,12 +20,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gsd-build/get-shit-done.git",
+    "url": "git+https://github.com/gtd-build/get-things-done.git",
     "directory": "sdk"
   },
-  "homepage": "https://github.com/gsd-build/get-shit-done/tree/main/sdk",
+  "homepage": "https://github.com/gtd-build/get-things-done/tree/main/sdk",
   "bugs": {
-    "url": "https://github.com/gsd-build/get-shit-done/issues"
+    "url": "https://github.com/gtd-build/get-things-done/issues"
   },
   "author": "TÂCHES",
   "license": "MIT",

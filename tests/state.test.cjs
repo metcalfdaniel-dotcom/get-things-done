@@ -1,5 +1,5 @@
 /**
- * GSD Tools Tests - State
+ * GTD Tools Tests - State
  */
 
 const { test, describe, beforeEach, afterEach } = require('node:test');
@@ -153,7 +153,7 @@ describe('state-snapshot command', () => {
     let outsideDir;
 
     beforeEach(() => {
-      outsideDir = fs.mkdtempSync(path.join(require('os').tmpdir(), 'gsd-test-outside-'));
+      outsideDir = fs.mkdtempSync(path.join(require('os').tmpdir(), 'gtd-test-outside-'));
     });
 
     afterEach(() => {
@@ -537,7 +537,7 @@ milestone: v1.0
 // stateExtractField and stateReplaceField helpers
 // ─────────────────────────────────────────────────────────────────────────────
 
-const { stateExtractField, stateReplaceField, stateReplaceFieldWithFallback } = require('../get-shit-done/bin/lib/state.cjs');
+const { stateExtractField, stateReplaceField, stateReplaceFieldWithFallback } = require('../get-things-done/bin/lib/state.cjs');
 
 describe('stateExtractField and stateReplaceField helpers', () => {
   // stateExtractField tests

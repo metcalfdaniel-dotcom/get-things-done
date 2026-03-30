@@ -1,4 +1,4 @@
-# GSD Configuration Reference
+# GTD Configuration Reference
 
 > Full configuration schema, workflow toggles, model profiles, and git branching options. For feature context, see [Feature Reference](FEATURES.md).
 
@@ -6,7 +6,7 @@
 
 ## Configuration File
 
-GSD stores project settings in `.planning/config.json`. Created during `/gsd:new-project`, updated via `/gsd:settings`.
+GTD stores project settings in `.planning/config.json`. Created during `/gsd:new-project`, updated via `/gsd:settings`.
 
 ### Full Schema
 
@@ -133,9 +133,9 @@ If `.planning/` is in `.gitignore`, `commit_docs` is automatically `false` regar
 | Setting | Type | Default | Description |
 |---------|------|---------|-------------|
 | `hooks.context_warnings` | boolean | `true` | Show context window usage warnings via context monitor hook |
-| `hooks.workflow_guard` | boolean | `false` | Warn when file edits happen outside GSD workflow context (advises using `/gsd:quick` or `/gsd:fast`) |
+| `hooks.workflow_guard` | boolean | `false` | Warn when file edits happen outside GTD workflow context (advises using `/gsd:quick` or `/gsd:fast`) |
 
-The prompt injection guard hook (`gsd-prompt-guard.js`) is always active and cannot be disabled — it's a security feature, not a workflow toggle.
+The prompt injection guard hook (`gtd-prompt-guard.js`) is always active and cannot be disabled — it's a security feature, not a workflow toggle.
 
 ### Private Planning Setup
 
@@ -149,7 +149,7 @@ To keep planning artifacts out of git:
 
 ## Agent Skills Injection
 
-Inject custom skill files into GSD subagent prompts. Skills are read by agents at spawn time, giving them project-specific instructions beyond what CLAUDE.md provides.
+Inject custom skill files into GTD subagent prompts. Skills are read by agents at spawn time, giving them project-specific instructions beyond what CLAUDE.md provides.
 
 | Setting | Type | Default | Description |
 |---------|------|---------|-------------|
@@ -162,9 +162,9 @@ Add an `agent_skills` section to `.planning/config.json` mapping agent types to 
 ```json
 {
   "agent_skills": {
-    "gsd-executor": ["skills/testing-standards", "skills/api-conventions"],
-    "gsd-planner": ["skills/architecture-rules"],
-    "gsd-verifier": ["skills/acceptance-criteria"]
+    "gtd-executor": ["skills/testing-standards", "skills/api-conventions"],
+    "gtd-planner": ["skills/architecture-rules"],
+    "gtd-verifier": ["skills/acceptance-criteria"]
   }
 }
 ```
@@ -173,25 +173,25 @@ Each path must be a directory containing a `SKILL.md` file. Paths are validated 
 
 ### Supported Agent Types
 
-Any GSD agent type can receive skills. Common types:
+Any GTD agent type can receive skills. Common types:
 
-- `gsd-executor` -- executes implementation plans
-- `gsd-planner` -- creates phase plans
-- `gsd-checker` -- verifies plan quality
-- `gsd-verifier` -- post-execution verification
-- `gsd-researcher` -- phase research
-- `gsd-project-researcher` -- new-project research
-- `gsd-debugger` -- diagnostic agents
-- `gsd-codebase-mapper` -- codebase analysis
-- `gsd-advisor` -- discuss-phase advisors
-- `gsd-ui-researcher` -- UI design contract creation
-- `gsd-ui-checker` -- UI spec verification
-- `gsd-roadmapper` -- roadmap creation
-- `gsd-synthesizer` -- research synthesis
+- `gtd-executor` -- executes implementation plans
+- `gtd-planner` -- creates phase plans
+- `gtd-checker` -- verifies plan quality
+- `gtd-verifier` -- post-execution verification
+- `gtd-researcher` -- phase research
+- `gtd-project-researcher` -- new-project research
+- `gtd-debugger` -- diagnostic agents
+- `gtd-codebase-mapper` -- codebase analysis
+- `gtd-advisor` -- discuss-phase advisors
+- `gtd-ui-researcher` -- UI design contract creation
+- `gtd-ui-checker` -- UI spec verification
+- `gtd-roadmapper` -- roadmap creation
+- `gtd-synthesizer` -- research synthesis
 
 ### How It Works
 
-At spawn time, workflows call `node gsd-tools.cjs agent-skills <type>` to load configured skills. If skills exist for the agent type, they are injected as an `<agent_skills>` block in the Task() prompt:
+At spawn time, workflows call `node gtd-tools.cjs agent-skills <type>` to load configured skills. If skills exist for the agent type, they are injected as an `<agent_skills>` block in the Task() prompt:
 
 ```xml
 <agent_skills>
@@ -208,7 +208,7 @@ If no skills are configured, the block is omitted (zero overhead).
 Set skills via the CLI:
 
 ```bash
-node gsd-tools.cjs config-set agent_skills.gsd-executor '["skills/my-skill"]'
+node gtd-tools.cjs config-set agent_skills.gtd-executor '["skills/my-skill"]'
 ```
 
 ---
@@ -313,18 +313,18 @@ Control confirmation prompts during workflows.
 
 | Agent | `quality` | `balanced` | `budget` | `inherit` |
 |-------|-----------|------------|----------|-----------|
-| gsd-planner | Opus | Opus | Sonnet | Inherit |
-| gsd-roadmapper | Opus | Sonnet | Sonnet | Inherit |
-| gsd-executor | Opus | Sonnet | Sonnet | Inherit |
-| gsd-phase-researcher | Opus | Sonnet | Haiku | Inherit |
-| gsd-project-researcher | Opus | Sonnet | Haiku | Inherit |
-| gsd-research-synthesizer | Sonnet | Sonnet | Haiku | Inherit |
-| gsd-debugger | Opus | Sonnet | Sonnet | Inherit |
-| gsd-codebase-mapper | Sonnet | Haiku | Haiku | Inherit |
-| gsd-verifier | Sonnet | Sonnet | Haiku | Inherit |
-| gsd-plan-checker | Sonnet | Sonnet | Haiku | Inherit |
-| gsd-integration-checker | Sonnet | Sonnet | Haiku | Inherit |
-| gsd-nyquist-auditor | Sonnet | Sonnet | Haiku | Inherit |
+| gtd-planner | Opus | Opus | Sonnet | Inherit |
+| gtd-roadmapper | Opus | Sonnet | Sonnet | Inherit |
+| gtd-executor | Opus | Sonnet | Sonnet | Inherit |
+| gtd-phase-researcher | Opus | Sonnet | Haiku | Inherit |
+| gtd-project-researcher | Opus | Sonnet | Haiku | Inherit |
+| gtd-research-synthesizer | Sonnet | Sonnet | Haiku | Inherit |
+| gtd-debugger | Opus | Sonnet | Sonnet | Inherit |
+| gtd-codebase-mapper | Sonnet | Haiku | Haiku | Inherit |
+| gtd-verifier | Sonnet | Sonnet | Haiku | Inherit |
+| gtd-plan-checker | Sonnet | Sonnet | Haiku | Inherit |
+| gtd-integration-checker | Sonnet | Sonnet | Haiku | Inherit |
+| gtd-nyquist-auditor | Sonnet | Sonnet | Haiku | Inherit |
 
 ### Per-Agent Overrides
 
@@ -334,8 +334,8 @@ Override specific agents without changing the entire profile:
 {
   "model_profile": "balanced",
   "model_overrides": {
-    "gsd-executor": "opus",
-    "gsd-planner": "haiku"
+    "gtd-executor": "opus",
+    "gtd-planner": "haiku"
   }
 }
 ```
@@ -344,7 +344,7 @@ Valid override values: `opus`, `sonnet`, `haiku`, `inherit`, or any fully-qualif
 
 ### Non-Claude Runtimes (Codex, OpenCode, Gemini CLI)
 
-When GSD is installed for a non-Claude runtime, the installer automatically sets `resolve_model_ids: "omit"` in `~/.gsd/defaults.json`. This causes GSD to return an empty model parameter for all agents, so each agent uses whatever model the runtime is configured with. No additional setup is needed for the default case.
+When GTD is installed for a non-Claude runtime, the installer automatically sets `resolve_model_ids: "omit"` in `~/.gsd/defaults.json`. This causes GTD to return an empty model parameter for all agents, so each agent uses whatever model the runtime is configured with. No additional setup is needed for the default case.
 
 If you want different agents to use different models, use `model_overrides` with fully-qualified model IDs that your runtime recognizes:
 
@@ -352,10 +352,10 @@ If you want different agents to use different models, use `model_overrides` with
 {
   "resolve_model_ids": "omit",
   "model_overrides": {
-    "gsd-planner": "o3",
-    "gsd-executor": "o4-mini",
-    "gsd-debugger": "o3",
-    "gsd-codebase-mapper": "o4-mini"
+    "gtd-planner": "o3",
+    "gtd-executor": "o4-mini",
+    "gtd-debugger": "o3",
+    "gtd-codebase-mapper": "o4-mini"
   }
 }
 ```

@@ -1,4 +1,4 @@
-# Referência de Configuração do GSD
+# Referência de Configuração do GTD
 
 Configurações do projeto ficam em `.planning/config.json`.  
 Esta versão resume os parâmetros principais em Português. Para schema completo, veja [inglês](../CONFIGURATION.md).

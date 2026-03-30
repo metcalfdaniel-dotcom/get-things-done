@@ -1,4 +1,4 @@
-# GSD 설정 레퍼런스
+# GTD 설정 레퍼런스
 
 > 전체 설정 스키마, 워크플로우 토글, 모델 프로필, git 브랜칭 옵션입니다. 기능에 대한 맥락은 [Feature Reference](FEATURES.md)를 참조하세요.
 
@@ -6,7 +6,7 @@
 
 ## 설정 파일
 
-GSD는 프로젝트 설정을 `.planning/config.json`에 저장합니다. `/gsd:new-project` 실행 시 생성되며 `/gsd:settings`를 통해 업데이트할 수 있습니다.
+GTD는 프로젝트 설정을 `.planning/config.json`에 저장합니다. `/gsd:new-project` 실행 시 생성되며 `/gsd:settings`를 통해 업데이트할 수 있습니다.
 
 ### 전체 스키마
 
@@ -132,9 +132,9 @@ GSD는 프로젝트 설정을 `.planning/config.json`에 저장합니다. `/gsd:
 | 설정 | 타입 | 기본값 | 설명 |
 |------|------|--------|------|
 | `hooks.context_warnings` | boolean | `true` | context monitor 훅을 통해 컨텍스트 윈도우 사용 경고 표시 |
-| `hooks.workflow_guard` | boolean | `false` | GSD 워크플로우 컨텍스트 밖에서 파일 편집이 발생할 때 경고 ((`/gsd:quick` 또는 `/gsd:fast` 사용 권고)) |
+| `hooks.workflow_guard` | boolean | `false` | GTD 워크플로우 컨텍스트 밖에서 파일 편집이 발생할 때 경고 ((`/gsd:quick` 또는 `/gsd:fast` 사용 권고)) |
 
-프롬프트 주입 방지 훅 (`gsd-prompt-guard.js`)은 항상 활성화되며 비활성화할 수 없습니다. 워크플로우 토글이 아닌 보안 기능입니다.
+프롬프트 주입 방지 훅 (`gtd-prompt-guard.js`)은 항상 활성화되며 비활성화할 수 없습니다. 워크플로우 토글이 아닌 보안 기능입니다.
 
 ### 플래닝 비공개 설정
 
@@ -246,18 +246,18 @@ quick 태스크 브랜칭 예시:
 
 | 에이전트 | `quality` | `balanced` | `budget` | `inherit` |
 |---------|-----------|------------|----------|-----------|
-| gsd-planner | Opus | Opus | Sonnet | Inherit |
-| gsd-roadmapper | Opus | Sonnet | Sonnet | Inherit |
-| gsd-executor | Opus | Sonnet | Sonnet | Inherit |
-| gsd-phase-researcher | Opus | Sonnet | Haiku | Inherit |
-| gsd-project-researcher | Opus | Sonnet | Haiku | Inherit |
-| gsd-research-synthesizer | Sonnet | Sonnet | Haiku | Inherit |
-| gsd-debugger | Opus | Sonnet | Sonnet | Inherit |
-| gsd-codebase-mapper | Sonnet | Haiku | Haiku | Inherit |
-| gsd-verifier | Sonnet | Sonnet | Haiku | Inherit |
-| gsd-plan-checker | Sonnet | Sonnet | Haiku | Inherit |
-| gsd-integration-checker | Sonnet | Sonnet | Haiku | Inherit |
-| gsd-nyquist-auditor | Sonnet | Sonnet | Haiku | Inherit |
+| gtd-planner | Opus | Opus | Sonnet | Inherit |
+| gtd-roadmapper | Opus | Sonnet | Sonnet | Inherit |
+| gtd-executor | Opus | Sonnet | Sonnet | Inherit |
+| gtd-phase-researcher | Opus | Sonnet | Haiku | Inherit |
+| gtd-project-researcher | Opus | Sonnet | Haiku | Inherit |
+| gtd-research-synthesizer | Sonnet | Sonnet | Haiku | Inherit |
+| gtd-debugger | Opus | Sonnet | Sonnet | Inherit |
+| gtd-codebase-mapper | Sonnet | Haiku | Haiku | Inherit |
+| gtd-verifier | Sonnet | Sonnet | Haiku | Inherit |
+| gtd-plan-checker | Sonnet | Sonnet | Haiku | Inherit |
+| gtd-integration-checker | Sonnet | Sonnet | Haiku | Inherit |
+| gtd-nyquist-auditor | Sonnet | Sonnet | Haiku | Inherit |
 
 ### 에이전트별 재정의
 
@@ -267,8 +267,8 @@ quick 태스크 브랜칭 예시:
 {
   "model_profile": "balanced",
   "model_overrides": {
-    "gsd-executor": "opus",
-    "gsd-planner": "haiku"
+    "gtd-executor": "opus",
+    "gtd-planner": "haiku"
   }
 }
 ```
@@ -277,7 +277,7 @@ quick 태스크 브랜칭 예시:
 
 ### 비 Claude 런타임 (Codex, OpenCode, Gemini CLI)
 
-비 Claude 런타임에 GSD를 설치하면 인스톨러가 자동으로 `~/.gsd/defaults.json`에 `resolve_model_ids: "omit"`을 설정합니다. 이로 인해 GSD는 모든 에이전트에 빈 model 파라미터를 반환하며 각 에이전트는 런타임에 설정된 모델을 사용합니다. 기본 사용 시 추가 설정은 필요하지 않습니다.
+비 Claude 런타임에 GTD를 설치하면 인스톨러가 자동으로 `~/.gsd/defaults.json`에 `resolve_model_ids: "omit"`을 설정합니다. 이로 인해 GTD는 모든 에이전트에 빈 model 파라미터를 반환하며 각 에이전트는 런타임에 설정된 모델을 사용합니다. 기본 사용 시 추가 설정은 필요하지 않습니다.
 
 에이전트마다 다른 모델을 사용하려면 런타임이 인식하는 완전히 정규화된 모델 ID로 `model_overrides`를 사용합니다.
 
@@ -285,10 +285,10 @@ quick 태스크 브랜칭 예시:
 {
   "resolve_model_ids": "omit",
   "model_overrides": {
-    "gsd-planner": "o3",
-    "gsd-executor": "o4-mini",
-    "gsd-debugger": "o3",
-    "gsd-codebase-mapper": "o4-mini"
+    "gtd-planner": "o3",
+    "gtd-executor": "o4-mini",
+    "gtd-debugger": "o3",
+    "gtd-codebase-mapper": "o4-mini"
   }
 }
 ```

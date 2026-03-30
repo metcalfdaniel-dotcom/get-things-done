@@ -1,7 +1,7 @@
 /**
  * Config reader — loads `.planning/config.json` and merges with defaults.
  *
- * Mirrors the default structure from `get-shit-done/bin/lib/config.cjs`
+ * Mirrors the default structure from `get-things-done/bin/lib/config.cjs`
  * `buildNewProjectConfig()`.
  */
 
@@ -37,7 +37,7 @@ export interface HooksConfig {
   context_warnings: boolean;
 }
 
-export interface GSDConfig {
+export interface GTDConfig {
   model_profile: string;
   commit_docs: boolean;
   parallelization: boolean;
@@ -54,7 +54,7 @@ export interface GSDConfig {
 
 // ─── Defaults ────────────────────────────────────────────────────────────────
 
-export const CONFIG_DEFAULTS: GSDConfig = {
+export const CONFIG_DEFAULTS: GTDConfig = {
   model_profile: 'balanced',
   commit_docs: true,
   parallelization: true,
@@ -96,7 +96,7 @@ export const CONFIG_DEFAULTS: GSDConfig = {
  * Returns full defaults when file is missing or empty.
  * Throws on malformed JSON with a helpful error message.
  */
-export async function loadConfig(projectDir: string): Promise<GSDConfig> {
+export async function loadConfig(projectDir: string): Promise<GTDConfig> {
   const configPath = join(projectDir, '.planning', 'config.json');
 
   let raw: string;

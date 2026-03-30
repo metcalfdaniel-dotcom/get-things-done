@@ -1,5 +1,5 @@
 /**
- * Prompt sanitizer — strips interactive CLI patterns from GSD-1 prompts
+ * Prompt sanitizer — strips interactive CLI patterns from GTD-1 prompts
  * so they're safe for headless SDK use.
  *
  * Patterns removed:

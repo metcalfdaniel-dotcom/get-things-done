@@ -6,7 +6,7 @@
 
 **アーキテクチャ:** `config.cjs` に単一の JS 関数 `buildNewProjectConfig(cwd, userChoices)` を追加し、新規プロジェクトの完全な設定の唯一の信頼できる情報源とする。これを CLI コマンド `config-new-project` として公開する。`new-project.md` ワークフローを更新し、部分的な JSON をインラインで書き込む代わりにこのコマンドを呼び出すようにする。
 
-**技術スタック:** Node.js/CommonJS、既存の gsd-tools CLI、テストには `node:test` を使用。
+**技術スタック:** Node.js/CommonJS、既存の gtd-tools CLI、テストには `node:test` を使用。
 
 ---
 
@@ -61,9 +61,9 @@
 
 | ファイル | 操作 | 目的 |
 |------|--------|---------|
-| `get-shit-done/bin/lib/config.cjs` | 変更 | `buildNewProjectConfig()` + `cmdConfigNewProject()` を追加 |
-| `get-shit-done/bin/gsd-tools.cjs` | 変更 | `config-new-project` の case を登録 + usage 文字列を更新 |
-| `get-shit-done/workflows/new-project.md` | 変更 | ステップ 2a + 5: インライン JSON 書き込みを CLI 呼び出しに置換 |
+| `get-things-done/bin/lib/config.cjs` | 変更 | `buildNewProjectConfig()` + `cmdConfigNewProject()` を追加 |
+| `get-things-done/bin/gtd-tools.cjs` | 変更 | `config-new-project` の case を登録 + usage 文字列を更新 |
+| `get-things-done/workflows/new-project.md` | 変更 | ステップ 2a + 5: インライン JSON 書き込みを CLI 呼び出しに置換 |
 | `tests/config.test.cjs` | 変更 | `config-new-project` テストスイートを追加 |
 
 ---
@@ -72,7 +72,7 @@
 
 **ファイル:**
 
-- 変更: `get-shit-done/bin/lib/config.cjs`
+- 変更: `get-things-done/bin/lib/config.cjs`
 
 - [ ] **ステップ 1.1: まず失敗するテストを書く**
 
@@ -227,7 +227,7 @@ describe('config-new-project command', () => {
 - [ ] **ステップ 1.2: 失敗するテストを実行して失敗を確認する**
 
 ```bash
-cd /Users/diego/Dev/get-shit-done
+cd /Users/diego/Dev/get-things-done
 node --test tests/config.test.cjs 2>&1 | grep -E "config-new-project|FAIL|Error"
 ```
 
@@ -235,7 +235,7 @@ node --test tests/config.test.cjs 2>&1 | grep -E "config-new-project|FAIL|Error"
 
 - [ ] **ステップ 1.3: config.cjs に `buildNewProjectConfig` と `cmdConfigNewProject` を実装する**
 
-`get-shit-done/bin/lib/config.cjs` の `validateKnownConfigKeyPath` 関数の後（35行目付近）、`ensureConfigFile` の前に以下を追加する:
+`get-things-done/bin/lib/config.cjs` の `validateKnownConfigKeyPath` 関数の後（35行目付近）、`ensureConfigFile` の前に以下を追加する:
 
 ```js
 /**
@@ -367,7 +367,7 @@ function cmdConfigNewProject(cwd, choicesJson, raw) {
 - [ ] **ステップ 1.4: テストを実行してパスすることを確認する**
 
 ```bash
-cd /Users/diego/Dev/get-shit-done
+cd /Users/diego/Dev/get-things-done
 node --test tests/config.test.cjs 2>&1 | tail -20
 ```
 
@@ -376,20 +376,20 @@ node --test tests/config.test.cjs 2>&1 | tail -20
 - [ ] **ステップ 1.5: コミット**
 
 ```bash
-cd /Users/diego/Dev/get-shit-done
-git add get-shit-done/bin/lib/config.cjs tests/config.test.cjs
+cd /Users/diego/Dev/get-things-done
+git add get-things-done/bin/lib/config.cjs tests/config.test.cjs
 git commit -m "feat: add config-new-project command for full config materialization"
 ```
 
 ---
 
-## タスク 2: gsd-tools.cjs に `config-new-project` を登録する
+## タスク 2: gtd-tools.cjs に `config-new-project` を登録する
 
 **ファイル:**
 
-- 変更: `get-shit-done/bin/gsd-tools.cjs`
+- 変更: `get-things-done/bin/gtd-tools.cjs`
 
-- [ ] **ステップ 2.1: gsd-tools.cjs の switch 文に case を追加する**
+- [ ] **ステップ 2.1: gtd-tools.cjs の switch 文に case を追加する**
 
 `config-get` の case の後（401行目付近）に以下を追加する:
 
@@ -408,18 +408,18 @@ git commit -m "feat: add config-new-project command for full config materializat
 - [ ] **ステップ 2.2: CLI 登録のスモークテスト**
 
 ```bash
-cd /Users/diego/Dev/get-shit-done
-node get-shit-done/bin/gsd-tools.cjs config-new-project '{"mode":"interactive","granularity":"standard"}' --cwd /tmp/gsd-smoke-$(date +%s)
+cd /Users/diego/Dev/get-things-done
+node get-things-done/bin/gtd-tools.cjs config-new-project '{"mode":"interactive","granularity":"standard"}' --cwd /tmp/gtd-smoke-$(date +%s)
 ```
 
 期待結果: `{"created":true,"path":".planning/config.json"}` （または類似の出力）が表示される。
 
-クリーンアップ: `rm -rf /tmp/gsd-smoke-*`
+クリーンアップ: `rm -rf /tmp/gtd-smoke-*`
 
 - [ ] **ステップ 2.3: フルテストスイートを実行する**
 
 ```bash
-cd /Users/diego/Dev/get-shit-done
+cd /Users/diego/Dev/get-things-done
 node --test tests/config.test.cjs 2>&1 | tail -10
 ```
 
@@ -428,9 +428,9 @@ node --test tests/config.test.cjs 2>&1 | tail -10
 - [ ] **ステップ 2.4: コミット**
 
 ```bash
-cd /Users/diego/Dev/get-shit-done
-git add get-shit-done/bin/gsd-tools.cjs
-git commit -m "feat: register config-new-project in gsd-tools CLI router"
+cd /Users/diego/Dev/get-things-done
+git add get-things-done/bin/gtd-tools.cjs
+git commit -m "feat: register config-new-project in gtd-tools CLI router"
 ```
 
 ---
@@ -439,7 +439,7 @@ git commit -m "feat: register config-new-project in gsd-tools CLI router"
 
 **ファイル:**
 
-- 変更: `get-shit-done/workflows/new-project.md`
+- 変更: `get-things-done/workflows/new-project.md`
 
 これが中心となる変更。2箇所を更新する必要がある:
 
@@ -470,7 +470,7 @@ Create `.planning/config.json` using the CLI (fills in all defaults automaticall
 
 ```bash
 mkdir -p .planning
-node "$HOME/.claude/get-shit-done/bin/gsd-tools.cjs" config-new-project "$(cat <<'CHOICES'
+node "$HOME/.claude/get-things-done/bin/gtd-tools.cjs" config-new-project "$(cat <<'CHOICES'
 {
   "mode": "yolo",
   "granularity": "[selected: coarse|standard|fine]",
@@ -516,7 +516,7 @@ Create `.planning/config.json` using the CLI (fills in all defaults automaticall
 
 ```bash
 mkdir -p .planning
-node "$HOME/.claude/get-shit-done/bin/gsd-tools.cjs" config-new-project "$(cat <<'CHOICES'
+node "$HOME/.claude/get-things-done/bin/gtd-tools.cjs" config-new-project "$(cat <<'CHOICES'
 {
   "mode": "[selected: yolo|interactive]",
   "granularity": "[selected: coarse|standard|fine]",
@@ -541,8 +541,8 @@ CHOICES
 - [ ] **ステップ 3.3: ワークフローファイルが正しく読めることを確認する**
 
 ```bash
-cd /Users/diego/Dev/get-shit-done
-grep -n "config-new-project\|config\.json\|CHOICES" get-shit-done/workflows/new-project.md
+cd /Users/diego/Dev/get-things-done
+grep -n "config-new-project\|config\.json\|CHOICES" get-things-done/workflows/new-project.md
 ```
 
 期待結果: `config-new-project` が2箇所（各ステップに1つ）で出現し、設定作成用のインライン JSON テンプレートがなくなっている。
@@ -550,8 +550,8 @@ grep -n "config-new-project\|config\.json\|CHOICES" get-shit-done/workflows/new-
 - [ ] **ステップ 3.4: コミット**
 
 ```bash
-cd /Users/diego/Dev/get-shit-done
-git add get-shit-done/workflows/new-project.md
+cd /Users/diego/Dev/get-things-done
+git add get-things-done/workflows/new-project.md
 git commit -m "feat: use config-new-project in new-project workflow for full config materialization"
 ```
 
@@ -562,7 +562,7 @@ git commit -m "feat: use config-new-project in new-project workflow for full con
 - [ ] **ステップ 4.1: フルテストスイートを実行する**
 
 ```bash
-cd /Users/diego/Dev/get-shit-done
+cd /Users/diego/Dev/get-things-done
 node --test tests/ 2>&1 | tail -30
 ```
 
@@ -578,10 +578,10 @@ TMP=$(mktemp -d)
 cd "$TMP"
 
 # ステップ 1 のシミュレーション: init new-project の実行結果
-node /Users/diego/Dev/get-shit-done/get-shit-done/bin/gsd-tools.cjs init new-project --cwd "$TMP"
+node /Users/diego/Dev/get-things-done/get-things-done/bin/gtd-tools.cjs init new-project --cwd "$TMP"
 
 # ステップ 5 のシミュレーション: 完全な設定を作成
-node /Users/diego/Dev/get-shit-done/get-shit-done/bin/gsd-tools.cjs config-new-project '{
+node /Users/diego/Dev/get-things-done/get-things-done/bin/gtd-tools.cjs config-new-project '{
   "mode": "interactive",
   "granularity": "standard",
   "parallelization": true,
@@ -611,11 +611,11 @@ rm -rf "$TMP"
 TMP=$(mktemp -d)
 CHOICES='{"mode":"yolo","granularity":"coarse"}'
 
-node /Users/diego/Dev/get-shit-done/get-shit-done/bin/gsd-tools.cjs config-new-project "$CHOICES" --cwd "$TMP"
+node /Users/diego/Dev/get-things-done/get-things-done/bin/gtd-tools.cjs config-new-project "$CHOICES" --cwd "$TMP"
 FIRST=$(cat "$TMP/.planning/config.json")
 
 # 2回目の呼び出しは何も変更しないはず
-node /Users/diego/Dev/get-shit-done/get-shit-done/bin/gsd-tools.cjs config-new-project "$CHOICES" --cwd "$TMP"
+node /Users/diego/Dev/get-things-done/get-things-done/bin/gtd-tools.cjs config-new-project "$CHOICES" --cwd "$TMP"
 SECOND=$(cat "$TMP/.planning/config.json")
 
 [ "$FIRST" = "$SECOND" ] && echo "IDEMPOTENT: OK" || echo "IDEMPOTENT: FAIL"
@@ -628,17 +628,17 @@ rm -rf "$TMP"
 
 ```bash
 TMP=$(mktemp -d)
-node /Users/diego/Dev/get-shit-done/get-shit-done/bin/gsd-tools.cjs config-new-project '{
+node /Users/diego/Dev/get-things-done/get-things-done/bin/gtd-tools.cjs config-new-project '{
   "mode":"yolo","granularity":"standard","parallelization":true,"commit_docs":true,
   "model_profile":"balanced",
   "workflow":{"research":true,"plan_check":false,"verifier":true,"nyquist_validation":true}
 }' --cwd "$TMP"
 
 # loadConfig が正しく plan_check（workflow.plan_check としてネスト）を読み取るか
-node /Users/diego/Dev/get-shit-done/get-shit-done/bin/gsd-tools.cjs config-get workflow.plan_check --cwd "$TMP"
+node /Users/diego/Dev/get-things-done/get-things-done/bin/gtd-tools.cjs config-get workflow.plan_check --cwd "$TMP"
 # 期待値: false
 
-node /Users/diego/Dev/get-shit-done/get-shit-done/bin/gsd-tools.cjs config-get git.branching_strategy --cwd "$TMP"
+node /Users/diego/Dev/get-things-done/get-things-done/bin/gtd-tools.cjs config-get git.branching_strategy --cwd "$TMP"
 # 期待値: "none"
 
 rm -rf "$TMP"
@@ -647,7 +647,7 @@ rm -rf "$TMP"
 - [ ] **ステップ 4.5: 最終フルテストスイート + コミット**
 
 ```bash
-cd /Users/diego/Dev/get-shit-done
+cd /Users/diego/Dev/get-things-done
 node --test tests/ 2>&1 | grep -E "pass|fail|error" | tail -5
 ```
 
@@ -674,7 +674,7 @@ feat: materialize all config defaults at new-project initialization
    これらのキーは追加されない。設定ファイルは実効設定のごく一部しか反映しない。
 
 **解決策:**
-`gsd-tools.cjs` に `config-new-project` CLI コマンドを追加する。このコマンドは:
+`gtd-tools.cjs` に `config-new-project` CLI コマンドを追加する。このコマンドは:
 - ユーザーが選択した値を JSON として受け取る
 - すべてのランタイムデフォルト（環境検出される `brave_search` を含む）とマージする
 - 完全に展開された設定を一度に書き込む
@@ -694,6 +694,6 @@ JSON テンプレートの書き込みの代わりにこのコマンドを呼び
 
 **発見可能性が向上する理由:**
 初めて `.planning/config.json` を開いた開発者が `git.branching_strategy: "none"` を
-見て、GSD のソースコードを読まなくてもブランチ戦略機能が利用可能で設定変更できることを
+見て、GTD のソースコードを読まなくてもブランチ戦略機能が利用可能で設定変更できることを
 即座に理解できるようになる。
 ```

@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to GSD will be documented in this file.
+All notable changes to GTD will be documented in this file.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
@@ -9,8 +9,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [1.30.0] - 2026-03-26
 
 ### Added
-- **GSD SDK** — Headless TypeScript SDK (`@gsd-build/sdk`) with `gsd-sdk init` and `gsd-sdk auto` CLI commands for autonomous project execution
-- **`--sdk` installer flag** — Optionally install the GSD SDK during setup (interactive prompt or `--sdk` flag)
+- **GTD SDK** — Headless TypeScript SDK (`@gtd-build/sdk`) with `gtd-sdk init` and `gtd-sdk auto` CLI commands for autonomous project execution
+- **`--sdk` installer flag** — Optionally install the GTD SDK during setup (interactive prompt or `--sdk` flag)
 
 ## [1.29.0] - 2026-03-25
 
@@ -24,7 +24,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - **Japanese (ja-JP) documentation**
 
 ### Changed
-- Repository references updated from `glittercowboy` to `gsd-build`
+- Repository references updated from `glittercowboy` to `gtd-build`
 - Korean translations refined from formal -십시오 to natural -세요 style
 
 ### Fixed
@@ -32,7 +32,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - `findProjectRoot` returns startDir when it already contains `.planning/`
 - Agent workflows include `<available_agent_types>` for named agent spawning
 - Begin-phase preserves Status/LastActivity/Progress in Current Position
-- Missing GSD agents detected with warning when `subagent_type` falls back to general-purpose
+- Missing GTD agents detected with warning when `subagent_type` falls back to general-purpose
 - Codex re-install repairs trapped non-boolean keys under `[features]`
 - Invalid `\Z` regex anchor replaced and redundant pattern removed
 - Hook field validation prevents silent `settings.json` rejection
@@ -47,7 +47,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 - **Workstream namespacing** — Parallel milestone work via `/gsd:workstreams`
-- **Multi-project workspace commands** — Manage multiple GSD projects from a single root
+- **Multi-project workspace commands** — Manage multiple GTD projects from a single root
 - **`/gsd:forensics` command** — Post-mortem workflow investigation
 - **`/gsd:milestone-summary` command** — Post-build onboarding for completed milestones
 - **`workflow.skip_discuss` setting** — Bypass discuss-phase in autonomous mode
@@ -57,7 +57,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - **Data-flow tracing, environment audit, and behavioral spot-checks** in verification
 - **Multi-runtime selection** in interactive installer
 - **Text mode support** for plan-phase workflow
-- **"Follow the Indirection" debugging technique** in gsd-debugger
+- **"Follow the Indirection" debugging technique** in gtd-debugger
 - **`--reviews` flag** for `gsd:plan-phase`
 - **Temp file reaper** — Prevents unbounded /tmp accumulation
 
@@ -105,7 +105,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - **Quick-task branch support** — Isolated branches for quick-mode tasks
 - **Decision IDs** — Discuss-to-plan traceability via decision identifiers
 - **Stub detection** — Verifier and executor detect incomplete implementations
-- **Security hardening** — Centralized `security.cjs` module with path traversal prevention, prompt injection detection/sanitization, safe JSON parsing, field name validation, and shell argument validation. PreToolUse `gsd-prompt-guard` hook scans writes to `.planning/` for injection patterns
+- **Security hardening** — Centralized `security.cjs` module with path traversal prevention, prompt injection detection/sanitization, safe JSON parsing, field name validation, and shell argument validation. PreToolUse `gtd-prompt-guard` hook scans writes to `.planning/` for injection patterns
 
 ### Changed
 - CI matrix updated to Node 20, 22, 24 — dropped EOL Node 18
@@ -118,7 +118,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Fixed
 - Path traversal in `readTextArgOrFile` — arguments validate paths resolve within project directory
 - Codex config.toml corruption from non-boolean `[features]` keys
-- Stale hooks check filtered to gsd-prefixed files only
+- Stale hooks check filtered to gtd-prefixed files only
 - Universal agent name replacement for non-Claude runtimes
 - `--no-verify` support for parallel executor commits
 - ROADMAP fallback for plan-phase, execute-phase, and verify-work
@@ -146,7 +146,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - **Structured session handoff artifact** — `/gsd:pause-work` writes `.planning/HANDOFF.json` for machine-readable cross-session continuity (#940)
 - **WAITING.json signal file** — Machine-readable signal for decision points requiring user input (#1034)
 - **Interactive executor mode** — Pair-programming style execution with step-by-step user involvement (#963)
-- **MCP tool awareness** — GSD subagents can discover and use MCP server tools (#973)
+- **MCP tool awareness** — GTD subagents can discover and use MCP server tools (#973)
 - **Codex hooks support** — SessionStart hook support for Codex runtime (#1020)
 - **Model alias-to-full-ID resolution** — Task API compatibility for model alias strings (#991)
 - **Execution hardening** — Pre-wave dependency checks, cross-plan data contracts, and export-level spot checks (#1082)
@@ -186,7 +186,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 - **Antigravity runtime support** — Full installation support for the Antigravity AI agent runtime (`--antigravity`), alongside Claude Code, OpenCode, Gemini, Codex, and Copilot
-- **`/gsd:do` command** — Freeform text router that dispatches natural language to the right GSD command
+- **`/gsd:do` command** — Freeform text router that dispatches natural language to the right GTD command
 - **`/gsd:note` command** — Zero-friction idea capture with append, list, and promote-to-todo subcommands
 - **Context window warning toggle** — Config option to disable context monitor warnings (`hooks.context_monitor: false`)
 - **Comprehensive documentation** — New `docs/` directory with feature, architecture, agent, command, CLI, and configuration guides
@@ -220,7 +220,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - OpenCode agent frontmatter conversion — agents get correct `name:`, `model: inherit`, `mode: subagent`
 - `opencode.jsonc` config files respected during install (previously only `.json` was detected) (#1053)
 - Windows installer crash on EPERM/EACCES when scanning protected directories (#964)
-- `gsd-tools.cjs` uses absolute paths in all install types (#820)
+- `gtd-tools.cjs` uses absolute paths in all install types (#820)
 - Invalid `skills:` frontmatter removed from UI agent files
 
 ## [1.23.0] - 2026-03-15
@@ -229,7 +229,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - `/gsd:ui-phase` + `/gsd:ui-review` — UI design contract generation and retroactive 6-pillar visual audit for frontend phases (closes #986)
 - `/gsd:stats` — project statistics dashboard: phases, plans, requirements, git metrics, and timeline
 - **Copilot CLI** runtime support — install with `--copilot`, maps Claude Code tools to GitHub Copilot tools
-- **`gsd-autonomous` skill** for Codex runtime — enables autonomous GSD execution
+- **`gtd-autonomous` skill** for Codex runtime — enables autonomous GTD execution
 - **Node repair operator** — autonomous recovery when task verification fails: RETRY, DECOMPOSE, or PRUNE before escalating to user. Configurable via `workflow.node_repair_budget` (default: 2 attempts). Disable with `workflow.node_repair: false`
 - Mandatory `read_first` and `acceptance_criteria` sections in plans to prevent shallow execution
 - Mandatory `canonical_refs` section in CONTEXT.md for traceable decisions
@@ -264,7 +264,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Fixed
 - Windows: `@file:` protocol resolution for large init payloads (>50KB) — all 32 workflow/agent files now resolve temp file paths instead of letting agents hallucinate `/tmp` paths (#841)
-- Missing `skills` frontmatter on gsd-nyquist-auditor agent
+- Missing `skills` frontmatter on gtd-nyquist-auditor agent
 
 ## [1.22.3] - 2026-03-03
 
@@ -281,7 +281,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Fixed
 - Codex installer no longer creates duplicate `[features]` and `[agents]` sections on re-install (#902, #882)
-- Context monitor hook is advisory instead of blocking non-GSD workflows
+- Context monitor hook is advisory instead of blocking non-GTD workflows
 - Hooks respect `CLAUDE_CONFIG_DIR` for custom config directories
 - Hooks include stdin timeout guard to prevent hanging on pipe errors
 - Statusline context scaling matches autocompact buffer thresholds
@@ -356,13 +356,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - YAML frontmatter sync to STATE.md for machine-readable status tracking
 - `/gsd:add-tests` command for post-phase test generation
 - Codex runtime support with skills-first installation
-- Standard `project_context` block in gsd-verifier output
+- Standard `project_context` block in gtd-verifier output
 - Codex changelog and usage documentation
 
 ### Changed
 - Improved onboarding UX: installer now suggests `/gsd:new-project` instead of `/gsd:help`
 - Updated Discord invite to vanity URL (discord.gg/gsd)
-- Compressed Nyquist validation layer to align with GSD meta-prompt conventions
+- Compressed Nyquist validation layer to align with GTD meta-prompt conventions
 - Requirements propagation now includes `phase_req_ids` from ROADMAP to workflow agents
 - Debug sessions require human verification before resolution
 
@@ -454,7 +454,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [1.19.2] - 2026-02-15
 
 ### Added
-- User-level default settings via `~/.gsd/defaults.json` — set GSD defaults across all projects
+- User-level default settings via `~/.gsd/defaults.json` — set GTD defaults across all projects
 - Per-agent model overrides — customize which Claude model each agent uses
 
 ### Changed
@@ -466,7 +466,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Large JSON payloads write to temp files to prevent truncation in tool calls
 - Phase heading matching now supports `####` depth
 - Phase padding normalized in insert command
-- ESM conflicts prevented by renaming gsd-tools.js to .cjs
+- ESM conflicts prevented by renaming gtd-tools.js to .cjs
 - Config directory paths quoted in hook templates for local installs
 - Settings file corruption prevented by using Write tool for file creation
 - Plan-phase autocomplete fixed by removing "execution" from description
@@ -515,15 +515,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [1.17.0] - 2026-02-08
 
 ### Added
-- **gsd-tools verification suite**: `verify plan-structure`, `verify phase-completeness`, `verify references`, `verify commits`, `verify artifacts`, `verify key-links` — deterministic structural checks
-- **gsd-tools frontmatter CRUD**: `frontmatter get/set/merge/validate` — safe YAML frontmatter operations with schema validation
-- **gsd-tools template fill**: `template fill summary/plan/verification` — pre-filled document skeletons
-- **gsd-tools state progression**: `state advance-plan`, `state update-progress`, `state record-metric`, `state add-decision`, `state add-blocker`, `state resolve-blocker`, `state record-session` — automates STATE.md updates
-- **Local patch preservation**: Installer now detects locally modified GSD files, backs them up to `gsd-local-patches/`, and creates a manifest for restoration
-- `/gsd:reapply-patches` command to merge local modifications back after GSD updates
+- **gtd-tools verification suite**: `verify plan-structure`, `verify phase-completeness`, `verify references`, `verify commits`, `verify artifacts`, `verify key-links` — deterministic structural checks
+- **gtd-tools frontmatter CRUD**: `frontmatter get/set/merge/validate` — safe YAML frontmatter operations with schema validation
+- **gtd-tools template fill**: `template fill summary/plan/verification` — pre-filled document skeletons
+- **gtd-tools state progression**: `state advance-plan`, `state update-progress`, `state record-metric`, `state add-decision`, `state add-blocker`, `state resolve-blocker`, `state record-session` — automates STATE.md updates
+- **Local patch preservation**: Installer now detects locally modified GTD files, backs them up to `gtd-local-patches/`, and creates a manifest for restoration
+- `/gsd:reapply-patches` command to merge local modifications back after GTD updates
 
 ### Changed
-- Agents (executor, planner, plan-checker, verifier) now use gsd-tools for state updates and verification instead of manual markdown parsing
+- Agents (executor, planner, plan-checker, verifier) now use gtd-tools for state updates and verification instead of manual markdown parsing
 - `/gsd:update` workflow now notifies about backed-up local patches and suggests `/gsd:reapply-patches`
 
 ### Fixed
@@ -532,7 +532,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [1.16.0] - 2026-02-08
 
 ### Added
-- 10 new gsd-tools CLI commands that replace manual AI orchestration of mechanical operations:
+- 10 new gtd-tools CLI commands that replace manual AI orchestration of mechanical operations:
   - `phase add <desc>` — append phase to roadmap + create directory
   - `phase insert <after> <desc>` — insert decimal phase
   - `phase remove <N> [--force]` — remove phase with full renumbering
@@ -545,7 +545,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   - `scaffold [context|uat|verification|phase-dir]` — template generation
 
 ### Changed
-- Workflows now delegate deterministic operations to gsd-tools CLI, reducing token usage and errors:
+- Workflows now delegate deterministic operations to gtd-tools CLI, reducing token usage and errors:
   - `remove-phase.md`: 13 manual steps → 1 CLI call + confirm + commit
   - `add-phase.md`: 6 manual steps → 1 CLI call + state update
   - `insert-phase.md`: 7 manual steps → 1 CLI call + state update
@@ -553,10 +553,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   - `progress.md`: roadmap parsing delegated to `roadmap analyze`
 
 ### Fixed
-- Execute-phase now correctly spawns `gsd-executor` subagents instead of generic task agents
-- `commit_docs=false` setting now respected in all `.planning/` commit paths (execute-plan, debugger, reference docs all route through gsd-tools CLI)
+- Execute-phase now correctly spawns `gtd-executor` subagents instead of generic task agents
+- `commit_docs=false` setting now respected in all `.planning/` commit paths (execute-plan, debugger, reference docs all route through gtd-tools CLI)
 - Execute-phase orchestrator no longer bloats context by embedding file content — passes paths instead, letting subagents read in their fresh context
-- Windows: Normalized backslash paths in gsd-tools invocations (contributed by @rmindel)
+- Windows: Normalized backslash paths in gtd-tools invocations (contributed by @rmindel)
 
 ## [1.15.0] - 2026-02-08
 
@@ -566,7 +566,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [1.14.0] - 2026-02-08
 
 ### Added
-- Context-optimizing parsing commands in gsd-tools (`phase-plan-index`, `state-snapshot`, `summary-extract`) — reduces agent context usage by returning structured JSON instead of raw file content
+- Context-optimizing parsing commands in gtd-tools (`phase-plan-index`, `state-snapshot`, `summary-extract`) — reduces agent context usage by returning structured JSON instead of raw file content
 
 ### Fixed
 - Installer no longer deletes opencode.json on JSONC parse errors — now handles comments, trailing commas, and BOM correctly (#474)
@@ -574,18 +574,18 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [1.13.0] - 2026-02-08
 
 ### Added
-- `gsd-tools history-digest` — Compiles phase summaries into structured JSON for faster context loading
-- `gsd-tools phases list` — Lists phase directories with filtering (replaces fragile `ls | sort -V` patterns)
-- `gsd-tools roadmap get-phase` — Extracts phase sections from ROADMAP.md
-- `gsd-tools phase next-decimal` — Calculates next decimal phase number for insert operations
-- `gsd-tools state get/patch` — Atomic STATE.md field operations
-- `gsd-tools template select` — Chooses summary template based on plan complexity
+- `gtd-tools history-digest` — Compiles phase summaries into structured JSON for faster context loading
+- `gtd-tools phases list` — Lists phase directories with filtering (replaces fragile `ls | sort -V` patterns)
+- `gtd-tools roadmap get-phase` — Extracts phase sections from ROADMAP.md
+- `gtd-tools phase next-decimal` — Calculates next decimal phase number for insert operations
+- `gtd-tools state get/patch` — Atomic STATE.md field operations
+- `gtd-tools template select` — Chooses summary template based on plan complexity
 - Summary template variants: minimal (~30 lines), standard (~60 lines), complex (~100 lines)
 - Test infrastructure with 22 tests covering new commands
 
 ### Changed
 - Planner uses two-step context assembly: digest for selection, full SUMMARY for understanding
-- Agents migrated from bash patterns to structured gsd-tools commands
+- Agents migrated from bash patterns to structured gtd-tools commands
 - Nested YAML frontmatter parsing now handles `dependency-graph.provides`, `tech-stack.added` correctly
 
 ## [1.12.1] - 2026-02-08
@@ -598,12 +598,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 - **Architecture: Thin orchestrator pattern** — Commands now delegate to workflows, reducing command file size by ~75% and improving maintainability
-- **Centralized utilities** — New `gsd-tools.cjs` (11 functions) replaces repetitive bash patterns across 50+ files
+- **Centralized utilities** — New `gtd-tools.cjs` (11 functions) replaces repetitive bash patterns across 50+ files
 - **Token reduction** — ~22k characters removed from affected command/workflow/agent files
 - **Condensed agent prompts** — Same behavior with fewer words (executor, planner, verifier, researcher agents)
 
 ### Added
-- `gsd-tools.cjs` CLI utility with functions: state load/update, resolve-model, find-phase, commit, verify-summary, generate-slug, current-timestamp, list-todos, verify-path-exists, config-ensure-section
+- `gtd-tools.cjs` CLI utility with functions: state load/update, resolve-model, find-phase, commit, verify-summary, generate-slug, current-timestamp, list-todos, verify-path-exists, config-ensure-section
 
 ## [1.11.2] - 2026-02-05
 
@@ -624,7 +624,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Statusline.js reference updated during install (#330)
 - Parallelization config setting now respected (#379)
 - ASCII box-drawing vs text content with diacritics (#289)
-- Removed broken gsd-gemini link (404)
+- Removed broken gtd-gemini link (404)
 
 ## [1.11.1] - 2026-01-31
 
@@ -677,12 +677,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [1.9.9] - 2026-01-23
 
 ### Added
-- `/gsd:join-discord` command to quickly access the GSD Discord community invite link
+- `/gsd:join-discord` command to quickly access the GTD Discord community invite link
 
 ## [1.9.8] - 2025-01-22
 
 ### Added
-- Uninstall flag (`--uninstall`) to cleanly remove GSD from global or local installations
+- Uninstall flag (`--uninstall`) to cleanly remove GTD from global or local installations
 
 ### Fixed
 - Context file detection now matches filename variants (handles both `CONTEXT.md` and `{phase}-CONTEXT.md` patterns)
@@ -691,16 +691,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Fixed
 - OpenCode installer now uses correct XDG-compliant config path (`~/.config/opencode/`) instead of `~/.opencode/`
-- OpenCode commands use flat structure (`command/gsd-help.md`) matching OpenCode's expected format
+- OpenCode commands use flat structure (`command/gtd-help.md`) matching OpenCode's expected format
 - OpenCode permissions written to `~/.config/opencode/opencode.json`
 
 ## [1.9.6] - 2026-01-22
 
 ### Added
 - Interactive runtime selection: installer now prompts to choose Claude Code, OpenCode, or both
-- Native OpenCode support: `--opencode` flag converts GSD to OpenCode format automatically
+- Native OpenCode support: `--opencode` flag converts GTD to OpenCode format automatically
 - `--both` flag to install for both Claude Code and OpenCode in one command
-- Auto-configures `~/.opencode.json` permissions for seamless GSD doc access
+- Auto-configures `~/.opencode.json` permissions for seamless GTD doc access
 
 ### Changed
 - Installation flow now asks for runtime first, then location
@@ -734,7 +734,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   - Deleted `/gsd:analyze-codebase` command
   - Deleted `/gsd:query-intel` command
   - Removed SQLite graph database and sql.js dependency (21MB)
-  - Removed intel hooks (gsd-intel-index.js, gsd-intel-session.js, gsd-intel-prune.js)
+  - Removed intel hooks (gtd-intel-index.js, gtd-intel-session.js, gtd-intel-prune.js)
   - Removed entity file generation and templates
 
 ### Fixed
@@ -749,7 +749,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Fixed
 - Orchestrators now inline file contents in Task prompts (fixes context issues with @ references)
 - Tech debt from milestone audit addressed
-- All hooks now use `gsd-` prefix for consistency (statusline.js → gsd-statusline.js)
+- All hooks now use `gtd-` prefix for consistency (statusline.js → gtd-statusline.js)
 
 ## [1.8.0] - 2026-01-19
 
@@ -765,11 +765,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [1.7.0] - 2026-01-19
 
 ### Added
-- **Quick Mode** (`/gsd:quick`) — Execute small, ad-hoc tasks with GSD guarantees but skip optional agents (researcher, checker, verifier). Quick tasks live in `.planning/quick/` with their own tracking in STATE.md.
+- **Quick Mode** (`/gsd:quick`) — Execute small, ad-hoc tasks with GTD guarantees but skip optional agents (researcher, checker, verifier). Quick tasks live in `.planning/quick/` with their own tracking in STATE.md.
 
 ### Changed
 - Improved progress bar calculation to clamp values within 0-100 range
-- Updated documentation with comprehensive Quick Mode sections in help.md, README.md, and GSD-STYLE.md
+- Updated documentation with comprehensive Quick Mode sections in help.md, README.md, and GTD-STYLE.md
 
 ### Fixed
 - Console window flash on Windows when running hooks
@@ -777,7 +777,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Consistent `allowed-tools` YAML format across agents
 - Corrected agent name in research-phase heading
 - Removed hardcoded 2025 year from search query examples
-- Removed dead gsd-researcher agent references
+- Removed dead gtd-researcher agent references
 - Integrated unused reference files into documentation
 
 ### Housekeeping
@@ -788,7 +788,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Fixed
 - Installation on WSL2/non-TTY terminals now works correctly - detects non-interactive stdin and falls back to global install automatically
 - Installation now verifies files were actually copied before showing success checkmarks
-- Orphaned `gsd-notify.sh` hook from previous versions is now automatically removed during install (both file and settings.json registration)
+- Orphaned `gtd-notify.sh` hook from previous versions is now automatically removed during install (both file and settings.json registration)
 
 ## [1.6.3] - 2025-01-17
 
@@ -807,7 +807,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [1.6.1] - 2025-01-17
 
 ### Changed
-- Installer performs clean install of GSD folders, removing orphaned files from previous versions
+- Installer performs clean install of GTD folders, removing orphaned files from previous versions
 - `/gsd:update` shows changelog and asks for confirmation before updating, with clear warning about what gets replaced
 
 ## [1.6.0] - 2026-01-17
@@ -839,7 +839,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Fixed
 - Windows hooks now work via Node.js conversion (statusline, update-check)
 - Phase input normalization at command entry points
-- Removed blocking notification popups (gsd-notify) on all platforms
+- Removed blocking notification popups (gtd-notify) on all platforms
 
 ## [1.5.28] - 2026-01-16
 
@@ -897,7 +897,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [1.5.21] - 2026-01-16
 
 ### Added
-- GSD brand system for consistent UI (checkpoint boxes, stage banners, status symbols)
+- GTD brand system for consistent UI (checkpoint boxes, stage banners, status symbols)
 - Research synthesizer agent that consolidates parallel research into SUMMARY.md
 
 ### Changed
@@ -930,17 +930,17 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Explicit scope guardrail prevents scope creep during discussion — captures deferred ideas without acting on them
 - CONTEXT.md template restructured for decisions (domain boundary, decisions by category, Claude's discretion, deferred ideas)
 - Downstream awareness: discuss-phase now explicitly documents that CONTEXT.md feeds researcher and planner agents
-- `/gsd:plan-phase` now integrates research — spawns `gsd-phase-researcher` before planning unless research exists or `--skip-research` flag used
+- `/gsd:plan-phase` now integrates research — spawns `gtd-phase-researcher` before planning unless research exists or `--skip-research` flag used
 
 ## [1.5.18] - 2026-01-16
 
 ### Added
 - **Plan verification loop** — Plans are now verified before execution with a planner → checker → revise cycle
-  - New `gsd-plan-checker` agent (744 lines) validates plans will achieve phase goals
+  - New `gtd-plan-checker` agent (744 lines) validates plans will achieve phase goals
   - Six verification dimensions: requirement coverage, task completeness, dependency correctness, key links, scope sanity, must_haves derivation
   - Max 3 revision iterations before user escalation
   - `--skip-verify` flag for experienced users who want to bypass verification
-- **Dedicated planner agent** — `gsd-planner` (1,319 lines) consolidates all planning expertise
+- **Dedicated planner agent** — `gtd-planner` (1,319 lines) consolidates all planning expertise
   - Complete methodology: discovery levels, task breakdown, dependency graphs, scope estimation, goal-backward analysis
   - Revision mode for handling checker feedback
   - TDD integration and checkpoint patterns
@@ -948,14 +948,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 - `/gsd:plan-phase` refactored to thin orchestrator pattern (310 lines)
-  - Spawns `gsd-planner` for planning, `gsd-plan-checker` for verification
+  - Spawns `gtd-planner` for planning, `gtd-plan-checker` for verification
   - User sees status between agent spawns (not a black box)
-- Planning references deprecated with redirects to `gsd-planner` agent sections
+- Planning references deprecated with redirects to `gtd-planner` agent sections
   - `plan-format.md`, `scope-estimation.md`, `goal-backward.md`, `principles.md`
   - `workflows/plan-phase.md`
 
 ### Fixed
-- Removed zombie `gsd-milestone-auditor` agent (was accidentally re-added after correct deletion)
+- Removed zombie `gtd-milestone-auditor` agent (was accidentally re-added after correct deletion)
 
 ### Removed
 - Phase 99 throwaway test files
@@ -963,34 +963,34 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [1.5.17] - 2026-01-15
 
 ### Added
-- New `/gsd:update` command — check for updates, install, and display changelog of what changed (better UX than raw `npx get-shit-done-cc`)
+- New `/gsd:update` command — check for updates, install, and display changelog of what changed (better UX than raw `npx get-things-done-cc`)
 
 ## [1.5.16] - 2026-01-15
 
 ### Added
-- New `gsd-researcher` agent (915 lines) with comprehensive research methodology, 4 research modes (ecosystem, feasibility, implementation, comparison), source hierarchy, and verification protocols
-- New `gsd-debugger` agent (990 lines) with scientific debugging methodology, hypothesis testing, and 7+ investigation techniques
-- New `gsd-codebase-mapper` agent for brownfield codebase analysis
+- New `gtd-researcher` agent (915 lines) with comprehensive research methodology, 4 research modes (ecosystem, feasibility, implementation, comparison), source hierarchy, and verification protocols
+- New `gtd-debugger` agent (990 lines) with scientific debugging methodology, hypothesis testing, and 7+ investigation techniques
+- New `gtd-codebase-mapper` agent for brownfield codebase analysis
 - Research subagent prompt template for context-only spawning
 
 ### Changed
-- `/gsd:research-phase` refactored to thin orchestrator — now injects rich context (key insight framing, downstream consumer info, quality gates) to gsd-researcher agent
-- `/gsd:research-project` refactored to spawn 4 parallel gsd-researcher agents with milestone-aware context (greenfield vs v1.1+) and roadmap implications guidance
-- `/gsd:debug` refactored to thin orchestrator (149 lines) — spawns gsd-debugger agent with full debugging expertise
+- `/gsd:research-phase` refactored to thin orchestrator — now injects rich context (key insight framing, downstream consumer info, quality gates) to gtd-researcher agent
+- `/gsd:research-project` refactored to spawn 4 parallel gtd-researcher agents with milestone-aware context (greenfield vs v1.1+) and roadmap implications guidance
+- `/gsd:debug` refactored to thin orchestrator (149 lines) — spawns gtd-debugger agent with full debugging expertise
 - `/gsd:new-milestone` now explicitly references MILESTONE-CONTEXT.md
 
 ### Deprecated
-- `workflows/research-phase.md` — consolidated into gsd-researcher agent
-- `workflows/research-project.md` — consolidated into gsd-researcher agent
-- `workflows/debug.md` — consolidated into gsd-debugger agent
-- `references/research-pitfalls.md` — consolidated into gsd-researcher agent
-- `references/debugging.md` — consolidated into gsd-debugger agent
-- `references/debug-investigation.md` — consolidated into gsd-debugger agent
+- `workflows/research-phase.md` — consolidated into gtd-researcher agent
+- `workflows/research-project.md` — consolidated into gtd-researcher agent
+- `workflows/debug.md` — consolidated into gtd-debugger agent
+- `references/research-pitfalls.md` — consolidated into gtd-researcher agent
+- `references/debugging.md` — consolidated into gtd-debugger agent
+- `references/debug-investigation.md` — consolidated into gtd-debugger agent
 
 ## [1.5.15] - 2025-01-15
 
 ### Fixed
-- **Agents now install correctly** — The `agents/` folder (gsd-executor, gsd-verifier, gsd-integration-checker, gsd-milestone-auditor) was missing from npm package, now included
+- **Agents now install correctly** — The `agents/` folder (gtd-executor, gtd-verifier, gtd-integration-checker, gtd-milestone-auditor) was missing from npm package, now included
 
 ### Changed
 - Consolidated `/gsd:plan-fix` into `/gsd:plan-phase --gaps` for simpler workflow
@@ -1056,25 +1056,25 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Verification loop: When gaps are found, verifier generates fix plans that execute automatically before re-verifying
 
 ### Changed
-- `gsd-executor` subagent color changed from red to blue
+- `gtd-executor` subagent color changed from red to blue
 
 ## [1.5.7] - 2025-01-15
 
 ### Added
-- `gsd-executor` subagent: Dedicated agent for plan execution with full workflow logic built-in
-- `gsd-verifier` subagent: Goal-backward verification that checks if phase goals are actually achieved (not just tasks completed)
+- `gtd-executor` subagent: Dedicated agent for plan execution with full workflow logic built-in
+- `gtd-verifier` subagent: Goal-backward verification that checks if phase goals are actually achieved (not just tasks completed)
 - Phase verification: Automatic verification runs when a phase completes to catch stubs and incomplete implementations
 - Goal-backward planning reference: Documentation for deriving must-haves from goals
 
 ### Changed
-- execute-plan and execute-phase now spawn `gsd-executor` subagent instead of using inline workflow
+- execute-plan and execute-phase now spawn `gtd-executor` subagent instead of using inline workflow
 - Roadmap and planning workflows enhanced with goal-backward analysis
 
 ### Removed
 - Obsolete templates (`checkpoint-resume.md`, `subagent-task-prompt.md`) — logic now lives in subagents
 
 ### Fixed
-- Updated remaining `general-purpose` subagent references to use `gsd-executor`
+- Updated remaining `general-purpose` subagent references to use `gtd-executor`
 
 ## [1.5.6] - 2025-01-15
 
@@ -1531,7 +1531,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - `/gsd:map-codebase` command for brownfield project analysis
 - Codebase map templates (stack, architecture, structure, conventions, testing, integrations, concerns)
 - Parallel Explore agent orchestration for codebase analysis
-- Brownfield integration into GSD workflows
+- Brownfield integration into GTD workflows
 
 ### Changed
 - Improved continuation UI with context and visual hierarchy
@@ -1695,192 +1695,192 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [1.0.0] - 2025-12-14
 
 ### Added
-- Initial release of GSD (Get Shit Done) meta-prompting system
+- Initial release of GTD (Get Things Done) meta-prompting system
 - Core slash commands: `/gsd:new-project`, `/gsd:discuss-phase`, `/gsd:plan-phase`, `/gsd:execute-phase`
 - PROJECT.md and STATE.md templates
 - Phase-based development workflow
 - YOLO mode for autonomous execution
 - Interactive mode with checkpoints
 
-[Unreleased]: https://github.com/gsd-build/get-shit-done/compare/v1.30.0...HEAD
-[1.30.0]: https://github.com/gsd-build/get-shit-done/releases/tag/v1.30.0
-[1.29.0]: https://github.com/gsd-build/get-shit-done/releases/tag/v1.29.0
-[1.28.0]: https://github.com/gsd-build/get-shit-done/releases/tag/v1.28.0
-[1.27.0]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.27.0
-[1.26.0]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.26.0
-[1.25.0]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.25.0
-[1.24.0]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.24.0
-[1.23.0]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.23.0
-[1.22.4]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.22.4
-[1.22.3]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.22.3
-[1.22.2]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.22.2
-[1.22.1]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.22.1
-[1.22.0]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.22.0
-[1.21.1]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.21.1
-[1.21.0]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.21.0
-[1.20.6]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.20.6
-[1.20.5]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.20.5
-[1.20.4]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.20.4
-[1.20.3]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.20.3
-[1.20.2]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.20.2
-[1.20.1]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.20.1
-[1.20.0]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.20.0
-[1.19.2]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.19.2
-[1.19.1]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.19.1
-[1.19.0]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.19.0
-[1.18.0]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.18.0
-[1.17.0]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.17.0
-[1.16.0]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.16.0
-[1.15.0]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.15.0
-[1.14.0]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.14.0
-[1.13.0]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.13.0
-[1.12.1]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.12.1
-[1.12.0]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.12.0
-[1.11.2]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.11.2
-[1.11.1]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.11.0
-[1.10.1]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.10.1
-[1.10.0]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.10.0
-[1.9.12]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.9.12
-[1.9.11]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.9.11
-[1.9.10]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.9.10
-[1.9.9]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.9.9
-[1.9.8]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.9.8
-[1.9.7]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.9.7
-[1.9.6]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.9.6
-[1.9.5]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.9.5
-[1.9.4]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.9.4
-[1.9.2]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.9.2
-[1.9.0]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.9.0
-[1.8.0]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.8.0
-[1.7.1]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.7.1
-[1.7.0]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.7.0
-[1.6.4]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.6.4
-[1.6.3]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.6.3
-[1.6.2]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.6.2
-[1.6.1]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.6.1
-[1.6.0]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.6.0
-[1.5.30]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.5.30
-[1.5.29]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.5.29
-[1.5.28]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.5.28
-[1.5.27]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.5.27
-[1.5.26]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.5.26
-[1.5.25]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.5.25
-[1.5.24]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.5.24
-[1.5.23]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.5.23
-[1.5.22]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.5.22
-[1.5.21]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.5.21
-[1.5.20]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.5.20
-[1.5.19]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.5.19
-[1.5.18]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.5.18
-[1.5.17]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.5.17
-[1.5.16]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.5.16
-[1.5.15]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.5.15
-[1.5.14]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.5.14
-[1.5.13]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.5.13
-[1.5.12]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.5.12
-[1.5.11]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.5.11
-[1.5.10]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.5.10
-[1.5.9]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.5.9
-[1.5.8]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.5.8
-[1.5.7]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.5.7
-[1.5.6]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.5.6
-[1.5.5]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.5.5
-[1.5.4]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.5.4
-[1.5.3]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.5.3
-[1.5.2]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.5.2
-[1.5.1]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.5.1
-[1.5.0]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.5.0
-[1.4.29]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.4.29
-[1.4.28]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.4.28
-[1.4.27]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.4.27
-[1.4.26]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.4.26
-[1.4.25]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.4.25
-[1.4.24]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.4.24
-[1.4.23]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.4.23
-[1.4.22]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.4.22
-[1.4.21]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.4.21
-[1.4.20]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.4.20
-[1.4.19]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.4.19
-[1.4.18]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.4.18
-[1.4.17]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.4.17
-[1.4.16]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.4.16
-[1.4.15]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.4.15
-[1.4.14]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.4.14
-[1.4.13]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.4.13
-[1.4.12]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.4.12
-[1.4.11]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.4.11
-[1.4.10]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.4.10
-[1.4.9]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.4.9
-[1.4.8]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.4.8
-[1.4.7]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.4.7
-[1.4.6]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.4.6
-[1.4.5]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.4.5
-[1.4.4]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.4.4
-[1.4.3]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.4.3
-[1.4.2]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.4.2
-[1.4.1]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.4.1
-[1.4.0]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.4.0
-[1.3.34]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.3.34
-[1.3.33]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.3.33
-[1.3.32]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.3.32
-[1.3.31]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.3.31
-[1.3.30]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.3.30
-[1.3.29]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.3.29
-[1.3.28]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.3.28
-[1.3.27]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.3.27
-[1.3.26]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.3.26
-[1.3.25]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.3.25
-[1.3.24]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.3.24
-[1.3.23]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.3.23
-[1.3.22]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.3.22
-[1.3.21]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.3.21
-[1.3.20]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.3.20
-[1.3.19]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.3.19
-[1.3.18]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.3.18
-[1.3.17]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.3.17
-[1.3.16]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.3.16
-[1.3.15]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.3.15
-[1.3.14]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.3.14
-[1.3.13]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.3.13
-[1.3.12]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.3.12
-[1.3.11]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.3.11
-[1.3.10]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.3.10
-[1.3.9]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.3.9
-[1.3.8]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.3.8
-[1.3.7]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.3.7
-[1.3.6]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.3.6
-[1.3.5]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.3.5
-[1.3.4]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.3.4
-[1.3.3]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.3.3
-[1.3.2]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.3.2
-[1.3.1]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.3.1
-[1.3.0]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.3.0
-[1.2.13]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.2.13
-[1.2.12]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.2.12
-[1.2.11]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.2.11
-[1.2.10]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.2.10
-[1.2.9]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.2.9
-[1.2.8]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.2.8
-[1.2.7]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.2.7
-[1.2.6]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.2.6
-[1.2.5]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.2.5
-[1.2.4]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.2.4
-[1.2.3]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.2.3
-[1.2.2]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.2.2
-[1.2.1]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.2.1
-[1.2.0]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.2.0
-[1.1.2]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.1.2
-[1.1.1]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.1.1
-[1.1.0]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.1.0
-[1.0.11]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.0.11
-[1.0.10]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.0.10
-[1.0.9]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.0.9
-[1.0.8]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.0.8
-[1.0.7]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.0.7
-[1.0.6]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.0.6
-[1.0.5]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.0.5
-[1.0.4]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.0.4
-[1.0.3]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.0.3
-[1.0.2]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.0.2
-[1.0.1]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.0.1
-[1.0.0]: https://github.com/glittercowboy/get-shit-done/releases/tag/v1.0.0
+[Unreleased]: https://github.com/gtd-build/get-things-done/compare/v1.30.0...HEAD
+[1.30.0]: https://github.com/gtd-build/get-things-done/releases/tag/v1.30.0
+[1.29.0]: https://github.com/gtd-build/get-things-done/releases/tag/v1.29.0
+[1.28.0]: https://github.com/gtd-build/get-things-done/releases/tag/v1.28.0
+[1.27.0]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.27.0
+[1.26.0]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.26.0
+[1.25.0]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.25.0
+[1.24.0]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.24.0
+[1.23.0]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.23.0
+[1.22.4]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.22.4
+[1.22.3]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.22.3
+[1.22.2]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.22.2
+[1.22.1]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.22.1
+[1.22.0]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.22.0
+[1.21.1]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.21.1
+[1.21.0]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.21.0
+[1.20.6]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.20.6
+[1.20.5]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.20.5
+[1.20.4]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.20.4
+[1.20.3]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.20.3
+[1.20.2]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.20.2
+[1.20.1]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.20.1
+[1.20.0]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.20.0
+[1.19.2]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.19.2
+[1.19.1]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.19.1
+[1.19.0]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.19.0
+[1.18.0]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.18.0
+[1.17.0]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.17.0
+[1.16.0]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.16.0
+[1.15.0]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.15.0
+[1.14.0]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.14.0
+[1.13.0]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.13.0
+[1.12.1]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.12.1
+[1.12.0]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.12.0
+[1.11.2]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.11.2
+[1.11.1]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.11.0
+[1.10.1]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.10.1
+[1.10.0]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.10.0
+[1.9.12]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.9.12
+[1.9.11]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.9.11
+[1.9.10]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.9.10
+[1.9.9]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.9.9
+[1.9.8]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.9.8
+[1.9.7]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.9.7
+[1.9.6]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.9.6
+[1.9.5]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.9.5
+[1.9.4]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.9.4
+[1.9.2]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.9.2
+[1.9.0]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.9.0
+[1.8.0]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.8.0
+[1.7.1]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.7.1
+[1.7.0]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.7.0
+[1.6.4]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.6.4
+[1.6.3]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.6.3
+[1.6.2]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.6.2
+[1.6.1]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.6.1
+[1.6.0]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.6.0
+[1.5.30]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.5.30
+[1.5.29]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.5.29
+[1.5.28]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.5.28
+[1.5.27]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.5.27
+[1.5.26]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.5.26
+[1.5.25]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.5.25
+[1.5.24]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.5.24
+[1.5.23]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.5.23
+[1.5.22]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.5.22
+[1.5.21]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.5.21
+[1.5.20]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.5.20
+[1.5.19]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.5.19
+[1.5.18]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.5.18
+[1.5.17]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.5.17
+[1.5.16]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.5.16
+[1.5.15]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.5.15
+[1.5.14]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.5.14
+[1.5.13]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.5.13
+[1.5.12]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.5.12
+[1.5.11]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.5.11
+[1.5.10]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.5.10
+[1.5.9]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.5.9
+[1.5.8]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.5.8
+[1.5.7]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.5.7
+[1.5.6]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.5.6
+[1.5.5]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.5.5
+[1.5.4]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.5.4
+[1.5.3]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.5.3
+[1.5.2]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.5.2
+[1.5.1]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.5.1
+[1.5.0]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.5.0
+[1.4.29]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.4.29
+[1.4.28]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.4.28
+[1.4.27]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.4.27
+[1.4.26]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.4.26
+[1.4.25]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.4.25
+[1.4.24]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.4.24
+[1.4.23]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.4.23
+[1.4.22]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.4.22
+[1.4.21]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.4.21
+[1.4.20]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.4.20
+[1.4.19]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.4.19
+[1.4.18]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.4.18
+[1.4.17]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.4.17
+[1.4.16]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.4.16
+[1.4.15]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.4.15
+[1.4.14]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.4.14
+[1.4.13]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.4.13
+[1.4.12]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.4.12
+[1.4.11]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.4.11
+[1.4.10]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.4.10
+[1.4.9]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.4.9
+[1.4.8]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.4.8
+[1.4.7]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.4.7
+[1.4.6]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.4.6
+[1.4.5]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.4.5
+[1.4.4]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.4.4
+[1.4.3]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.4.3
+[1.4.2]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.4.2
+[1.4.1]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.4.1
+[1.4.0]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.4.0
+[1.3.34]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.3.34
+[1.3.33]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.3.33
+[1.3.32]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.3.32
+[1.3.31]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.3.31
+[1.3.30]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.3.30
+[1.3.29]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.3.29
+[1.3.28]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.3.28
+[1.3.27]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.3.27
+[1.3.26]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.3.26
+[1.3.25]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.3.25
+[1.3.24]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.3.24
+[1.3.23]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.3.23
+[1.3.22]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.3.22
+[1.3.21]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.3.21
+[1.3.20]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.3.20
+[1.3.19]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.3.19
+[1.3.18]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.3.18
+[1.3.17]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.3.17
+[1.3.16]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.3.16
+[1.3.15]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.3.15
+[1.3.14]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.3.14
+[1.3.13]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.3.13
+[1.3.12]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.3.12
+[1.3.11]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.3.11
+[1.3.10]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.3.10
+[1.3.9]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.3.9
+[1.3.8]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.3.8
+[1.3.7]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.3.7
+[1.3.6]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.3.6
+[1.3.5]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.3.5
+[1.3.4]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.3.4
+[1.3.3]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.3.3
+[1.3.2]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.3.2
+[1.3.1]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.3.1
+[1.3.0]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.3.0
+[1.2.13]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.2.13
+[1.2.12]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.2.12
+[1.2.11]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.2.11
+[1.2.10]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.2.10
+[1.2.9]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.2.9
+[1.2.8]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.2.8
+[1.2.7]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.2.7
+[1.2.6]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.2.6
+[1.2.5]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.2.5
+[1.2.4]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.2.4
+[1.2.3]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.2.3
+[1.2.2]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.2.2
+[1.2.1]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.2.1
+[1.2.0]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.2.0
+[1.1.2]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.1.2
+[1.1.1]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.1.1
+[1.1.0]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.1.0
+[1.0.11]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.0.11
+[1.0.10]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.0.10
+[1.0.9]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.0.9
+[1.0.8]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.0.8
+[1.0.7]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.0.7
+[1.0.6]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.0.6
+[1.0.5]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.0.5
+[1.0.4]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.0.4
+[1.0.3]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.0.3
+[1.0.2]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.0.2
+[1.0.1]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.0.1
+[1.0.0]: https://github.com/glittercowboy/get-things-done/releases/tag/v1.0.0

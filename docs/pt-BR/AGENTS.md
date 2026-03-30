@@ -1,13 +1,13 @@
-# Referência de Agentes do GSD
+# Referência de Agentes do GTD
 
-Este documento descreve os papéis dos agentes especializados no ecossistema GSD.  
+Este documento descreve os papéis dos agentes especializados no ecossistema GTD.  
 Para a listagem completa com regras detalhadas, consulte [AGENTS.md em inglês](../AGENTS.md).
 
 ---
 
 ## Visão geral
 
-O GSD usa um **orquestrador leve** para coordenar subagentes especializados por etapa:
+O GTD usa um **orquestrador leve** para coordenar subagentes especializados por etapa:
 
 - pesquisa
 - planejamento

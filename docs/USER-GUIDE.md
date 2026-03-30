@@ -1,4 +1,4 @@
-# GSD User Guide
+# GTD User Guide
 
 A detailed reference for workflows, troubleshooting, and configuration. For quick-start setup, see the [README](../README.md).
 
@@ -111,7 +111,7 @@ A detailed reference for workflows, troubleshooting, and configuration. For quic
 
 ### Validation Architecture (Nyquist Layer)
 
-During plan-phase research, GSD now maps automated test coverage to each phase
+During plan-phase research, GTD now maps automated test coverage to each phase
 requirement before any code is written. This ensures that when Claude's executor
 commits a task, a feedback mechanism already exists to verify it within seconds.
 
@@ -160,7 +160,7 @@ enabled, or after `/gsd:audit-milestone` surfaces Nyquist compliance gaps.
 
 ### Assumptions Discussion Mode
 
-By default, `/gsd:discuss-phase` asks open-ended questions about your implementation preferences. Assumptions mode inverts this: GSD reads your codebase first, surfaces structured assumptions about how it would build the phase, and asks only for corrections.
+By default, `/gsd:discuss-phase` asks open-ended questions about your implementation preferences. Assumptions mode inverts this: GTD reads your codebase first, surfaces structured assumptions about how it would build the phase, and asks only for corrections.
 
 **Enable:** Set `workflow.discuss_mode` to `'assumptions'` via `/gsd:settings`.
 
@@ -213,7 +213,7 @@ AI-generated frontends are visually inconsistent not because Claude Code is bad 
 
 **When to run:** After `/gsd:execute-phase` or `/gsd:verify-work` — for any project with frontend code.
 
-**Standalone:** Works on any project, not just GSD-managed ones. If no UI-SPEC.md exists, audits against abstract 6-pillar standards.
+**Standalone:** Works on any project, not just GTD-managed ones. If no UI-SPEC.md exists, audits against abstract 6-pillar standards.
 
 **6 Pillars (scored 1-4 each):**
 1. Copywriting — CTA labels, empty states, error states
@@ -243,7 +243,7 @@ For React/Next.js/Vite projects, the UI researcher offers to initialize shadcn i
 3. Run `npx shadcn init --preset {paste}`
 4. Preset encodes the entire design system — colors, border radius, fonts
 
-The preset string becomes a first-class GSD planning artifact, reproducible across phases and milestones.
+The preset string becomes a first-class GTD planning artifact, reproducible across phases and milestones.
 
 ### Registry Safety Gate
 
@@ -321,7 +321,7 @@ Workstreams let you work on multiple milestone areas concurrently without state 
 
 ### How It Works
 
-Each workstream maintains its own `.planning/` directory subtree. When you switch workstreams, GSD swaps the active planning context so that `/gsd:progress`, `/gsd:discuss-phase`, `/gsd:plan-phase`, and other commands operate on that workstream's state.
+Each workstream maintains its own `.planning/` directory subtree. When you switch workstreams, GTD swaps the active planning context so that `/gsd:progress`, `/gsd:discuss-phase`, `/gsd:plan-phase`, and other commands operate on that workstream's state.
 
 This is lighter weight than `/gsd:new-workspace` (which creates separate repo worktrees). Workstreams share the same codebase and git history but isolate planning artifacts.
 
@@ -331,7 +331,7 @@ This is lighter weight than `/gsd:new-workspace` (which creates separate repo wo
 
 ### Defense-in-Depth (v1.27)
 
-GSD generates markdown files that become LLM system prompts. This means any user-controlled text flowing into planning artifacts is a potential indirect prompt injection vector. v1.27 introduced centralized security hardening:
+GTD generates markdown files that become LLM system prompts. This means any user-controlled text flowing into planning artifacts is a potential indirect prompt injection vector. v1.27 introduced centralized security hardening:
 
 **Path Traversal Prevention:**
 All user-supplied file paths (`--text-file`, `--prd`) are validated to resolve within the project directory. macOS `/var` → `/private/var` symlink resolution is handled.
@@ -340,8 +340,8 @@ All user-supplied file paths (`--text-file`, `--prd`) are validated to resolve w
 The `security.cjs` module scans for known injection patterns (role overrides, instruction bypasses, system tag injections) in user-supplied text before it enters planning artifacts.
 
 **Runtime Hooks:**
-- `gsd-prompt-guard.js` — Scans Write/Edit calls to `.planning/` for injection patterns (always active, advisory-only)
-- `gsd-workflow-guard.js` — Warns on file edits outside GSD workflow context (opt-in via `hooks.workflow_guard`)
+- `gtd-prompt-guard.js` — Scans Write/Edit calls to `.planning/` for injection patterns (always active, advisory-only)
+- `gtd-workflow-guard.js` — Warns on file edits outside GTD workflow context (opt-in via `hooks.workflow_guard`)
 
 **CI Scanner:**
 `prompt-injection-scan.test.cjs` scans all agent, workflow, and command files for embedded injection vectors. Run as part of the test suite.
@@ -416,7 +416,7 @@ The `security.cjs` module scans for known injection patterns (role overrides, in
 | `/gsd:pause-work` | Save structured handoff (HANDOFF.json + continue-here.md) | Stopping mid-phase |
 | `/gsd:session-report` | Generate session summary with work and outcomes | End of session, stakeholder sharing |
 | `/gsd:help` | Show all commands | Quick reference |
-| `/gsd:update` | Update GSD with changelog preview | Check for new versions |
+| `/gsd:update` | Update GTD with changelog preview | Check for new versions |
 | `/gsd:join-discord` | Open Discord community invite | Questions or community |
 
 ### Phase Management
@@ -435,7 +435,7 @@ The `security.cjs` module scans for known injection patterns (role overrides, in
 | Command | Purpose | When to Use |
 |---------|---------|-------------|
 | `/gsd:map-codebase` | Analyze existing codebase | Before `/gsd:new-project` on existing code |
-| `/gsd:quick` | Ad-hoc task with GSD guarantees | Bug fixes, small features, config changes |
+| `/gsd:quick` | Ad-hoc task with GTD guarantees | Bug fixes, small features, config changes |
 | `/gsd:debug [desc]` | Systematic debugging with persistent state | When something breaks |
 | `/gsd:forensics` | Diagnostic report for workflow failures | When state, artifacts, or git history seem corrupted |
 | `/gsd:add-todo [desc]` | Capture an idea for later | Think of something during a session |
@@ -465,7 +465,7 @@ The `security.cjs` module scans for known injection patterns (role overrides, in
 
 ## Configuration Reference
 
-GSD stores project settings in `.planning/config.json`. Configure during `/gsd:new-project` or update later with `/gsd:settings`.
+GTD stores project settings in `.planning/config.json`. Configure during `/gsd:new-project` or update later with `/gsd:settings`.
 
 ### Full config.json Schema
 
@@ -539,7 +539,7 @@ GSD stores project settings in `.planning/config.json`. Configure during `/gsd:n
 | Setting | Options | Default | What it Controls |
 |---------|---------|---------|------------------|
 | `hooks.context_warnings` | `true`, `false` | `true` | Context window usage warnings |
-| `hooks.workflow_guard` | `true`, `false` | `false` | Warn on file edits outside GSD workflow context |
+| `hooks.workflow_guard` | `true`, `false` | `false` | Warn on file edits outside GTD workflow context |
 
 Disable workflow toggles to speed up phases in familiar domains or when conserving tokens.
 
@@ -574,17 +574,17 @@ Example quick-task branching:
 
 | Agent | `quality` | `balanced` | `budget` | `inherit` |
 |-------|-----------|------------|----------|-----------|
-| gsd-planner | Opus | Opus | Sonnet | Inherit |
-| gsd-roadmapper | Opus | Sonnet | Sonnet | Inherit |
-| gsd-executor | Opus | Sonnet | Sonnet | Inherit |
-| gsd-phase-researcher | Opus | Sonnet | Haiku | Inherit |
-| gsd-project-researcher | Opus | Sonnet | Haiku | Inherit |
-| gsd-research-synthesizer | Sonnet | Sonnet | Haiku | Inherit |
-| gsd-debugger | Opus | Sonnet | Sonnet | Inherit |
-| gsd-codebase-mapper | Sonnet | Haiku | Haiku | Inherit |
-| gsd-verifier | Sonnet | Sonnet | Haiku | Inherit |
-| gsd-plan-checker | Sonnet | Sonnet | Haiku | Inherit |
-| gsd-integration-checker | Sonnet | Sonnet | Haiku | Inherit |
+| gtd-planner | Opus | Opus | Sonnet | Inherit |
+| gtd-roadmapper | Opus | Sonnet | Sonnet | Inherit |
+| gtd-executor | Opus | Sonnet | Sonnet | Inherit |
+| gtd-phase-researcher | Opus | Sonnet | Haiku | Inherit |
+| gtd-project-researcher | Opus | Sonnet | Haiku | Inherit |
+| gtd-research-synthesizer | Sonnet | Sonnet | Haiku | Inherit |
+| gtd-debugger | Opus | Sonnet | Sonnet | Inherit |
+| gtd-codebase-mapper | Sonnet | Haiku | Haiku | Inherit |
+| gtd-verifier | Sonnet | Sonnet | Haiku | Inherit |
+| gtd-plan-checker | Sonnet | Sonnet | Haiku | Inherit |
+| gtd-integration-checker | Sonnet | Sonnet | Haiku | Inherit |
 
 **Profile philosophy:**
 - **quality** -- Opus for all decision-making agents, Sonnet for read-only verification. Use when quota is available and the work is critical.
@@ -678,7 +678,7 @@ claude --dangerously-skip-permissions
 
 ### Multi-Project Workspaces
 
-Work on multiple repos or features in parallel with isolated GSD state.
+Work on multiple repos or features in parallel with isolated GTD state.
 
 ```bash
 # Create a workspace with repos from your monorepo
@@ -687,8 +687,8 @@ Work on multiple repos or features in parallel with isolated GSD state.
 # Feature branch isolation — worktree of current repo with its own .planning/
 /gsd:new-workspace --name feature-b --repos .
 
-# Then cd into the workspace and initialize GSD
-cd ~/gsd-workspaces/feature-b
+# Then cd into the workspace and initialize GTD
+cd ~/gtd-workspaces/feature-b
 /gsd:new-project
 
 # List and manage workspaces
@@ -711,7 +711,7 @@ You ran `/gsd:new-project` but `.planning/PROJECT.md` already exists. This is a 
 
 ### Context Degradation During Long Sessions
 
-Clear your context window between major commands: `/clear` in Claude Code. GSD is designed around fresh contexts -- every subagent gets a clean 200K window. If quality is dropping in the main session, clear and use `/gsd:resume-work` or `/gsd:progress` to restore state.
+Clear your context window between major commands: `/clear` in Claude Code. GTD is designed around fresh contexts -- every subagent gets a clean 200K window. If quality is dropping in the main session, clear and use `/gsd:resume-work` or `/gsd:progress` to restore state.
 
 ### Plans Seem Wrong or Misaligned
 
@@ -735,7 +735,7 @@ Switch to budget profile: `/gsd:set-profile budget`. Disable research and plan-c
 
 ### Using Non-Claude Runtimes (Codex, OpenCode, Gemini CLI)
 
-If you installed GSD for a non-Claude runtime, the installer already configured model resolution so all agents use the runtime's default model. No manual setup is needed. Specifically, the installer sets `resolve_model_ids: "omit"` in your config, which tells GSD to skip Anthropic model ID resolution and let the runtime choose its own default model.
+If you installed GTD for a non-Claude runtime, the installer already configured model resolution so all agents use the runtime's default model. No manual setup is needed. Specifically, the installer sets `resolve_model_ids: "omit"` in your config, which tells GTD to skip Anthropic model ID resolution and let the runtime choose its own default model.
 
 To assign different models to different agents on a non-Claude runtime, add `model_overrides` to `.planning/config.json` with fully-qualified model IDs that your runtime recognizes:
 
@@ -743,9 +743,9 @@ To assign different models to different agents on a non-Claude runtime, add `mod
 {
   "resolve_model_ids": "omit",
   "model_overrides": {
-    "gsd-planner": "o3",
-    "gsd-executor": "o4-mini",
-    "gsd-debugger": "o3"
+    "gtd-planner": "o3",
+    "gtd-executor": "o4-mini",
+    "gtd-debugger": "o3"
   }
 }
 ```
@@ -756,15 +756,15 @@ See the [Configuration Reference](CONFIGURATION.md#non-claude-runtimes-codex-ope
 
 ### Using Claude Code with Non-Anthropic Providers (OpenRouter, Local)
 
-If GSD subagents call Anthropic models and you're paying through OpenRouter or a local provider, switch to the `inherit` profile: `/gsd:set-profile inherit`. This makes all agents use your current session model instead of specific Anthropic models. See also `/gsd:settings` → Model Profile → Inherit.
+If GTD subagents call Anthropic models and you're paying through OpenRouter or a local provider, switch to the `inherit` profile: `/gsd:set-profile inherit`. This makes all agents use your current session model instead of specific Anthropic models. See also `/gsd:settings` → Model Profile → Inherit.
 
 ### Working on a Sensitive/Private Project
 
 Set `commit_docs: false` during `/gsd:new-project` or via `/gsd:settings`. Add `.planning/` to your `.gitignore`. Planning artifacts stay local and never touch git.
 
-### GSD Update Overwrote My Local Changes
+### GTD Update Overwrote My Local Changes
 
-Since v1.17, the installer backs up locally modified files to `gsd-local-patches/`. Run `/gsd:reapply-patches` to merge your changes back.
+Since v1.17, the installer backs up locally modified files to `gtd-local-patches/`. Run `/gsd:reapply-patches` to merge your changes back.
 
 ### Workflow Diagnostics (`/gsd:forensics`)
 
@@ -779,11 +779,11 @@ When a workflow fails in a way that isn't obvious -- plans reference nonexistent
 
 ### Subagent Appears to Fail but Work Was Done
 
-A known workaround exists for a Claude Code classification bug. GSD's orchestrators (execute-phase, quick) spot-check actual output before reporting failure. If you see a failure message but commits were made, check `git log` -- the work may have succeeded.
+A known workaround exists for a Claude Code classification bug. GTD's orchestrators (execute-phase, quick) spot-check actual output before reporting failure. If you see a failure message but commits were made, check `git log` -- the work may have succeeded.
 
 ### Parallel Execution Causes Build Lock Errors
 
-If you see pre-commit hook failures, cargo lock contention, or 30+ minute execution times during parallel wave execution, this is caused by multiple agents triggering build tools simultaneously. GSD handles this automatically since v1.26 — parallel agents use `--no-verify` on commits and the orchestrator runs hooks once after each wave. If you're on an older version, add this to your project's `CLAUDE.md`:
+If you see pre-commit hook failures, cargo lock contention, or 30+ minute execution times during parallel wave execution, this is caused by multiple agents triggering build tools simultaneously. GTD handles this automatically since v1.26 — parallel agents use `--no-verify` on commits and the orchestrator runs hooks once after each wave. If you're on an older version, add this to your project's `CLAUDE.md`:
 
 ```markdown
 ## Git Commit Rules for Agents
@@ -814,13 +814,13 @@ If the installer crashes with `EPERM: operation not permitted, scandir` on Windo
 | Update broke local changes | `/gsd:reapply-patches` |
 | Want session summary for stakeholder | `/gsd:session-report` |
 | Don't know what step is next | `/gsd:next` |
-| Parallel execution build errors | Update GSD or set `parallelization.enabled: false` |
+| Parallel execution build errors | Update GTD or set `parallelization.enabled: false` |
 
 ---
 
 ## Project File Structure
 
-For reference, here is what GSD creates in your project:
+For reference, here is what GTD creates in your project:
 
 ```
 .planning/

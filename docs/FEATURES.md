@@ -1,4 +1,4 @@
-# GSD Feature Reference
+# GTD Feature Reference
 
 > Complete feature and function documentation with requirements. For architecture details, see [Architecture](ARCHITECTURE.md). For command syntax, see [Command Reference](COMMANDS.md).
 
@@ -377,7 +377,7 @@
 
 **Command:** `/gsd:quick [--full] [--discuss] [--research]`
 
-**Purpose:** Ad-hoc task execution with GSD guarantees but a faster path.
+**Purpose:** Ad-hoc task execution with GTD guarantees but a faster path.
 
 **Requirements:**
 - REQ-QUICK-01: System MUST accept freeform task description
@@ -411,11 +411,11 @@
 
 **Command:** `/gsd:do`
 
-**Purpose:** Analyze freeform text and route to the appropriate GSD command.
+**Purpose:** Analyze freeform text and route to the appropriate GTD command.
 
 **Requirements:**
 - REQ-DO-01: System MUST parse user intent from natural language input
-- REQ-DO-02: System MUST map intent to the best matching GSD command
+- REQ-DO-02: System MUST map intent to the best matching GTD command
 - REQ-DO-03: System MUST confirm the routing with the user before executing
 - REQ-DO-04: System MUST handle project-exists vs no-project contexts differently
 
@@ -579,7 +579,7 @@
 - REQ-CTX-03: Context monitor MUST inject agent-facing warnings at ≤25% remaining (CRITICAL)
 - REQ-CTX-04: Warnings MUST debounce (5 tool uses between repeated warnings)
 - REQ-CTX-05: Severity escalation (WARNING→CRITICAL) MUST bypass debounce
-- REQ-CTX-06: Context monitor MUST differentiate GSD-active vs non-GSD-active projects
+- REQ-CTX-06: Context monitor MUST differentiate GTD-active vs non-GTD-active projects
 - REQ-CTX-07: Warnings MUST be advisory, never imperative commands that override user preferences
 - REQ-CTX-08: All hooks MUST fail silently and never block tool execution
 
@@ -664,18 +664,18 @@
 
 | Agent | `quality` | `balanced` | `budget` | `inherit` |
 |-------|-----------|------------|----------|-----------|
-| gsd-planner | Opus | Opus | Sonnet | Inherit |
-| gsd-roadmapper | Opus | Sonnet | Sonnet | Inherit |
-| gsd-executor | Opus | Sonnet | Sonnet | Inherit |
-| gsd-phase-researcher | Opus | Sonnet | Haiku | Inherit |
-| gsd-project-researcher | Opus | Sonnet | Haiku | Inherit |
-| gsd-research-synthesizer | Sonnet | Sonnet | Haiku | Inherit |
-| gsd-debugger | Opus | Sonnet | Sonnet | Inherit |
-| gsd-codebase-mapper | Sonnet | Haiku | Haiku | Inherit |
-| gsd-verifier | Sonnet | Sonnet | Haiku | Inherit |
-| gsd-plan-checker | Sonnet | Sonnet | Haiku | Inherit |
-| gsd-integration-checker | Sonnet | Sonnet | Haiku | Inherit |
-| gsd-nyquist-auditor | Sonnet | Sonnet | Haiku | Inherit |
+| gtd-planner | Opus | Opus | Sonnet | Inherit |
+| gtd-roadmapper | Opus | Sonnet | Sonnet | Inherit |
+| gtd-executor | Opus | Sonnet | Sonnet | Inherit |
+| gtd-phase-researcher | Opus | Sonnet | Haiku | Inherit |
+| gtd-project-researcher | Opus | Sonnet | Haiku | Inherit |
+| gtd-research-synthesizer | Sonnet | Sonnet | Haiku | Inherit |
+| gtd-debugger | Opus | Sonnet | Sonnet | Inherit |
+| gtd-codebase-mapper | Sonnet | Haiku | Haiku | Inherit |
+| gtd-verifier | Sonnet | Sonnet | Haiku | Inherit |
+| gtd-plan-checker | Sonnet | Sonnet | Haiku | Inherit |
+| gtd-integration-checker | Sonnet | Sonnet | Haiku | Inherit |
+| gtd-nyquist-auditor | Sonnet | Sonnet | Haiku | Inherit |
 
 ---
 
@@ -685,7 +685,7 @@
 
 **Command:** `/gsd:map-codebase [area]`
 
-**Purpose:** Analyze an existing codebase before starting a new project, so GSD understands what exists.
+**Purpose:** Analyze an existing codebase before starting a new project, so GTD understands what exists.
 
 **Requirements:**
 - REQ-MAP-01: System MUST spawn parallel mapper agents for each analysis area
@@ -759,13 +759,13 @@
 
 **Command:** `/gsd:update`
 
-**Purpose:** Update GSD to the latest version with changelog preview.
+**Purpose:** Update GTD to the latest version with changelog preview.
 
 **Requirements:**
 - REQ-UPDATE-01: System MUST check for new versions via npm
 - REQ-UPDATE-02: System MUST display changelog for new version before updating
 - REQ-UPDATE-03: System MUST be runtime-aware and target the correct directory
-- REQ-UPDATE-04: System MUST back up locally modified files to `gsd-local-patches/`
+- REQ-UPDATE-04: System MUST back up locally modified files to `gtd-local-patches/`
 - REQ-UPDATE-05: `/gsd:reapply-patches` MUST restore local modifications after update
 
 ---
@@ -861,14 +861,14 @@ fix(03-01): correct auth token expiry
 
 ### 36. Multi-Runtime Support
 
-**Purpose:** Run GSD across 6 different AI coding agent runtimes.
+**Purpose:** Run GTD across 6 different AI coding agent runtimes.
 
 **Requirements:**
 - REQ-RUNTIME-01: System MUST support Claude Code, OpenCode, Gemini CLI, Codex, Copilot, Antigravity
 - REQ-RUNTIME-02: Installer MUST transform content per runtime (tool names, paths, frontmatter)
 - REQ-RUNTIME-03: Installer MUST support interactive and non-interactive (`--claude --global`) modes
 - REQ-RUNTIME-04: Installer MUST support both global and local installation
-- REQ-RUNTIME-05: Uninstall MUST cleanly remove all GSD files without affecting other configurations
+- REQ-RUNTIME-05: Uninstall MUST cleanly remove all GTD files without affecting other configurations
 - REQ-RUNTIME-06: Installer MUST handle platform differences (Windows, macOS, Linux, WSL, Docker)
 
 **Runtime Transformations:**
@@ -930,7 +930,7 @@ Color coding: <50% green, <65% yellow, <80% orange, ≥80% red with skull emoji
 **Pipeline Modules:**
 - `profile-pipeline.cjs` — Session scanning, message extraction, sampling
 - `profile-output.cjs` — Profile rendering, questionnaire, artifact generation
-- `gsd-user-profiler` agent — Behavioral analysis from session data
+- `gtd-user-profiler` agent — Behavioral analysis from session data
 
 **Requirements:**
 - REQ-PROF-01: Session analysis MUST cover at least 8 behavioral dimensions
@@ -1073,7 +1073,7 @@ When verification returns `human_needed`, items are persisted as a trackable HUM
 
 **Command:** `/gsd:pr-branch [target branch]`
 
-**Purpose:** Create a clean branch suitable for pull requests by filtering out `.planning/` commits. Reviewers see only code changes, not GSD planning artifacts.
+**Purpose:** Create a clean branch suitable for pull requests by filtering out `.planning/` commits. Reviewers see only code changes, not GTD planning artifacts.
 
 **Requirements:**
 - REQ-PRBRANCH-01: System MUST identify commits that only modify `.planning/` files
@@ -1084,7 +1084,7 @@ When verification returns `human_needed`, items are persisted as a trackable HUM
 
 ### 46. Security Hardening
 
-**Purpose:** Defense-in-depth security for GSD's planning artifacts. Because GSD generates markdown files that become LLM system prompts, user-controlled text flowing into these files is a potential indirect prompt injection vector.
+**Purpose:** Defense-in-depth security for GTD's planning artifacts. Because GTD generates markdown files that become LLM system prompts, user-controlled text flowing into these files is a potential indirect prompt injection vector.
 
 **Components:**
 
@@ -1095,11 +1095,11 @@ When verification returns `human_needed`, items are persisted as a trackable HUM
 - Field name validation — prevents injection through config field names
 - Shell argument validation — sanitizes user text before shell interpolation
 
-**2. Prompt Injection Guard Hook** (`gsd-prompt-guard.js`)
+**2. Prompt Injection Guard Hook** (`gtd-prompt-guard.js`)
 PreToolUse hook that scans Write/Edit calls targeting `.planning/` for injection patterns. Advisory-only — logs detection for awareness without blocking legitimate operations.
 
-**3. Workflow Guard Hook** (`gsd-workflow-guard.js`)
-PreToolUse hook that detects when Claude attempts file edits outside a GSD workflow context. Advises using `/gsd:quick` or `/gsd:fast` instead of direct edits. Configurable via `hooks.workflow_guard` (default: false).
+**3. Workflow Guard Hook** (`gtd-workflow-guard.js`)
+PreToolUse hook that detects when Claude attempts file edits outside a GTD workflow context. Advises using `/gsd:quick` or `/gsd:fast` instead of direct edits. Configurable via `hooks.workflow_guard` (default: false).
 
 **4. CI-Ready Injection Scanner** (`prompt-injection-scan.test.cjs`)
 Test suite that scans all agent, workflow, and command files for embedded injection vectors.
@@ -1141,7 +1141,7 @@ Test suite that scans all agent, workflow, and command files for embedded inject
 
 **Command:** `/gsd:forensics [description]`
 
-**Purpose:** Post-mortem investigation of failed or stuck GSD workflows.
+**Purpose:** Post-mortem investigation of failed or stuck GTD workflows.
 
 **Requirements:**
 - REQ-FORENSICS-01: System MUST analyze git history for anomalies (stuck loops, long gaps, repeated commits)
@@ -1204,7 +1204,7 @@ Test suite that scans all agent, workflow, and command files for embedded inject
 
 **Process:**
 1. **Create** — Initialize a named workstream with isolated `.planning/workstreams/{name}/` directory
-2. **Switch** — Change active workstream context for subsequent GSD commands
+2. **Switch** — Change active workstream context for subsequent GTD commands
 3. **Manage** — List, check status, track progress, complete, or resume workstreams
 
 ---
@@ -1276,7 +1276,7 @@ Test suite that scans all agent, workflow, and command files for embedded inject
 
 ### 55. Multi-Runtime Installer Selection
 
-**Part of:** `npx get-shit-done-cc`
+**Part of:** `npx get-things-done-cc`
 
 **Purpose:** Select multiple runtimes in a single interactive install session.
 
@@ -1287,4 +1287,4 @@ Test suite that scans all agent, workflow, and command files for embedded inject
 **Process:**
 1. **Detect** — Identify available AI CLI runtimes on the system
 2. **Prompt** — Present multi-select interface for runtime selection
-3. **Install** — Configure GSD for all selected runtimes in a single session
+3. **Install** — Configure GTD for all selected runtimes in a single session

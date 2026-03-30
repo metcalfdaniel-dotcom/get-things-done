@@ -1,8 +1,8 @@
 /**
- * GSD Workspace Tests
+ * GTD Workspace Tests
  *
  * Tests for /gsd:new-workspace, /gsd:list-workspaces, /gsd:remove-workspace
- * init functions and integration with gsd-tools routing.
+ * init functions and integration with gtd-tools routing.
  */
 
 const { test, describe, beforeEach, afterEach } = require('node:test');
@@ -12,7 +12,7 @@ const path = require('path');
 const os = require('os');
 const { execSync } = require('child_process');
 const { runGsdTools, createTempDir, cleanup } = require('./helpers.cjs');
-const { detectChildRepos } = require('../get-shit-done/bin/lib/init.cjs');
+const { detectChildRepos } = require('../get-things-done/bin/lib/init.cjs');
 
 // ─── detectChildRepos ────────────────────────────────────────────────────────
 
@@ -20,7 +20,7 @@ describe('detectChildRepos', () => {
   let tmpDir;
 
   beforeEach(() => {
-    tmpDir = createTempDir('gsd-ws-test-');
+    tmpDir = createTempDir('gtd-ws-test-');
   });
 
   afterEach(() => {
@@ -75,13 +75,13 @@ describe('detectChildRepos', () => {
   });
 });
 
-// ─── cmdInitNewWorkspace via gsd-tools ──────────────────────────────────────
+// ─── cmdInitNewWorkspace via gtd-tools ──────────────────────────────────────
 
 describe('init new-workspace', () => {
   let tmpDir;
 
   beforeEach(() => {
-    tmpDir = createTempDir('gsd-ws-test-');
+    tmpDir = createTempDir('gtd-ws-test-');
   });
 
   afterEach(() => {
@@ -119,13 +119,13 @@ describe('init new-workspace', () => {
   });
 });
 
-// ─── cmdInitListWorkspaces via gsd-tools ────────────────────────────────────
+// ─── cmdInitListWorkspaces via gtd-tools ────────────────────────────────────
 
 describe('init list-workspaces', () => {
   let tmpDir;
 
   beforeEach(() => {
-    tmpDir = createTempDir('gsd-ws-test-');
+    tmpDir = createTempDir('gtd-ws-test-');
   });
 
   afterEach(() => {
@@ -141,7 +141,7 @@ describe('init list-workspaces', () => {
   });
 
   test('finds workspaces with WORKSPACE.md', () => {
-    const wsBase = path.join(tmpDir, 'gsd-workspaces');
+    const wsBase = path.join(tmpDir, 'gtd-workspaces');
     const ws1 = path.join(wsBase, 'feature-a');
     fs.mkdirSync(path.join(ws1, '.planning'), { recursive: true });
     fs.writeFileSync(path.join(ws1, 'WORKSPACE.md'), [
@@ -166,13 +166,13 @@ describe('init list-workspaces', () => {
   });
 });
 
-// ─── cmdInitRemoveWorkspace via gsd-tools ───────────────────────────────────
+// ─── cmdInitRemoveWorkspace via gtd-tools ───────────────────────────────────
 
 describe('init remove-workspace', () => {
   let tmpDir;
 
   beforeEach(() => {
-    tmpDir = createTempDir('gsd-ws-test-');
+    tmpDir = createTempDir('gtd-ws-test-');
   });
 
   afterEach(() => {
@@ -192,7 +192,7 @@ describe('init remove-workspace', () => {
   });
 
   test('returns workspace info for existing workspace', () => {
-    const wsBase = path.join(tmpDir, 'gsd-workspaces');
+    const wsBase = path.join(tmpDir, 'gtd-workspaces');
     const ws = path.join(wsBase, 'test-ws');
     fs.mkdirSync(ws, { recursive: true });
     fs.writeFileSync(path.join(ws, 'WORKSPACE.md'), [
@@ -224,7 +224,7 @@ describe('workspace worktree integration', () => {
   let sourceRepo;
 
   beforeEach(() => {
-    tmpDir = createTempDir('gsd-ws-integ-');
+    tmpDir = createTempDir('gtd-ws-integ-');
     // Create a source git repo with a commit
     sourceRepo = path.join(tmpDir, 'source-repo');
     fs.mkdirSync(sourceRepo);
@@ -337,7 +337,7 @@ describe('workspace command files', () => {
   });
 
   test('new-workspace workflow exists', () => {
-    const content = fs.readFileSync(path.join(baseDir, 'get-shit-done/workflows/new-workspace.md'), 'utf8');
+    const content = fs.readFileSync(path.join(baseDir, 'get-things-done/workflows/new-workspace.md'), 'utf8');
     assert.ok(content.includes('init new-workspace'));
     assert.ok(content.includes('WORKSPACE.md'));
     assert.ok(content.includes('git worktree add'));
@@ -345,23 +345,23 @@ describe('workspace command files', () => {
   });
 
   test('list-workspaces workflow exists', () => {
-    const content = fs.readFileSync(path.join(baseDir, 'get-shit-done/workflows/list-workspaces.md'), 'utf8');
+    const content = fs.readFileSync(path.join(baseDir, 'get-things-done/workflows/list-workspaces.md'), 'utf8');
     assert.ok(content.includes('init list-workspaces'));
   });
 
   test('remove-workspace workflow exists', () => {
-    const content = fs.readFileSync(path.join(baseDir, 'get-shit-done/workflows/remove-workspace.md'), 'utf8');
+    const content = fs.readFileSync(path.join(baseDir, 'get-things-done/workflows/remove-workspace.md'), 'utf8');
     assert.ok(content.includes('init remove-workspace'));
     assert.ok(content.includes('git worktree remove'));
   });
 });
 
-// ─── Routing in gsd-tools ───────────────────────────────────────────────────
+// ─── Routing in gtd-tools ───────────────────────────────────────────────────
 
-describe('workspace routing in gsd-tools', () => {
+describe('workspace routing in gtd-tools', () => {
   test('init new-workspace is routed correctly', () => {
     const toolsContent = fs.readFileSync(
-      path.join(__dirname, '..', 'get-shit-done', 'bin', 'gsd-tools.cjs'),
+      path.join(__dirname, '..', 'get-things-done', 'bin', 'gtd-tools.cjs'),
       'utf8'
     );
     assert.ok(toolsContent.includes("case 'new-workspace'"));
@@ -370,7 +370,7 @@ describe('workspace routing in gsd-tools', () => {
 
   test('init list-workspaces is routed correctly', () => {
     const toolsContent = fs.readFileSync(
-      path.join(__dirname, '..', 'get-shit-done', 'bin', 'gsd-tools.cjs'),
+      path.join(__dirname, '..', 'get-things-done', 'bin', 'gtd-tools.cjs'),
       'utf8'
     );
     assert.ok(toolsContent.includes("case 'list-workspaces'"));
@@ -379,7 +379,7 @@ describe('workspace routing in gsd-tools', () => {
 
   test('init remove-workspace is routed correctly', () => {
     const toolsContent = fs.readFileSync(
-      path.join(__dirname, '..', 'get-shit-done', 'bin', 'gsd-tools.cjs'),
+      path.join(__dirname, '..', 'get-things-done', 'bin', 'gtd-tools.cjs'),
       'utf8'
     );
     assert.ok(toolsContent.includes("case 'remove-workspace'"));

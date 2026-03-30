@@ -1,4 +1,4 @@
-# Guia do Usuário do GSD
+# Guia do Usuário do GTD
 
 Referência detalhada de workflows, troubleshooting e configuração. Para setup rápido, veja o [README](../../README.pt-BR.md).
 
@@ -44,7 +44,7 @@ Para seguir automaticamente o próximo passo:
 
 ### Nyquist Validation
 
-Durante `plan-phase`, o GSD pode mapear requisitos para comandos de teste automáticos antes da implementação. Isso gera `{phase}-VALIDATION.md` e aumenta a confiabilidade de verificação pós-execução.
+Durante `plan-phase`, o GTD pode mapear requisitos para comandos de teste automáticos antes da implementação. Isso gera `{phase}-VALIDATION.md` e aumenta a confiabilidade de verificação pós-execução.
 
 Desativar:
 
@@ -58,7 +58,7 @@ Desativar:
 
 ### Modo de discussão por suposições
 
-Com `workflow.discuss_mode: "assumptions"`, o GSD analisa o código antes de perguntar, apresenta suposições estruturadas e pede apenas correções.
+Com `workflow.discuss_mode: "assumptions"`, o GTD analisa o código antes de perguntar, apresenta suposições estruturadas e pede apenas correções.
 
 ---
 
@@ -139,7 +139,7 @@ Workstreams permitem trabalho paralelo sem colisão de estado de planejamento.
 
 ## Segurança
 
-O GSD aplica defesa em profundidade:
+O GTD aplica defesa em profundidade:
 
 - prevenção de path traversal em entradas de arquivo
 - detecção de prompt injection em texto do usuário
@@ -172,7 +172,7 @@ Para arquivos sensíveis, use deny list no Claude Code.
 | `/gsd:resume-work` | Retomar sessão |
 | `/gsd:pause-work` | Pausar com handoff |
 | `/gsd:session-report` | Resumo da sessão |
-| `/gsd:quick` | Tarefa ad-hoc com garantias GSD |
+| `/gsd:quick` | Tarefa ad-hoc com garantias GTD |
 | `/gsd:debug [desc]` | Debug sistemático |
 | `/gsd:forensics` | Diagnóstico de workflow quebrado |
 | `/gsd:settings` | Ajustar workflow/modelos |

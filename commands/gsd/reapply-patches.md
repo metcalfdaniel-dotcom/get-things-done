@@ -1,10 +1,10 @@
 ---
-description: Reapply local modifications after a GSD update
+description: Reapply local modifications after a GTD update
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, AskUserQuestion
 ---
 
 <purpose>
-After a GSD update wipes and reinstalls files, this command merges user's previously saved local modifications back into the new version. Uses intelligent comparison to handle cases where the upstream file also changed.
+After a GTD update wipes and reinstalls files, this command merges user's previously saved local modifications back into the new version. Uses intelligent comparison to handle cases where the upstream file also changed.
 </purpose>
 
 <process>
@@ -15,20 +15,20 @@ Check for local patches directory:
 
 ```bash
 # Global install — detect runtime config directory
-if [ -d "$HOME/.config/opencode/gsd-local-patches" ]; then
-  PATCHES_DIR="$HOME/.config/opencode/gsd-local-patches"
-elif [ -d "$HOME/.opencode/gsd-local-patches" ]; then
-  PATCHES_DIR="$HOME/.opencode/gsd-local-patches"
-elif [ -d "$HOME/.gemini/gsd-local-patches" ]; then
-  PATCHES_DIR="$HOME/.gemini/gsd-local-patches"
+if [ -d "$HOME/.config/opencode/gtd-local-patches" ]; then
+  PATCHES_DIR="$HOME/.config/opencode/gtd-local-patches"
+elif [ -d "$HOME/.opencode/gtd-local-patches" ]; then
+  PATCHES_DIR="$HOME/.opencode/gtd-local-patches"
+elif [ -d "$HOME/.gemini/gtd-local-patches" ]; then
+  PATCHES_DIR="$HOME/.gemini/gtd-local-patches"
 else
-  PATCHES_DIR="$HOME/.claude/gsd-local-patches"
+  PATCHES_DIR="$HOME/.claude/gtd-local-patches"
 fi
 # Local install fallback — check all runtime directories
 if [ ! -d "$PATCHES_DIR" ]; then
   for dir in .config/opencode .opencode .gemini .claude; do
-    if [ -d "./$dir/gsd-local-patches" ]; then
-      PATCHES_DIR="./$dir/gsd-local-patches"
+    if [ -d "./$dir/gtd-local-patches" ]; then
+      PATCHES_DIR="./$dir/gtd-local-patches"
       break
     fi
   done
@@ -42,7 +42,7 @@ Read `backup-meta.json` from the patches directory.
 No local patches found. Nothing to reapply.
 
 Local patches are automatically saved when you run /gsd:update
-after modifying any GSD workflow, command, or agent files.
+after modifying any GTD workflow, command, or agent files.
 ```
 Exit.
 
@@ -65,7 +65,7 @@ Exit.
 
 For each file in `backup-meta.json`:
 
-1. **Read the backed-up version** (user's modified copy from `gsd-local-patches/`)
+1. **Read the backed-up version** (user's modified copy from `gtd-local-patches/`)
 2. **Read the newly installed version** (current file after update)
 3. **Compare and merge:**
 
@@ -96,8 +96,8 @@ After reapplying, regenerate the file manifest so future updates correctly detec
 ## Step 5: Cleanup option
 
 Ask user:
-- "Keep patch backups for reference?" → preserve `gsd-local-patches/`
-- "Clean up patch backups?" → remove `gsd-local-patches/` directory
+- "Keep patch backups for reference?" → preserve `gtd-local-patches/`
+- "Clean up patch backups?" → remove `gtd-local-patches/` directory
 
 ## Step 6: Report
 
