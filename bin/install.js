@@ -290,7 +290,7 @@ const banner = '\n' +
   '\n' +
   '  Get Things Done ' + dim + 'v' + pkg.version + reset + '\n' +
   '  A profanity-free fork of get-shit-done\n' +
-  '  For full specs, see: https://github.com/gsd-build/get-shit-done\n';
+  '  Forked from gsd-build/get-shit-done. See original specs at https://github.com/gsd-build/get-shit-done\n';
 
 // Parse --config-dir argument
 function parseConfigDirArg() {
