@@ -2,6 +2,8 @@
 
 # Get Things Done
 
+> A profanity-free fork of [get-shit-done](https://github.com/gsd-build/get-shit-done)
+
 A light-weight and powerful meta-prompting, context engineering and spec-driven development system for Claude Code, OpenCode, Gemini CLI, Codex, Copilot, Cursor, Windsurf, and Antigravity.
 
 **Solves context rot — the quality degradation that happens as Claude fills its context window.**
