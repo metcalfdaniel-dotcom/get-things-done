@@ -34,8 +34,8 @@ if [[ "$INIT" == @file:* ]]; then INIT=$(cat "${INIT#@file:}"); fi
 
 Parse JSON for: `milestone_version`, `milestone_name`, `phase_count`, `completed_phases`, `roadmap_exists`, `state_exists`, `commit_docs`.
 
-**If `roadmap_exists` is false:** Error — "No ROADMAP.md found. Run `/gsd:new-milestone` first."
-**If `state_exists` is false:** Error — "No STATE.md found. Run `/gsd:new-milestone` first."
+**If `roadmap_exists` is false:** Error — "No ROADMAP.md found. Run `/gtd-new-milestone` first."
+**If `state_exists` is false:** Error — "No STATE.md found. Run `/gtd-new-milestone` first."
 
 Display startup banner:
 
@@ -767,7 +767,7 @@ Ask user via AskUserQuestion:
 
 On **"Continue anyway"**: Display `Audit ⏭ Gaps accepted — proceeding to complete milestone` and proceed to 5b.
 
-On **"Stop"**: Go to handle_blocker with "User stopped — audit gaps remain. Run /gsd:audit-milestone to review, then /gsd:complete-milestone when ready."
+On **"Stop"**: Go to handle_blocker with "User stopped — audit gaps remain. Run /gtd-audit-milestone to review, then /gtd-complete-milestone when ready."
 
 **If `tech_debt`:**
 
@@ -782,7 +782,7 @@ Show the summary, then ask user via AskUserQuestion:
 
 On **"Continue with tech debt"**: Display `Audit ⏭ Tech debt acknowledged — proceeding to complete milestone` and proceed to 5b.
 
-On **"Stop"**: Go to handle_blocker with "User stopped — tech debt to address. Run /gsd:audit-milestone to review details."
+On **"Stop"**: Go to handle_blocker with "User stopped — tech debt to address. Run /gtd-audit-milestone to review details."
 
 **5b. Complete Milestone**
 
@@ -852,7 +852,7 @@ When any phase operation fails or a blocker is detected, present 3 options via A
  Skipped: {list of skipped phases}
  Remaining: {list of remaining phases}
 
- Resume with: /gsd:autonomous --from {next_phase}
+ Resume with: /gtd-autonomous --from {next_phase}
 ```
 
 </step>

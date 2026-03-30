@@ -21,7 +21,7 @@ The profile section is managed exclusively by `generate-claude-profile`.
 
 **Fallback text:**
 ```
-Project not yet initialized. Run /gsd:new-project to set up.
+Project not yet initialized. Run /gtd-new-project to set up.
 ```
 
 ### Stack Section
@@ -74,9 +74,9 @@ Architecture not yet mapped. Follow existing patterns found in the codebase.
 Before using Edit, Write, or other file-changing tools, start work through a GTD command so planning artifacts and execution context stay in sync.
 
 Use these entry points:
-- `/gsd:quick` for small fixes, doc updates, and ad-hoc tasks
-- `/gsd:debug` for investigation and bug fixing
-- `/gsd:execute-phase` for planned phase work
+- `/gtd-quick` for small fixes, doc updates, and ad-hoc tasks
+- `/gtd-debug` for investigation and bug fixing
+- `/gtd-execute-phase` for planned phase work
 
 Do not make direct repo edits outside a GTD workflow unless the user explicitly asks to bypass it.
 <!-- GTD:workflow-end -->
@@ -87,7 +87,7 @@ Do not make direct repo edits outside a GTD workflow unless the user explicitly 
 <!-- GTD:profile-start -->
 ## Developer Profile
 
-> Profile not yet configured. Run `/gsd:profile-user` to generate your developer profile.
+> Profile not yet configured. Run `/gtd-profile-user` to generate your developer profile.
 > This section is managed by `generate-claude-profile` — do not edit manually.
 <!-- GTD:profile-end -->
 ```

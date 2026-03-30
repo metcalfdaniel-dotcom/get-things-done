@@ -460,8 +460,8 @@ Apply the same "incomplete" filtering rules as earlier:
 
 Selected wave finished successfully. This phase still has incomplete plans, so phase-level verification and completion were intentionally skipped.
 
-/gsd:execute-phase {phase} ${GTD_WS}                # Continue remaining waves
-/gsd:execute-phase {phase} --wave {next} ${GTD_WS}  # Run the next wave explicitly
+/gtd-execute-phase {phase} ${GTD_WS}                # Continue remaining waves
+/gtd-execute-phase {phase} --wave {next} ${GTD_WS}  # Run the next wave explicitly
 ```
 
 **If no incomplete plans remain after the selected wave finishes:**
@@ -611,7 +611,7 @@ grep "^status:" "$PHASE_DIR"/*-VERIFICATION.md | cut -d: -f2 | tr -d ' '
 |--------|--------|
 | `passed` | → update_roadmap |
 | `human_needed` | Present items for human testing, get approval or feedback |
-| `gaps_found` | Present gap summary, offer `/gsd:plan-phase {phase} --gaps ${GTD_WS}` |
+| `gaps_found` | Present gap summary, offer `/gtd-plan-phase {phase} --gaps ${GTD_WS}` |
 
 **If human_needed:**
 
@@ -666,12 +666,12 @@ All automated checks passed. {N} items need human testing:
 
 {From VERIFICATION.md human_verification section}
 
-Items saved to `{phase_num}-HUMAN-UAT.md` — they will appear in `/gsd:progress` and `/gsd:audit-uat`.
+Items saved to `{phase_num}-HUMAN-UAT.md` — they will appear in `/gtd-progress` and `/gtd-audit-uat`.
 
 "approved" → continue | Report issues → gap closure
 ```
 
-**If user says "approved":** Proceed to `update_roadmap`. The HUMAN-UAT.md file persists with `status: partial` and will surface in future progress checks until the user runs `/gsd:verify-work` on it.
+**If user says "approved":** Proceed to `update_roadmap`. The HUMAN-UAT.md file persists with `status: partial` and will surface in future progress checks until the user runs `/gtd-verify-work` on it.
 
 **If user reports issues:** Proceed to gap closure as currently implemented.
 
@@ -688,15 +688,15 @@ Items saved to `{phase_num}-HUMAN-UAT.md` — they will appear in `/gsd:progress
 ---
 ## ▶ Next Up
 
-`/gsd:plan-phase {X} --gaps ${GTD_WS}`
+`/gtd-plan-phase {X} --gaps ${GTD_WS}`
 
 <sub>`/clear` first → fresh context window</sub>
 
 Also: `cat {phase_dir}/{phase_num}-VERIFICATION.md` — full report
-Also: `/gsd:verify-work {X} ${GTD_WS}` — manual testing first
+Also: `/gtd-verify-work {X} ${GTD_WS}` — manual testing first
 ```
 
-Gap closure cycle: `/gsd:plan-phase {X} --gaps ${GTD_WS}` reads VERIFICATION.md → creates gap plans with `gap_closure: true` → user runs `/gsd:execute-phase {X} --gaps-only ${GTD_WS}` → verifier re-runs.
+Gap closure cycle: `/gtd-plan-phase {X} --gaps ${GTD_WS}` reads VERIFICATION.md → creates gap plans with `gap_closure: true` → user runs `/gtd-execute-phase {X} --gaps-only ${GTD_WS}` → verifier re-runs.
 </step>
 
 <step name="update_roadmap">
@@ -722,7 +722,7 @@ Extract from result: `next_phase`, `next_phase_name`, `is_last_phase`, `warnings
 
 {list each warning}
 
-These items are tracked and will appear in `/gsd:progress` and `/gsd:audit-uat`.
+These items are tracked and will appear in `/gtd-progress` and `/gtd-audit-uat`.
 ```
 
 ```bash
@@ -754,7 +754,7 @@ node "$HOME/.claude/get-things-done/bin/gtd-tools.cjs" commit "docs(phase-{X}): 
 
 <step name="offer_next">
 
-**Exception:** If `gaps_found`, the `verify_phase_goal` step already presents the gap-closure path (`/gsd:plan-phase {X} --gaps`). No additional routing needed — skip auto-advance.
+**Exception:** If `gaps_found`, the `verify_phase_goal` step already presents the gap-closure path (`/gtd-plan-phase {X} --gaps`). No additional routing needed — skip auto-advance.
 
 **No-transition check (spawned by auto-advance chain):**
 
@@ -805,15 +805,15 @@ Read and follow `~/.claude/get-things-done/workflows/transition.md`, passing thr
 
 **STOP. Do not auto-advance. Do not execute transition. Do not plan next phase. Present options to the user and wait.**
 
-**IMPORTANT: There is NO `/gsd:transition` command. Never suggest it. The transition workflow is internal only.**
+**IMPORTANT: There is NO `/gtd-transition` command. Never suggest it. The transition workflow is internal only.**
 
 ```
 ## ✓ Phase {X}: {Name} Complete
 
-/gsd:progress ${GTD_WS} — see updated roadmap
-/gsd:discuss-phase {next} ${GTD_WS} — discuss next phase before planning
-/gsd:plan-phase {next} ${GTD_WS} — plan next phase
-/gsd:execute-phase {next} ${GTD_WS} — execute next phase
+/gtd-progress ${GTD_WS} — see updated roadmap
+/gtd-discuss-phase {next} ${GTD_WS} — discuss next phase before planning
+/gtd-plan-phase {next} ${GTD_WS} — plan next phase
+/gtd-execute-phase {next} ${GTD_WS} — execute next phase
 ```
 
 Only suggest the commands listed above. Do not invent or hallucinate command names.
@@ -840,7 +840,7 @@ For 1M+ context models, consider:
 </failure_handling>
 
 <resumption>
-Re-run `/gsd:execute-phase {phase}` → discover_plans finds completed SUMMARYs → skips them → resumes from first incomplete plan → continues wave execution.
+Re-run `/gtd-execute-phase {phase}` → discover_plans finds completed SUMMARYs → skips them → resumes from first incomplete plan → continues wave execution.
 
 STATE.md tracks: last completed plan, current wave, pending checkpoints.
 </resumption>

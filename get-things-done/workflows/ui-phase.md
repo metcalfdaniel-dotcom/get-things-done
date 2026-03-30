@@ -44,11 +44,11 @@ UI_ENABLED=$(node "$HOME/.claude/get-things-done/bin/gtd-tools.cjs" config-get w
 
 **If `UI_ENABLED` is `false`:**
 ```
-UI phase is disabled in config. Enable via /gsd:settings.
+UI phase is disabled in config. Enable via /gtd-settings.
 ```
 Exit workflow.
 
-**If `planning_exists` is false:** Error — run `/gsd:new-project` first.
+**If `planning_exists` is false:** Error — run `/gtd-new-project` first.
 
 ## 2. Parse and Validate Phase
 
@@ -65,7 +65,7 @@ PHASE_INFO=$(node "$HOME/.claude/get-things-done/bin/gtd-tools.cjs" roadmap get-
 **If `has_context` is false:**
 ```
 No CONTEXT.md found for Phase {N}.
-Recommended: run /gsd:discuss-phase {N} first to capture design preferences.
+Recommended: run /gtd-discuss-phase {N} first to capture design preferences.
 Continuing without user decisions — UI researcher will ask all questions.
 ```
 Continue (non-blocking).
@@ -120,7 +120,7 @@ Answer: "What visual and interaction contracts does this phase need?"
 - {state_path} (Project State)
 - {roadmap_path} (Roadmap)
 - {requirements_path} (Requirements)
-- {context_path} (USER DECISIONS from /gsd:discuss-phase)
+- {context_path} (USER DECISIONS from /gtd-discuss-phase)
 - {research_path} (Technical Research — stack decisions)
 </files_to_read>
 
@@ -238,7 +238,7 @@ Max revision iterations reached. Remaining issues:
 
 Options:
 1. Force approve — proceed with current UI-SPEC (FLAGs become accepted)
-2. Edit manually — open UI-SPEC.md in editor, re-run /gsd:ui-phase
+2. Edit manually — open UI-SPEC.md in editor, re-run /gtd-ui-phase
 3. Abandon — exit without approving
 ```
 
@@ -263,7 +263,7 @@ Dimensions: 6/6 passed
 
 **Plan Phase {N}** — planner will use UI-SPEC.md as design context
 
-`/gsd:plan-phase {N}`
+`/gtd-plan-phase {N}`
 
 <sub>/clear first → fresh context window</sub>
 

@@ -28,7 +28,7 @@ AUDITOR_MODEL=$(node "$HOME/.claude/get-things-done/bin/gtd-tools.cjs" resolve-m
 NYQUIST_CFG=$(node "$HOME/.claude/get-things-done/bin/gtd-tools.cjs" config-get workflow.nyquist_validation --raw)
 ```
 
-If `NYQUIST_CFG` is `false`: exit with "Nyquist validation is disabled. Enable via /gsd:settings."
+If `NYQUIST_CFG` is `false`: exit with "Nyquist validation is disabled. Enable via /gtd-settings."
 
 Display banner: `GTD > VALIDATE PHASE {N}: {name}`
 
@@ -41,7 +41,7 @@ SUMMARY_FILES=$(ls "${PHASE_DIR}"/*-SUMMARY.md 2>/dev/null)
 
 - **State A** (`VALIDATION_FILE` non-empty): Audit existing
 - **State B** (`VALIDATION_FILE` empty, `SUMMARY_FILES` non-empty): Reconstruct from artifacts
-- **State C** (`SUMMARY_FILES` empty): Exit — "Phase {N} not executed. Run /gsd:execute-phase {N} ${GTD_WS} first."
+- **State C** (`SUMMARY_FILES` empty): Exit — "Phase {N} not executed. Run /gtd-execute-phase {N} ${GTD_WS} first."
 
 ## 2. Discovery
 
@@ -144,14 +144,14 @@ node "$HOME/.claude/get-things-done/bin/gtd-tools.cjs" commit "docs(phase-${PHAS
 ```
 GTD > PHASE {N} IS NYQUIST-COMPLIANT
 All requirements have automated verification.
-▶ Next: /gsd:audit-milestone ${GTD_WS}
+▶ Next: /gtd-audit-milestone ${GTD_WS}
 ```
 
 **Partial:**
 ```
 GTD > PHASE {N} VALIDATED (PARTIAL)
 {M} automated, {K} manual-only.
-▶ Retry: /gsd:validate-phase {N} ${GTD_WS}
+▶ Retry: /gtd-validate-phase {N} ${GTD_WS}
 ```
 
 Display `/clear` reminder.

@@ -27,18 +27,18 @@ If `project_exists` is false (no `.planning/` directory):
 ```
 No planning structure found.
 
-Run /gsd:new-project to start a new project.
+Run /gtd-new-project to start a new project.
 ```
 
 Exit.
 
-If missing STATE.md: suggest `/gsd:new-project`.
+If missing STATE.md: suggest `/gtd-new-project`.
 
 **If ROADMAP.md missing but PROJECT.md exists:**
 
 This means a milestone was completed and archived. Go to **Route F** (between milestones).
 
-If missing both ROADMAP.md and PROJECT.md: suggest `/gsd:new-project`.
+If missing both ROADMAP.md and PROJECT.md: suggest `/gtd-new-project`.
 </step>
 
 <step name="load">
@@ -123,10 +123,10 @@ CONTEXT: [✓ if has_context | - if not]
 - [e.g. jq -r '.blockers[].text' from state-snapshot]
 
 ## Pending Todos
-- [count] pending — /gsd:check-todos to review
+- [count] pending — /gtd-check-todos to review
 
 ## Active Debug Sessions
-- [count] active — /gsd:debug to continue
+- [count] active — /gtd-debug to continue
 (Only show this section if count > 0)
 
 ## What's Next
@@ -185,8 +185,8 @@ Track: `outstanding_debt` — `summary.total_items` from the audit.
 | {phase} | {filename} | {pending_count} pending, {skipped_count} skipped, {blocked_count} blocked |
 | {phase} | {filename} | human_needed — {count} items |
 
-Review: `/gsd:audit-uat ${GTD_WS}` — full cross-phase audit
-Resume testing: `/gsd:verify-work {phase} ${GTD_WS}` — retest specific phase
+Review: `/gtd-audit-uat ${GTD_WS}` — full cross-phase audit
+Resume testing: `/gtd-verify-work {phase} ${GTD_WS}` — retest specific phase
 ```
 
 This is a WARNING, not a blocker — routing proceeds normally. The debt is visible so the user can make an informed choice.
@@ -215,7 +215,7 @@ Read its `<objective>` section.
 
 **{phase}-{plan}: [Plan Name]** — [objective summary from PLAN.md]
 
-`/gsd:execute-phase {phase} ${GTD_WS}`
+`/gtd-execute-phase {phase} ${GTD_WS}`
 
 <sub>`/clear` first → fresh context window</sub>
 
@@ -245,7 +245,7 @@ PHASE_HAS_UI=$(echo "$PHASE_SECTION" | grep -qi "UI hint.*yes" && echo "true" ||
 **Phase {N}: {Name}** — {Goal from ROADMAP.md}
 <sub>✓ Context gathered, ready to plan</sub>
 
-`/gsd:plan-phase {phase-number} ${GTD_WS}`
+`/gtd-plan-phase {phase-number} ${GTD_WS}`
 
 <sub>`/clear` first → fresh context window</sub>
 
@@ -261,16 +261,16 @@ PHASE_HAS_UI=$(echo "$PHASE_SECTION" | grep -qi "UI hint.*yes" && echo "true" ||
 
 **Phase {N}: {Name}** — {Goal from ROADMAP.md}
 
-`/gsd:discuss-phase {phase}` — gather context and clarify approach
+`/gtd-discuss-phase {phase}` — gather context and clarify approach
 
 <sub>`/clear` first → fresh context window</sub>
 
 ---
 
 **Also available:**
-- `/gsd:ui-phase {phase}` — generate UI design contract (recommended for frontend phases)
-- `/gsd:plan-phase {phase}` — skip discussion, plan directly
-- `/gsd:list-phase-assumptions {phase}` — see Claude's assumptions
+- `/gtd-ui-phase {phase}` — generate UI design contract (recommended for frontend phases)
+- `/gtd-plan-phase {phase}` — skip discussion, plan directly
+- `/gtd-list-phase-assumptions {phase}` — see Claude's assumptions
 
 ---
 ```
@@ -284,15 +284,15 @@ PHASE_HAS_UI=$(echo "$PHASE_SECTION" | grep -qi "UI hint.*yes" && echo "true" ||
 
 **Phase {N}: {Name}** — {Goal from ROADMAP.md}
 
-`/gsd:discuss-phase {phase} ${GTD_WS}` — gather context and clarify approach
+`/gtd-discuss-phase {phase} ${GTD_WS}` — gather context and clarify approach
 
 <sub>`/clear` first → fresh context window</sub>
 
 ---
 
 **Also available:**
-- `/gsd:plan-phase {phase} ${GTD_WS}` — skip discussion, plan directly
-- `/gsd:list-phase-assumptions {phase} ${GTD_WS}` — see Claude's assumptions
+- `/gtd-plan-phase {phase} ${GTD_WS}` — skip discussion, plan directly
+- `/gtd-list-phase-assumptions {phase} ${GTD_WS}` — see Claude's assumptions
 
 ---
 ```
@@ -310,15 +310,15 @@ UAT.md exists with gaps (diagnosed issues). User needs to plan fixes.
 
 **{phase_num}-UAT.md** has {N} gaps requiring fixes.
 
-`/gsd:plan-phase {phase} --gaps ${GTD_WS}`
+`/gtd-plan-phase {phase} --gaps ${GTD_WS}`
 
 <sub>`/clear` first → fresh context window</sub>
 
 ---
 
 **Also available:**
-- `/gsd:execute-phase {phase} ${GTD_WS}` — execute phase plans
-- `/gsd:verify-work {phase} ${GTD_WS}` — run more UAT testing
+- `/gtd-execute-phase {phase} ${GTD_WS}` — execute phase plans
+- `/gtd-verify-work {phase} ${GTD_WS}` — run more UAT testing
 
 ---
 ```
@@ -336,15 +336,15 @@ UAT.md exists with `status: partial` — testing session ended before all items 
 
 **{phase_num}-UAT.md** has {N} unresolved tests (pending, blocked, or skipped).
 
-`/gsd:verify-work {phase} ${GTD_WS}` — resume testing from where you left off
+`/gtd-verify-work {phase} ${GTD_WS}` — resume testing from where you left off
 
 <sub>`/clear` first → fresh context window</sub>
 
 ---
 
 **Also available:**
-- `/gsd:audit-uat ${GTD_WS}` — full cross-phase UAT audit
-- `/gsd:execute-phase {phase} ${GTD_WS}` — execute phase plans
+- `/gtd-audit-uat ${GTD_WS}` — full cross-phase UAT audit
+- `/gtd-execute-phase {phase} ${GTD_WS}` — execute phase plans
 
 ---
 ```
@@ -392,16 +392,16 @@ NEXT_HAS_UI=$(echo "$NEXT_PHASE_SECTION" | grep -qi "UI hint.*yes" && echo "true
 
 **Phase {Z+1}: {Name}** — {Goal from ROADMAP.md}
 
-`/gsd:discuss-phase {Z+1}` — gather context and clarify approach
+`/gtd-discuss-phase {Z+1}` — gather context and clarify approach
 
 <sub>`/clear` first → fresh context window</sub>
 
 ---
 
 **Also available:**
-- `/gsd:ui-phase {Z+1}` — generate UI design contract (recommended for frontend phases)
-- `/gsd:plan-phase {Z+1}` — skip discussion, plan directly
-- `/gsd:verify-work {Z}` — user acceptance test before continuing
+- `/gtd-ui-phase {Z+1}` — generate UI design contract (recommended for frontend phases)
+- `/gtd-plan-phase {Z+1}` — skip discussion, plan directly
+- `/gtd-verify-work {Z}` — user acceptance test before continuing
 
 ---
 ```
@@ -417,15 +417,15 @@ NEXT_HAS_UI=$(echo "$NEXT_PHASE_SECTION" | grep -qi "UI hint.*yes" && echo "true
 
 **Phase {Z+1}: {Name}** — {Goal from ROADMAP.md}
 
-`/gsd:discuss-phase {Z+1} ${GTD_WS}` — gather context and clarify approach
+`/gtd-discuss-phase {Z+1} ${GTD_WS}` — gather context and clarify approach
 
 <sub>`/clear` first → fresh context window</sub>
 
 ---
 
 **Also available:**
-- `/gsd:plan-phase {Z+1} ${GTD_WS}` — skip discussion, plan directly
-- `/gsd:verify-work {Z} ${GTD_WS}` — user acceptance test before continuing
+- `/gtd-plan-phase {Z+1} ${GTD_WS}` — skip discussion, plan directly
+- `/gtd-verify-work {Z} ${GTD_WS}` — user acceptance test before continuing
 
 ---
 ```
@@ -445,14 +445,14 @@ All {N} phases finished!
 
 **Complete Milestone** — archive and prepare for next
 
-`/gsd:complete-milestone ${GTD_WS}`
+`/gtd-complete-milestone ${GTD_WS}`
 
 <sub>`/clear` first → fresh context window</sub>
 
 ---
 
 **Also available:**
-- `/gsd:verify-work ${GTD_WS}` — user acceptance test before completing milestone
+- `/gtd-verify-work ${GTD_WS}` — user acceptance test before completing milestone
 
 ---
 ```
@@ -476,7 +476,7 @@ Ready to plan the next milestone.
 
 **Start Next Milestone** — questioning → research → requirements → roadmap
 
-`/gsd:new-milestone ${GTD_WS}`
+`/gtd-new-milestone ${GTD_WS}`
 
 <sub>`/clear` first → fresh context window</sub>
 
@@ -488,10 +488,10 @@ Ready to plan the next milestone.
 <step name="edge_cases">
 **Handle edge cases:**
 
-- Phase complete but next phase not planned → offer `/gsd:plan-phase [next] ${GTD_WS}`
+- Phase complete but next phase not planned → offer `/gtd-plan-phase [next] ${GTD_WS}`
 - All work complete → offer milestone completion
 - Blockers present → highlight before offering to continue
-- Handoff file exists → mention it, offer `/gsd:resume-work ${GTD_WS}`
+- Handoff file exists → mention it, offer `/gtd-resume-work ${GTD_WS}`
   </step>
 
 </process>
@@ -501,7 +501,7 @@ Ready to plan the next milestone.
 - [ ] Rich context provided (recent work, decisions, issues)
 - [ ] Current position clear with visual progress
 - [ ] What's next clearly explained
-- [ ] Smart routing: /gsd:execute-phase if plans exist, /gsd:plan-phase if not
+- [ ] Smart routing: /gtd-execute-phase if plans exist, /gtd-plan-phase if not
 - [ ] User confirms before any action
 - [ ] Seamless handoff to appropriate gsd command
       </success_criteria>

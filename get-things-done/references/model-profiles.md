@@ -69,7 +69,7 @@ If you're using Claude Code with OpenRouter, a local model, or any non-Anthropic
 
 ```bash
 # Via settings command
-/gsd:settings
+/gtd-settings
 # → Select "Inherit" for model profile
 
 # Or manually in .planning/config.json
@@ -109,7 +109,7 @@ Overrides take precedence over the profile. Valid values: `opus`, `sonnet`, `hai
 
 ## Switching Profiles
 
-Runtime: `/gsd:set-profile <profile>`
+Runtime: `/gtd-set-profile <profile>`
 
 Per-project default: Set in `.planning/config.json`:
 ```json

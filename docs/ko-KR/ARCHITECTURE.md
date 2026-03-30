@@ -31,7 +31,7 @@ GTD는 사용자와 AI 코딩 에이전트(Claude Code, Gemini CLI, OpenCode, Co
 ```
 ┌──────────────────────────────────────────────────────┐
 │                      USER                            │
-│            /gsd:command [args]                        │
+│            /gtd-command [args]                        │
 └─────────────────────┬────────────────────────────────┘
                       │
 ┌─────────────────────▼────────────────────────────────┐
@@ -107,10 +107,10 @@ GTD는 사용자와 AI 코딩 에이전트(Claude Code, Gemini CLI, OpenCode, Co
 ### Commands (`commands/gsd/*.md`)
 
 사용자 대면 진입점입니다. 각 파일은 YAML 전문(name, description, allowed-tools)과 워크플로우를 부트스트랩하는 프롬프트 본문을 포함합니다. 명령어는 다음과 같이 설치됩니다.
-- **Claude Code:** 커스텀 슬래시 명령어 (`/gsd:command-name`)
+- **Claude Code:** 커스텀 슬래시 명령어 (`/gtd-command-name`)
 - **OpenCode:** 슬래시 명령어 (`/gtd-command-name`)
 - **Codex:** Skills (`$gtd-command-name`)
-- **Copilot:** 슬래시 명령어 (`/gsd:command-name`)
+- **Copilot:** 슬래시 명령어 (`/gtd-command-name`)
 - **Antigravity:** Skills
 
 **전체 명령어 수:** 44개
@@ -377,13 +377,13 @@ UI-SPEC.md (per phase) ───────────────────
 ├── STATE.md                # 살아있는 메모리: 위치, 결정, 차단, 메트릭
 ├── config.json             # 워크플로우 설정
 ├── MILESTONES.md           # 완료된 마일스톤 보관
-├── research/               # /gsd:new-project의 도메인 조사
+├── research/               # /gtd-new-project의 도메인 조사
 │   ├── SUMMARY.md
 │   ├── STACK.md
 │   ├── FEATURES.md
 │   ├── ARCHITECTURE.md
 │   └── PITFALLS.md
-├── codebase/               # 브라운필드 매핑 (/gsd:map-codebase에서)
+├── codebase/               # 브라운필드 매핑 (/gtd-map-codebase에서)
 │   ├── STACK.md
 │   ├── ARCHITECTURE.md
 │   ├── CONVENTIONS.md
@@ -409,13 +409,13 @@ UI-SPEC.md (per phase) ───────────────────
 ├── todos/
 │   ├── pending/            # 캡처된 아이디어
 │   └── done/               # 완료된 할 일
-├── threads/               # 영구 컨텍스트 스레드 (/gsd:thread에서)
-├── seeds/                 # 미래 지향적 아이디어 (/gsd:plant-seed에서)
+├── threads/               # 영구 컨텍스트 스레드 (/gtd-thread에서)
+├── seeds/                 # 미래 지향적 아이디어 (/gtd-plant-seed에서)
 ├── debug/                  # 활성 디버그 세션
 │   ├── *.md                # 활성 세션
 │   ├── resolved/           # 보관된 세션
 │   └── knowledge-base.md   # 영구 디버그 학습 내용
-├── ui-reviews/             # /gsd:ui-review의 스크린샷 (gitignored)
+├── ui-reviews/             # /gtd-ui-review의 스크린샷 (gitignored)
 └── continue-here.md        # 컨텍스트 핸드오프 (pause-work에서)
 ```
 
@@ -437,7 +437,7 @@ UI-SPEC.md (per phase) ───────────────────
    - Antigravity: Google 모델 등가물을 사용한 skills-first 방식
 5. **경로 정규화** — `~/.claude/` 경로를 런타임별 경로로 교체
 6. **설정 통합** — 런타임의 `settings.json`에 훅 등록
-7. **패치 백업** — v1.17부터 로컬 수정 파일을 `gtd-local-patches/`에 백업하여 `/gsd:reapply-patches`에 사용
+7. **패치 백업** — v1.17부터 로컬 수정 파일을 `gtd-local-patches/`에 백업하여 `/gtd-reapply-patches`에 사용
 8. **매니페스트 추적** — 깔끔한 제거를 위해 `gtd-file-manifest.json` 작성
 9. **제거 모드** — `--uninstall`로 모든 GTD 파일, 훅, 설정 제거
 
@@ -497,8 +497,8 @@ Runtime Engine (Claude Code / Gemini CLI)
 
 **Workflow Guard** (`gtd-workflow-guard.js`).
 - `.planning/` 외부 파일에 Write/Edit 시 트리거됩니다
-- GTD 워크플로우 컨텍스트 외부의 편집을 감지합니다 (활성 `/gsd:` 명령어 또는 Task 서브에이전트 없음)
-- 상태 추적 변경을 위해 `/gsd:quick` 또는 `/gsd:fast` 사용을 권고합니다
+- GTD 워크플로우 컨텍스트 외부의 편집을 감지합니다 (활성 `/gtd-` 명령어 또는 Task 서브에이전트 없음)
+- 상태 추적 변경을 위해 `/gtd-quick` 또는 `/gtd-fast` 사용을 권고합니다
 - `hooks.workflow_guard: true`로 활성화 (기본값: false)
 
 ---
@@ -509,11 +509,11 @@ GTD는 통합된 명령어/워크플로우 아키텍처를 통해 6개의 AI 코
 
 | 런타임 | 명령어 형식 | 에이전트 시스템 | 설정 위치 |
 |---------|---------------|--------------|-----------------|
-| Claude Code | `/gsd:command` | Task 생성 | `~/.claude/` |
+| Claude Code | `/gtd-command` | Task 생성 | `~/.claude/` |
 | OpenCode | `/gtd-command` | Subagent 모드 | `~/.config/opencode/` |
-| Gemini CLI | `/gsd:command` | Task 생성 | `~/.gemini/` |
+| Gemini CLI | `/gtd-command` | Task 생성 | `~/.gemini/` |
 | Codex | `$gtd-command` | Skills | `~/.codex/` |
-| Copilot | `/gsd:command` | 에이전트 위임 | `~/.github/` |
+| Copilot | `/gtd-command` | 에이전트 위임 | `~/.github/` |
 | Antigravity | Skills | Skills | `~/.gemini/antigravity/` |
 
 ### 추상화 포인트

@@ -2,15 +2,15 @@
 
 **This is an INTERNAL workflow — NOT a user-facing command.**
 
-There is no `/gsd:transition` command. This workflow is invoked automatically by
+There is no `/gtd-transition` command. This workflow is invoked automatically by
 `execute-phase` during auto-advance, or inline by the orchestrator after phase
-verification. Users should never be told to run `/gsd:transition`.
+verification. Users should never be told to run `/gtd-transition`.
 
 **Valid user commands for phase progression:**
-- `/gsd:discuss-phase {N}` — discuss a phase before planning
-- `/gsd:plan-phase {N}` — plan a phase
-- `/gsd:execute-phase {N}` — execute a phase
-- `/gsd:progress` — see roadmap progress
+- `/gtd-discuss-phase {N}` — discuss a phase before planning
+- `/gtd-plan-phase {N}` — plan a phase
+- `/gtd-execute-phase {N}` — execute a phase
+- `/gtd-progress` — see roadmap progress
 
 </internal_workflow>
 
@@ -93,7 +93,7 @@ Append to the completion confirmation message (regardless of mode):
 Outstanding verification items in this phase:
 {list filenames}
 
-These will carry forward as debt. Review: `/gsd:audit-uat`
+These will carry forward as debt. Review: `/gtd-audit-uat`
 ```
 
 This does NOT block transition — it ensures the user sees the debt before confirming.
@@ -446,7 +446,7 @@ Next: Phase [X+1] — [Name]
 ⚡ Auto-continuing: Plan Phase [X+1] in detail
 ```
 
-Exit skill and invoke SlashCommand("/gsd:plan-phase [X+1] --auto ${GTD_WS}")
+Exit skill and invoke SlashCommand("/gtd-plan-phase [X+1] --auto ${GTD_WS}")
 
 **If CONTEXT.md does NOT exist:**
 
@@ -458,7 +458,7 @@ Next: Phase [X+1] — [Name]
 ⚡ Auto-continuing: Discuss Phase [X+1] first
 ```
 
-Exit skill and invoke SlashCommand("/gsd:discuss-phase [X+1] --auto ${GTD_WS}")
+Exit skill and invoke SlashCommand("/gtd-discuss-phase [X+1] --auto ${GTD_WS}")
 
 </if>
 
@@ -475,15 +475,15 @@ Exit skill and invoke SlashCommand("/gsd:discuss-phase [X+1] --auto ${GTD_WS}")
 
 **Phase [X+1]: [Name]** — [Goal from ROADMAP.md]
 
-`/gsd:discuss-phase [X+1] ${GTD_WS}` — gather context and clarify approach
+`/gtd-discuss-phase [X+1] ${GTD_WS}` — gather context and clarify approach
 
 <sub>`/clear` first → fresh context window</sub>
 
 ---
 
 **Also available:**
-- `/gsd:plan-phase [X+1] ${GTD_WS}` — skip discussion, plan directly
-- `/gsd:research-phase [X+1] ${GTD_WS}` — investigate unknowns
+- `/gtd-plan-phase [X+1] ${GTD_WS}` — skip discussion, plan directly
+- `/gtd-research-phase [X+1] ${GTD_WS}` — investigate unknowns
 
 ---
 ```
@@ -500,15 +500,15 @@ Exit skill and invoke SlashCommand("/gsd:discuss-phase [X+1] --auto ${GTD_WS}")
 **Phase [X+1]: [Name]** — [Goal from ROADMAP.md]
 <sub>✓ Context gathered, ready to plan</sub>
 
-`/gsd:plan-phase [X+1] ${GTD_WS}`
+`/gtd-plan-phase [X+1] ${GTD_WS}`
 
 <sub>`/clear` first → fresh context window</sub>
 
 ---
 
 **Also available:**
-- `/gsd:discuss-phase [X+1] ${GTD_WS}` — revisit context
-- `/gsd:research-phase [X+1] ${GTD_WS}` — investigate unknowns
+- `/gtd-discuss-phase [X+1] ${GTD_WS}` — revisit context
+- `/gtd-research-phase [X+1] ${GTD_WS}` — investigate unknowns
 
 ---
 ```
@@ -554,18 +554,18 @@ This workstream's phases are complete. Other workstreams are still active:
 
 Archive this workstream:
 
-`/gsd:workstreams complete {current_ws_name} ${GTD_WS}`
+`/gtd-workstreams complete {current_ws_name} ${GTD_WS}`
 
 See overall milestone progress:
 
-`/gsd:workstreams progress ${GTD_WS}`
+`/gtd-workstreams progress ${GTD_WS}`
 
 <sub>Milestone completion will be available once all workstreams finish.</sub>
 
 ---
 ```
 
-Do NOT suggest `/gsd:complete-milestone` or `/gsd:new-milestone`.
+Do NOT suggest `/gtd-complete-milestone` or `/gtd-new-milestone`.
 Do NOT auto-invoke any further slash commands.
 
 **Stop here.** The user must explicitly decide what to do next.
@@ -593,7 +593,7 @@ Phase {X} marked complete.
 ⚡ Auto-continuing: Complete milestone and archive
 ```
 
-Exit skill and invoke SlashCommand("/gsd:complete-milestone {version} ${GTD_WS}")
+Exit skill and invoke SlashCommand("/gtd-complete-milestone {version} ${GTD_WS}")
 
 </if>
 
@@ -610,7 +610,7 @@ Exit skill and invoke SlashCommand("/gsd:complete-milestone {version} ${GTD_WS}"
 
 **Complete Milestone {version}** — archive and prepare for next
 
-`/gsd:complete-milestone {version} ${GTD_WS}`
+`/gtd-complete-milestone {version} ${GTD_WS}`
 
 <sub>`/clear` first → fresh context window</sub>
 

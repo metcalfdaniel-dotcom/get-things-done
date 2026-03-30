@@ -25,7 +25,7 @@ Parse JSON for: `workspace_base`, `workspaces`, `workspace_count`.
 No workspaces found in ~/gtd-workspaces/
 
 Create one with:
-  /gsd:new-workspace --name my-workspace --repos repo1,repo2
+  /gtd-new-workspace --name my-workspace --repos repo1,repo2
 ```
 
 Done.
@@ -44,7 +44,7 @@ GTD Workspaces (~/gtd-workspaces/)
 
 Manage:
   cd ~/gtd-workspaces/<name>     # Enter a workspace
-  /gsd:remove-workspace <name>   # Remove a workspace
+  /gtd-remove-workspace <name>   # Remove a workspace
 ```
 
 For each workspace, show:

@@ -202,8 +202,8 @@ Requirements: {N} REQ-IDs addressed
 Next steps:
 - Review/approve PR
 - Merge when CI passes
-- /gsd:complete-milestone (if last phase in milestone)
-- /gsd:progress (to see what's next)
+- /gtd-complete-milestone (if last phase in milestone)
+- /gtd-progress (to see what's next)
 
 ───────────────────────────────────────────────────────────────
 ```
@@ -214,9 +214,9 @@ Next steps:
 <offer_next>
 After shipping:
 
-- /gsd:complete-milestone — if all phases in milestone are done
-- /gsd:progress — see overall project state
-- /gsd:execute-phase {next} — continue to next phase
+- /gtd-complete-milestone — if all phases in milestone are done
+- /gtd-progress — see overall project state
+- /gtd-execute-phase {next} — continue to next phase
 </offer_next>
 
 <success_criteria>

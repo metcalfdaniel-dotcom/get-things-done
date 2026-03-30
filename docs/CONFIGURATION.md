@@ -6,7 +6,7 @@
 
 ## Configuration File
 
-GTD stores project settings in `.planning/config.json`. Created during `/gsd:new-project`, updated via `/gsd:settings`.
+GTD stores project settings in `.planning/config.json`. Created during `/gtd-new-project`, updated via `/gtd-settings`.
 
 ### Full Schema
 
@@ -97,12 +97,12 @@ All workflow toggles follow the **absent = enabled** pattern. If a key is missin
 | `workflow.auto_advance` | boolean | `false` | Auto-chain discuss → plan → execute without stopping |
 | `workflow.nyquist_validation` | boolean | `true` | Test coverage mapping during plan-phase research |
 | `workflow.ui_phase` | boolean | `true` | Generate UI design contracts for frontend phases |
-| `workflow.ui_safety_gate` | boolean | `true` | Prompt to run /gsd:ui-phase for frontend phases during plan-phase |
+| `workflow.ui_safety_gate` | boolean | `true` | Prompt to run /gtd-ui-phase for frontend phases during plan-phase |
 | `workflow.node_repair` | boolean | `true` | Autonomous task repair on verification failure |
 | `workflow.node_repair_budget` | number | `2` | Max repair attempts per failed task |
 | `workflow.research_before_questions` | boolean | `false` | Run research before discussion questions instead of after |
-| `workflow.discuss_mode` | string | `'discuss'` | Controls how `/gsd:discuss-phase` gathers context. `'discuss'` (default) asks questions one-by-one. `'assumptions'` reads the codebase first, generates structured assumptions with confidence levels, and only asks you to correct what's wrong. Added in v1.28 |
-| `workflow.skip_discuss` | boolean | `false` | When `true`, `/gsd:autonomous` bypasses the discuss-phase entirely, writing minimal CONTEXT.md from the ROADMAP phase goal. Useful for projects where developer preferences are fully captured in PROJECT.md/REQUIREMENTS.md. Added in v1.28 |
+| `workflow.discuss_mode` | string | `'discuss'` | Controls how `/gtd-discuss-phase` gathers context. `'discuss'` (default) asks questions one-by-one. `'assumptions'` reads the codebase first, generates structured assumptions with confidence levels, and only asks you to correct what's wrong. Added in v1.28 |
+| `workflow.skip_discuss` | boolean | `false` | When `true`, `/gtd-autonomous` bypasses the discuss-phase entirely, writing minimal CONTEXT.md from the ROADMAP phase goal. Useful for projects where developer preferences are fully captured in PROJECT.md/REQUIREMENTS.md. Added in v1.28 |
 | `workflow.text_mode` | boolean | `false` | Replaces AskUserQuestion TUI menus with plain-text numbered lists. Required for Claude Code remote sessions (`/rc` mode) where TUI menus don't render. Can also be set per-session with `--text` flag on discuss-phase. Added in v1.28 |
 
 ### Recommended Presets
@@ -133,7 +133,7 @@ If `.planning/` is in `.gitignore`, `commit_docs` is automatically `false` regar
 | Setting | Type | Default | Description |
 |---------|------|---------|-------------|
 | `hooks.context_warnings` | boolean | `true` | Show context window usage warnings via context monitor hook |
-| `hooks.workflow_guard` | boolean | `false` | Warn when file edits happen outside GTD workflow context (advises using `/gsd:quick` or `/gsd:fast`) |
+| `hooks.workflow_guard` | boolean | `false` | Warn when file edits happen outside GTD workflow context (advises using `/gtd-quick` or `/gtd-fast`) |
 
 The prompt injection guard hook (`gtd-prompt-guard.js`) is always active and cannot be disabled — it's a security feature, not a workflow toggle.
 
@@ -235,7 +235,7 @@ node gtd-tools.cjs config-set agent_skills.gtd-executor '["skills/my-skill"]'
 | `git.branching_strategy` | enum | `none` | `none`, `phase`, or `milestone` |
 | `git.phase_branch_template` | string | `gsd/phase-{phase}-{slug}` | Branch name template for phase strategy |
 | `git.milestone_branch_template` | string | `gsd/{milestone}-{slug}` | Branch name template for milestone strategy |
-| `git.quick_branch_template` | string or null | `null` | Optional branch name template for `/gsd:quick` tasks |
+| `git.quick_branch_template` | string or null | `null` | Optional branch name template for `/gtd-quick` tasks |
 
 ### Strategy Comparison
 
@@ -406,4 +406,4 @@ Save settings as global defaults for future projects:
 
 **Location:** `~/.gsd/defaults.json`
 
-When `/gsd:new-project` creates a new `config.json`, it reads global defaults and merges them as the starting configuration. Per-project settings always override globals.
+When `/gtd-new-project` creates a new `config.json`, it reads global defaults and merges them as the starting configuration. Per-project settings always override globals.

@@ -71,7 +71,7 @@ Error:
 No git repos found in the current directory and this is not a git repo.
 
 Run this command from a directory containing git repos, or specify repos explicitly:
-  /gsd:new-workspace --name my-workspace --repos /path/to/repo1,/path/to/repo2
+  /gtd-new-workspace --name my-workspace --repos /path/to/repo1,/path/to/repo2
 ```
 Exit.
 
@@ -82,7 +82,7 @@ Error:
 Error: --auto requires --repos to specify which repos to include.
 
 Usage:
-  /gsd:new-workspace --name my-workspace --repos repo1,repo2 --auto
+  /gtd-new-workspace --name my-workspace --repos repo1,repo2 --auto
 ```
 Exit.
 
@@ -201,7 +201,7 @@ Workspace created: $TARGET_PATH
 
 Next steps:
   cd $TARGET_PATH
-  /gsd:new-project    # Initialize GTD in the workspace
+  /gtd-new-project    # Initialize GTD in the workspace
 ```
 
 **If some repos failed:**
@@ -214,7 +214,7 @@ Workspace created with $SUCCESS_COUNT of $TOTAL_COUNT repos: $TARGET_PATH
 
 Next steps:
   cd $TARGET_PATH
-  /gsd:new-project    # Initialize GTD in the workspace
+  /gtd-new-project    # Initialize GTD in the workspace
 ```
 
 **Offer to initialize GTD (if not `--auto`):**
@@ -223,7 +223,7 @@ Use AskUserQuestion:
 - header: "Initialize GTD"
 - question: "Would you like to initialize a GTD project in the new workspace?"
 - options:
-  - "Yes — run /gsd:new-project" → tell user to `cd $TARGET_PATH` first, then run `/gsd:new-project`
+  - "Yes — run /gtd-new-project" → tell user to `cd $TARGET_PATH` first, then run `/gtd-new-project`
   - "No — I'll set it up later" → done
 
 </process>

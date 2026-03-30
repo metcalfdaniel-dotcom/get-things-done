@@ -84,11 +84,11 @@ O instalador pede:
 2. **Local** — Global (todos os projetos) ou local (apenas projeto atual)
 
 Verifique com:
-- Claude Code / Gemini: `/gsd:help`
+- Claude Code / Gemini: `/gtd-help`
 - OpenCode: `/gtd-help`
 - Codex: `$gtd-help`
-- Copilot: `/gsd:help`
-- Antigravity: `/gsd:help`
+- Copilot: `/gtd-help`
+- Antigravity: `/gtd-help`
 
 > [!NOTE]
 > A instalação do Codex usa skills (`skills/gtd-*/SKILL.md`) em vez de prompts customizados.
@@ -151,12 +151,12 @@ claude --dangerously-skip-permissions
 
 ## Como funciona
 
-> **Já tem código?** Rode `/gsd:map-codebase` primeiro para analisar stack, arquitetura, convenções e riscos.
+> **Já tem código?** Rode `/gtd-map-codebase` primeiro para analisar stack, arquitetura, convenções e riscos.
 
 ### 1. Inicializar projeto
 
 ```
-/gsd:new-project
+/gtd-new-project
 ```
 
 O sistema:
@@ -170,7 +170,7 @@ O sistema:
 ### 2. Discutir fase
 
 ```
-/gsd:discuss-phase 1
+/gtd-discuss-phase 1
 ```
 
 Captura suas preferências de implementação antes do planejamento.
@@ -180,7 +180,7 @@ Captura suas preferências de implementação antes do planejamento.
 ### 3. Planejar fase
 
 ```
-/gsd:plan-phase 1
+/gtd-plan-phase 1
 ```
 
 1. Pesquisa abordagens
@@ -192,7 +192,7 @@ Captura suas preferências de implementação antes do planejamento.
 ### 4. Executar fase
 
 ```
-/gsd:execute-phase 1
+/gtd-execute-phase 1
 ```
 
 1. Executa planos em ondas
@@ -205,7 +205,7 @@ Captura suas preferências de implementação antes do planejamento.
 ### 5. Verificar trabalho
 
 ```
-/gsd:verify-work 1
+/gtd-verify-work 1
 ```
 
 Validação manual orientada para confirmar que a feature realmente funciona como esperado.
@@ -215,25 +215,25 @@ Validação manual orientada para confirmar que a feature realmente funciona com
 ### 6. Repetir -> Entregar -> Completar
 
 ```
-/gsd:discuss-phase 2
-/gsd:plan-phase 2
-/gsd:execute-phase 2
-/gsd:verify-work 2
-/gsd:ship 2
-/gsd:complete-milestone
-/gsd:new-milestone
+/gtd-discuss-phase 2
+/gtd-plan-phase 2
+/gtd-execute-phase 2
+/gtd-verify-work 2
+/gtd-ship 2
+/gtd-complete-milestone
+/gtd-new-milestone
 ```
 
 Ou deixe o GTD decidir:
 
 ```
-/gsd:next
+/gtd-next
 ```
 
 ### Modo rápido
 
 ```
-/gsd:quick
+/gtd-quick
 ```
 
 Para tarefas ad-hoc sem ciclo completo de planejamento.
@@ -289,36 +289,36 @@ Cada tarefa gera commit próprio, facilitando `git bisect`, rollback e rastreabi
 
 | Comando | O que faz |
 |---------|-----------|
-| `/gsd:new-project [--auto]` | Inicializa projeto completo |
-| `/gsd:discuss-phase [N] [--auto] [--analyze]` | Captura decisões antes do plano |
-| `/gsd:plan-phase [N] [--auto] [--reviews]` | Pesquisa + plano + validação |
-| `/gsd:execute-phase <N>` | Executa planos em ondas paralelas |
-| `/gsd:verify-work [N]` | UAT manual |
-| `/gsd:ship [N] [--draft]` | Cria PR da fase validada |
-| `/gsd:next` | Avança automaticamente para o próximo passo |
-| `/gsd:fast <text>` | Tarefas triviais sem planejamento |
-| `/gsd:complete-milestone` | Fecha o marco e marca release |
-| `/gsd:new-milestone [name]` | Inicia próximo marco |
+| `/gtd-new-project [--auto]` | Inicializa projeto completo |
+| `/gtd-discuss-phase [N] [--auto] [--analyze]` | Captura decisões antes do plano |
+| `/gtd-plan-phase [N] [--auto] [--reviews]` | Pesquisa + plano + validação |
+| `/gtd-execute-phase <N>` | Executa planos em ondas paralelas |
+| `/gtd-verify-work [N]` | UAT manual |
+| `/gtd-ship [N] [--draft]` | Cria PR da fase validada |
+| `/gtd-next` | Avança automaticamente para o próximo passo |
+| `/gtd-fast <text>` | Tarefas triviais sem planejamento |
+| `/gtd-complete-milestone` | Fecha o marco e marca release |
+| `/gtd-new-milestone [name]` | Inicia próximo marco |
 
 ### Qualidade e utilidades
 
 | Comando | O que faz |
 |---------|-----------|
-| `/gsd:review` | Peer review com múltiplas IAs |
-| `/gsd:pr-branch` | Cria branch limpa para PR |
-| `/gsd:settings` | Configura perfis e agentes |
-| `/gsd:set-profile <profile>` | Troca perfil (quality/balanced/budget/inherit) |
-| `/gsd:quick [--full] [--discuss] [--research]` | Execução rápida com garantias do GTD |
-| `/gsd:health [--repair]` | Verifica e repara `.planning/` |
+| `/gtd-review` | Peer review com múltiplas IAs |
+| `/gtd-pr-branch` | Cria branch limpa para PR |
+| `/gtd-settings` | Configura perfis e agentes |
+| `/gtd-set-profile <profile>` | Troca perfil (quality/balanced/budget/inherit) |
+| `/gtd-quick [--full] [--discuss] [--research]` | Execução rápida com garantias do GTD |
+| `/gtd-health [--repair]` | Verifica e repara `.planning/` |
 
-> Para a lista completa de comandos e opções, use `/gsd:help`.
+> Para a lista completa de comandos e opções, use `/gtd-help`.
 
 ---
 
 ## Configuração
 
 As configurações do projeto ficam em `.planning/config.json`.
-Você pode configurar no `/gsd:new-project` ou ajustar depois com `/gsd:settings`.
+Você pode configurar no `/gtd-new-project` ou ajustar depois com `/gtd-settings`.
 
 ### Ajustes principais
 
@@ -338,7 +338,7 @@ Você pode configurar no `/gsd:new-project` ou ajustar depois com `/gsd:settings
 
 Troca rápida:
 ```
-/gsd:set-profile budget
+/gtd-set-profile budget
 ```
 
 ---
@@ -382,7 +382,7 @@ Adicione padrões sensíveis ao deny list do Claude Code:
 - Verifique se os arquivos foram instalados no diretório correto
 
 **Comandos não funcionam como esperado?**
-- Rode `/gsd:help`
+- Rode `/gtd-help`
 - Reinstale com `npx get-things-done-cc@latest`
 
 **Em Docker/container?**
