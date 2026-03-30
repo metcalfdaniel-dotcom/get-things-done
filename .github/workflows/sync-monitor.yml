@@ -52,37 +52,42 @@ jobs:
           
           echo "Applying transformations: shit→things, gsd→gtd"
           
-          # Exclude binary files, .git, and sync tracking
-          EXCLUDE_PATTERNS="--exclude='.git' --exclude='node_modules' --exclude='.gtd-sync' --exclude='dist' --exclude='build' --exclude='*.png' --exclude='*.jpg' --exclude='*.jpeg' --exclude='*.gif' --exclude='*.ico' --exclude='*.svg' --exclude='*.woff' --exclude='*.woff2' --exclude='*.ttf' --exclude='*.eot'"
+          # Exclude binary files, .git, dotfiles, and sync tracking
+          EXCLUDE_PATTERNS="--exclude='.git' --exclude='node_modules' --exclude='.gtd-sync' --exclude='dist' --exclude='build' --exclude='*.png' --exclude='*.jpg' --exclude='*.jpeg' --exclude='*.gif' --exclude='*.ico' --exclude='*.svg' --exclude='*.woff' --exclude='*.woff2' --exclude='*.ttf' --exclude='*.eot' --exclude='.*'"
           
-          # Replace profanity with clean alternatives
-          find . $EXCLUDE_PATTERNS -type f -exec sed -i 's/shit/things/g' {} \; 2>/dev/null || TRANSFORM_ERRORS="$TRANSFORM_ERRORS shit;"
-          find . $EXCLUDE_PATTERNS -type f -exec sed -i 's/Shit/Things/g' {} \; 2>/dev/null || true
-          find . $EXCLUDE_PATTERNS -type f -exec sed -i 's/SHIT/THINGS/g' {} \; 2>/dev/null || true
+          # Replace profanity with clean alternatives (using + for safer exec)
+          find . $EXCLUDE_PATTERNS -type f -exec sed -i 's/shit/things/g' {} + 2>/dev/null || TRANSFORM_ERRORS="$TRANSFORM_ERRORS shit;"
+          find . $EXCLUDE_PATTERNS -type f -exec sed -i 's/Shit/Things/g' {} + 2>/dev/null || true
+          find . $EXCLUDE_PATTERNS -type f -exec sed -i 's/SHIT/THINGS/g' {} + 2>/dev/null || true
           
           # Replace gsd- prefixes with gtd-
-          find . $EXCLUDE_PATTERNS -type f -exec sed -i 's/gsd-/gtd-/g' {} \; 2>/dev/null || TRANSFORM_ERRORS="$TRANSFORM_ERRORS gsd-prefix;"
-          find . $EXCLUDE_PATTERNS -type f -exec sed -i 's/GSD/GTD/g' {} \; 2>/dev/null || true
+          find . $EXCLUDE_PATTERNS -type f -exec sed -i 's/gsd-/gtd-/g' {} + 2>/dev/null || TRANSFORM_ERRORS="$TRANSFORM_ERRORS gsd-prefix;"
+          find . $EXCLUDE_PATTERNS -type f -exec sed -i 's/GSD/GTD/g' {} + 2>/dev/null || true
           
           # Replace standalone gsd: references
-          find . $EXCLUDE_PATTERNS -type f -exec sed -i 's/gsd:/gtd-/g' {} \; 2>/dev/null || TRANSFORM_ERRORS="$TRANSFORM_ERRORS gsd-standalone;"
-          find . $EXCLUDE_PATTERNS -type f -exec sed -i "s/\/gsd:/\/gtd-/g" {} \; 2>/dev/null || true
+          find . $EXCLUDE_PATTERNS -type f -exec sed -i 's/gsd:/gtd-/g' {} + 2>/dev/null || TRANSFORM_ERRORS="$TRANSFORM_ERRORS gsd-standalone;"
+          find . $EXCLUDE_PATTERNS -type f -exec sed -i "s/\/gsd:/\/gtd-/g" {} + 2>/dev/null || true
           
-          # Rename directories
-          find . -type d -name 'gsd*' 2>/dev/null | while read dir; do
+          # Rename directories (using null-terminated strings for security)
+          find . -type d -name 'gsd*' -print0 2>/dev/null | while IFS= read -r -d '' dir; do
             newdir=$(echo "$dir" | sed 's/gsd/gtd/g')
-            if [ "$dir" != "$newdir" ]; then
+            # Validate path stays within repository bounds
+            if [[ "$newdir" == "$PWD"* ]] && [[ "$dir" != "$newdir" ]]; then
               mv "$dir" "$newdir" 2>/dev/null || TRANSFORM_ERRORS="$TRANSFORM_ERRORS dir;"
             fi
           done
           
-          # Rename files
-          find . -type f -name 'gsd*' 2>/dev/null | while read file; do
+          # Rename files (using null-terminated strings for security)
+          find . -type f -name 'gsd*' -print0 2>/dev/null | while IFS= read -r -d '' file; do
             newfile=$(echo "$file" | sed 's/gsd/gtd/g')
-            if [ "$file" != "$newfile" ]; then
+            # Validate path stays within repository bounds
+            if [[ "$newfile" == "$PWD"* ]] && [[ "$file" != "$newfile" ]]; then
               mv "$file" "$newfile" 2>/dev/null || TRANSFORM_ERRORS="$TRANSFORM_ERRORS file;"
             fi
           done
+          
+          # Sanitize transform_errors to prevent log injection
+          TRANSFORM_ERRORS=$(echo "$TRANSFORM_ERRORS" | tr -cd '[:alnum:],_-' | cut -c1-200)
           
           set -e
           
