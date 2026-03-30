@@ -1,0 +1,51 @@
+name: Sync from GSD
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Daily at midnight
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Add GSD as remote
+        run: |
+          git remote add gsd https://github.com/gsd-build/get-shit-done.git
+          git fetch gsd main
+
+      - name: Merge changes from GSD
+        run: |
+          git merge gsd/main --no-edit || echo "No changes to merge"
+
+      - name: Replace profanity with clean alternatives
+        run: |
+          # Replace all variations of shit/things
+          find . -type f -not -path './.git/*' -exec sed -i 's/shit/things/g' {} \;
+          find . -type f -not -path './.git/*' -exec sed -i 's/Shit/Things/g' {} \;
+          find . -type f -not -path './.git/*' -exec sed -i 's/SHIT/THINGS/g' {} \;
+          
+          # Replace gsd- prefixes with gtd-
+          find . -type f -not -path './.git/*' -exec sed -i 's/gsd-/gtd-/g' {} \;
+          find . -type f -not -path './.git/*' -exec sed -i 's/GSD/GTD/g' {} \;
+          
+          # Rename directories
+          find . -type d -name 'gsd' -exec mv {} {}_temp \; 2>/dev/null || true
+          find . -type d -name 'gsd_temp' -exec mv {} get-things-done \; 2>/dev/null || true
+
+      - name: Rename files with gsd- to gtd-
+        run: |
+          find . -type f -name 'gsd-*' -exec sh -c 'mv "$1" "${1//gsd-/gtd-}"' _ {} \;
+
+      - name: Commit and push
+        run: |
+          git add -A
+          git diff --staged --quiet || git commit -m "sync: merge from GSD and apply clean transformations"
+          git push origin main
