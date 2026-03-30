@@ -38,6 +38,9 @@ philosophy.md
 .github/copilot-instructions.md
 .bg-shell/
 
+# ── GTD sync tracking (auto-generated) ──
+.gtd-sync/
+
 # ── GSD baseline (auto-generated) ──
 .gsd
 Thumbs.db
