@@ -47,19 +47,17 @@ npx get-things-done-cc@latest
 
 ---
 
-## Why I Built This
+## About This Fork
 
-I'm a solo developer. I don't write code — Claude Code does.
+Get Things Done (GTD) is a profanity-free fork of [get-shit-done](https://github.com/gsd-build/get-shit-done) by **TÂCHES**. I forked it to clean up the profanity and restyled it.
 
-Other spec-driven development tools exist; BMAD, Speckit... But they all seem to make things way more complicated than they need to be (sprint ceremonies, story points, stakeholder syncs, retrospectives, Jira workflows) or lack real big picture understanding of what you're building. I'm not a 50-person software company. I don't want to play enterprise theater. I'm just a creative person trying to build great things that work.
+I'm a solo developer. I don't write code — OpenCode does.
 
-So I built GTD. The complexity is in the system, not in your workflow. Behind the scenes: context engineering, XML prompt formatting, subagent orchestration, state management. What you see: a few commands that just work.
+That's the gist. No enterprise roleplay. Just an incredibly effective system for building cool stuff with AI.
 
-The system gives Claude everything it needs to do the work *and* verify it. I trust the workflow. It just does a good job.
+This fork replaces "shit/gsd" with "things/gtd" — same powerful workflow, just cleaner commands.
 
-That's what this is. No enterprise roleplay nonsense. Just an incredibly effective system for building cool stuff consistently using Claude Code.
-
-— **TÂCHES**
+— **Daniel Metcalf**
 
 ---
 
